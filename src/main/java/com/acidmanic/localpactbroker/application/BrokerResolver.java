@@ -17,6 +17,7 @@ import java.util.List;
 public class BrokerResolver extends Resolver {
 
     private BrokerResolver() {
+        install(new BrokerIocRegistry());
     }
 
     private static BrokerResolver instance = null;
