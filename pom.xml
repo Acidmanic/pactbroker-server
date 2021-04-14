@@ -26,5 +26,11 @@
             <artifactId>myoccontainer</artifactId>
             <version>1.0.0</version>
         </dependency>
+        
+        <dependency>
+            <groupId>com.acidmanic</groupId>
+            <artifactId>application-pattern</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
 </project>
