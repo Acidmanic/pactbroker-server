@@ -12,6 +12,7 @@ import com.acidmanic.commandline.commands.Help;
 import com.acidmanic.commandline.commands.TypeRegistery;
 import com.acidmanic.lightweight.logger.ConsoleLogger;
 import com.acidmanic.lightweight.logger.Logger;
+import com.acidmanic.localpactbroker.application.services.BrokerWebService;
 import com.acidmanic.localpactbroker.application.services.ConsoleService;
 import com.acidmanic.localpactbroker.application.services.web.BrokerControllerProvider;
 import com.acidmanic.localpactbroker.commands.ApplicationContext;
@@ -47,6 +48,8 @@ public class BrokerIocRegistry implements Installer {
 
     private void configureApplicationServices(Registerer reg) {
         reg.register().bindToSelf(ConsoleService.class).livesAsA(LifetimeType.Singleton);
+        
+        reg.register().bindToSelf(BrokerWebService.class).livesAsA(LifetimeType.Singleton);
     }
 
     private void configureInfrastructureServices(Registerer reg) {
