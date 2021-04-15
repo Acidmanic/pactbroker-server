@@ -35,9 +35,17 @@ public class Models {
         Dto<T> failure = new Dto<>();
 
         failure.setError(status);
-        failure.setFailure(true);
+        failure.setFailure((status.getCode()/100)!=2);
 
         return failure;
     }
 
+    public static <T> Dto<T> SuccessDto() {
+        Dto<T> failure = new Dto<>();
+
+        failure.setError(HttpStatus.OK);
+        failure.setFailure(false);
+
+        return failure;
+    }
 }
