@@ -11,25 +11,23 @@ import java.util.UUID;
  *
  * @author diego
  */
-public class Token {
+public class TokenModel {
 
-    private UUID value;
+    private String value;
 
-    public Token() {
-        this.value = UUID.randomUUID();
+    public TokenModel() {
+        this.value = UUID.randomUUID().toString();
     }
 
-    public UUID getValue() {
-        return value;
-    }
-
-    public void setValue(UUID value) {
+    public TokenModel(String value) {
         this.value = value;
     }
 
-    @Override
-    public String toString() {
-        return this.value.toString();
+    public String getValue() {
+        return value;
     }
 
+    public void setValue(String value) {
+        this.value = value;
+    }
 }

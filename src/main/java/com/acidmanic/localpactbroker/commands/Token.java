@@ -11,7 +11,7 @@ import com.acidmanic.commandline.commands.CommandBase;
  *
  * @author diego
  */
-public class Token extends CommandBase{
+public class Token extends CommandBase {
 
     @Override
     protected String getUsageDescription() {
@@ -25,12 +25,28 @@ public class Token extends CommandBase{
 
     @Override
     public void execute(String[] args) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ApplicationContext context = getContext();
+
+        String token = context.getTokenGenerator().generateToken();
+
+        boolean success = context.getTokenStorage().write(token);
+
+        if (success) {
+
+            getLogger().log("=============================================");
+            getLogger().log("use following token for authentication over network:");
+            getLogger().log("---------------------------------------------");
+            getLogger().info(token);
+            getLogger().log("=============================================");
+        } else {
+            getLogger().error("Unable to write a new token to token storage.");
+        }
+
     }
 
     @Override
     public boolean hasArguments() {
         return false;
     }
-    
+
 }
