@@ -18,13 +18,15 @@ public class BrokerApplication extends ApplicationBase {
 
     private final Logger logger;
     private final BrokerResolver resolver;
-    
+
     public BrokerApplication(ServiceManager serviceManager,
             Logger logger,
-            BrokerResolver resolver) {
+            BrokerResolver resolver,
+            ShutdownDetect shutdownDetect) {
         super(serviceManager);
         this.logger = logger;
         this.resolver = resolver;
+        shutdownDetect.registerShutdownListener(()-> this.stop());
     }
 
     @Override
@@ -36,8 +38,8 @@ public class BrokerApplication extends ApplicationBase {
 
     @Override
     protected void beforeStartingServices(String[] args) {
-        super.beforeStartingServices(args); 
-        
+        super.beforeStartingServices(args);
+
         this.logger.log("Starting services");
     }
 
@@ -46,9 +48,6 @@ public class BrokerApplication extends ApplicationBase {
         this.logger.log("All services has been started");
     }
 
-    
-    
-    
     @Override
     public void dispose() {
     }

@@ -16,6 +16,8 @@ import com.acidmanic.localpactbroker.application.services.BrokerWebService;
 import com.acidmanic.localpactbroker.application.services.ConsoleService;
 import com.acidmanic.localpactbroker.application.services.web.BrokerControllerProvider;
 import com.acidmanic.localpactbroker.commands.ApplicationContext;
+import com.acidmanic.localpactbroker.commands.ApplicationSwitch;
+import com.acidmanic.localpactbroker.commands.Exit;
 import com.acidmanic.localpactbroker.commands.Token;
 import com.acidmanic.localpactbroker.controllers.PactController;
 import com.acidmanic.localpactbroker.storage.PactStorage;
@@ -48,7 +50,7 @@ public class BrokerIocRegistry implements Installer {
 
     private void configureApplicationServices(Registerer reg) {
         reg.register().bindToSelf(ConsoleService.class).livesAsA(LifetimeType.Singleton);
-        
+
         reg.register().bindToSelf(BrokerWebService.class).livesAsA(LifetimeType.Singleton);
     }
 
@@ -62,7 +64,7 @@ public class BrokerIocRegistry implements Installer {
         configureCommands(commandsRegistery);
 
         reg.register().bind(Resolver.class).withBuilder(() -> BrokerResolver.makeInstance());
-        
+
         reg.register().bind(BrokerResolver.class).withBuilder(() -> BrokerResolver.makeInstance());
 
         reg.register().bindToSelf(TokenStorage.class)
@@ -70,27 +72,35 @@ public class BrokerIocRegistry implements Installer {
 
         reg.register().bindToSelf(PactStorage.class)
                 .livesAsA(LifetimeType.Transient);
-        
+
         reg.register().bind(ServiceManager.class).to(DefaultServiceManager.class)
                 .livesAsA(LifetimeType.Singleton);
-        
+
         reg.register().bind(Logger.class).to(ConsoleLogger.class)
                 .livesAsA(LifetimeType.Singleton);
-        
+
         reg.register().bind(Application.class).to(BrokerApplication.class)
                 .livesAsA(LifetimeType.Transient);
-        
+
         reg.register().bindToSelf(ApplicationContext.class)
                 .livesAsA(LifetimeType.Transient);
-        
+
         reg.register().bind(StorageFileConfigs.class).to(BrokerStorageConfigs.class)
                 .livesAsA(LifetimeType.Singleton);
-        
+
         reg.register().bind(TokenGenerator.class).to(DoubleUUIDTokenGenerator.class)
                 .livesAsA(LifetimeType.Transient);
-        
+
         reg.register().bind(ControllersProvider.class).to(BrokerControllerProvider.class)
                 .livesAsA(LifetimeType.Transient);
+
+        ShutdownBus bus = new ShutdownBus();
+
+        reg.register().bind(ApplicationSwitch.class).withBuilder(() -> bus)
+                .livesAsA(LifetimeType.Singleton);
+
+        reg.register().bind(ShutdownDetect.class).withBuilder(() -> bus)
+                .livesAsA(LifetimeType.Singleton);
 
     }
 
@@ -103,6 +113,7 @@ public class BrokerIocRegistry implements Installer {
 
         reg.registerClass(Token.class);
         reg.registerClass(Help.class);
+        reg.registerClass(Exit.class);
     }
 
 }

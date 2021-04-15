@@ -19,7 +19,7 @@ public class Main {
 
         Resolver resolver = BrokerResolver.makeInstance();
 
-        BrokerApplication application
+        Application application
                 = resolver.tryResolve(Application.class);
 
         application.start(args, false);

@@ -19,11 +19,13 @@ public class ApplicationContext implements ExecutionContext {
     private final TokenStorage tokenStorage;
     private final PactStorage pactStorage;
     private final TokenGenerator tokenGenerator;
+    private final ApplicationSwitch applicationswitch;
 
-    public ApplicationContext(TokenStorage tokenStorage, PactStorage pactStorage, TokenGenerator tokenGenerator) {
+    public ApplicationContext(TokenStorage tokenStorage, PactStorage pactStorage, TokenGenerator tokenGenerator, ApplicationSwitch applicationExecution) {
         this.tokenStorage = tokenStorage;
         this.pactStorage = pactStorage;
         this.tokenGenerator = tokenGenerator;
+        this.applicationswitch = applicationExecution;
     }
 
     public TokenStorage getTokenStorage() {
@@ -36,6 +38,10 @@ public class ApplicationContext implements ExecutionContext {
 
     public TokenGenerator getTokenGenerator() {
         return tokenGenerator;
+    }
+
+    public ApplicationSwitch getApplicationswitch() {
+        return applicationswitch;
     }
 
 }
