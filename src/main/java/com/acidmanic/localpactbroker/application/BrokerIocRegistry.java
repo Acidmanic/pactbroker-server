@@ -16,6 +16,7 @@ import com.acidmanic.localpactbroker.application.services.ConsoleService;
 import com.acidmanic.localpactbroker.application.services.web.BrokerControllerProvider;
 import com.acidmanic.localpactbroker.commands.ApplicationContext;
 import com.acidmanic.localpactbroker.commands.Token;
+import com.acidmanic.localpactbroker.controllers.PactController;
 import com.acidmanic.localpactbroker.storage.PactStorage;
 import com.acidmanic.localpactbroker.storage.StorageFileConfigs;
 import com.acidmanic.localpactbroker.storage.TokenStorage;
@@ -91,7 +92,8 @@ public class BrokerIocRegistry implements Installer {
     }
 
     private void configureControllers(Registerer reg) {
-
+        reg.register().bindToSelf(PactController.class)
+                .livesAsA(LifetimeType.Singleton);
     }
 
     private void configureCommands(TypeRegistery reg) {
