@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.acidmanic.localpactbroker.models.pact;
+package com.acidmanic.localpactbroker.models;
 
+import com.acidmanic.localpactbroker.models.pact.Contract;
 import java.util.List;
 
 /**

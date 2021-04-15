@@ -7,7 +7,7 @@ package com.acidmanic.localpactbroker.storage;
 
 import com.acidmanic.lightweight.logger.Logger;
 import com.acidmanic.localpactbroker.jsonstorage.JsonStorageBase;
-import com.acidmanic.localpactbroker.models.pact.Pact;
+import com.acidmanic.localpactbroker.models.Pact;
 
 /**
  *
