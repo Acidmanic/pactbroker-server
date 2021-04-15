@@ -5,10 +5,18 @@
  */
 package com.acidmanic.localpactbroker.application;
 
+import com.acidmanic.applicationpattern.Application;
+import com.acidmanic.applicationpattern.DefaultServiceManager;
+import com.acidmanic.applicationpattern.ServiceManager;
+import com.acidmanic.commandline.commands.Help;
 import com.acidmanic.commandline.commands.TypeRegistery;
+import com.acidmanic.lightweight.logger.ConsoleLogger;
+import com.acidmanic.lightweight.logger.Logger;
 import com.acidmanic.localpactbroker.application.services.ConsoleService;
+import com.acidmanic.localpactbroker.commands.ApplicationContext;
 import com.acidmanic.localpactbroker.commands.Token;
 import com.acidmanic.localpactbroker.storage.PactStorage;
+import com.acidmanic.localpactbroker.storage.StorageFileConfigs;
 import com.acidmanic.localpactbroker.storage.TokenStorage;
 import com.acidmanic.utility.myoccontainer.Installer;
 import com.acidmanic.utility.myoccontainer.Registerer;
@@ -46,10 +54,26 @@ public class BrokerIocRegistry implements Installer {
         configureCommands(commandsRegistery);
 
         reg.register().bind(Resolver.class).withBuilder(() -> BrokerResolver.makeInstance());
+        
+        reg.register().bind(BrokerResolver.class).withBuilder(() -> BrokerResolver.makeInstance());
 
         reg.register().bindToSelf(TokenStorage.class).livesAsA(LifetimeType.Transient);
 
         reg.register().bindToSelf(PactStorage.class).livesAsA(LifetimeType.Transient);
+        
+        reg.register().bind(ServiceManager.class).to(DefaultServiceManager.class)
+                .livesAsA(LifetimeType.Singleton);
+        
+        reg.register().bind(Logger.class).to(ConsoleLogger.class)
+                .livesAsA(LifetimeType.Singleton);
+        
+        reg.register().bind(Application.class).to(BrokerApplication.class)
+                .livesAsA(LifetimeType.Transient);
+        
+        reg.register().bindToSelf(ApplicationContext.class).livesAsA(LifetimeType.Transient);
+        
+        reg.register().bind(StorageFileConfigs.class).to(BrokerStorageConfigs.class)
+                .livesAsA(LifetimeType.Singleton);
 
     }
 
@@ -60,6 +84,7 @@ public class BrokerIocRegistry implements Installer {
     private void configureCommands(TypeRegistery reg) {
 
         reg.registerClass(Token.class);
+        reg.registerClass(Help.class);
     }
 
 }

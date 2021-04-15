@@ -8,7 +8,6 @@ package com.acidmanic.localpactbroker.storage;
 import com.acidmanic.lightweight.logger.Logger;
 import com.acidmanic.localpactbroker.jsonstorage.JsonStorageBase;
 import com.acidmanic.localpactbroker.models.pact.Pact;
-import java.io.File;
 
 /**
  *
@@ -16,8 +15,8 @@ import java.io.File;
  */
 public class PactStorage extends JsonStorageBase<Pact>{
     
-    public PactStorage(File xmlFile, Logger logger) {
-        super(xmlFile, Pact.class, logger);
+    public PactStorage(StorageFileConfigs fileConfigs, Logger logger) {
+        super(fileConfigs.getPactFileStorage(), Pact.class, logger);
     }
     
 }

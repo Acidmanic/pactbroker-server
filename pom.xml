@@ -33,6 +33,11 @@
             <version>1.0.0</version>
         </dependency>
         
+        <dependency>
+            <groupId>com.acidmanic</groupId>
+            <artifactId>delegates</artifactId>
+            <version>1.0.0</version>
+        </dependency>
         
         <!-- https://mvnrepository.com/artifact/org.jboss.resteasy/resteasy-jaxrs -->
         <dependency>
