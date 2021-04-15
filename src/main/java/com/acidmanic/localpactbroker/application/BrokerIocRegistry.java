@@ -18,6 +18,8 @@ import com.acidmanic.localpactbroker.commands.Token;
 import com.acidmanic.localpactbroker.storage.PactStorage;
 import com.acidmanic.localpactbroker.storage.StorageFileConfigs;
 import com.acidmanic.localpactbroker.storage.TokenStorage;
+import com.acidmanic.localpactbroker.tokengenerate.DoubleUUIDTokenGenerator;
+import com.acidmanic.localpactbroker.tokengenerate.TokenGenerator;
 import com.acidmanic.utility.myoccontainer.Installer;
 import com.acidmanic.utility.myoccontainer.Registerer;
 import com.acidmanic.utility.myoccontainer.Resolver;
@@ -57,9 +59,11 @@ public class BrokerIocRegistry implements Installer {
         
         reg.register().bind(BrokerResolver.class).withBuilder(() -> BrokerResolver.makeInstance());
 
-        reg.register().bindToSelf(TokenStorage.class).livesAsA(LifetimeType.Transient);
+        reg.register().bindToSelf(TokenStorage.class)
+                .livesAsA(LifetimeType.Transient);
 
-        reg.register().bindToSelf(PactStorage.class).livesAsA(LifetimeType.Transient);
+        reg.register().bindToSelf(PactStorage.class)
+                .livesAsA(LifetimeType.Transient);
         
         reg.register().bind(ServiceManager.class).to(DefaultServiceManager.class)
                 .livesAsA(LifetimeType.Singleton);
@@ -70,10 +74,14 @@ public class BrokerIocRegistry implements Installer {
         reg.register().bind(Application.class).to(BrokerApplication.class)
                 .livesAsA(LifetimeType.Transient);
         
-        reg.register().bindToSelf(ApplicationContext.class).livesAsA(LifetimeType.Transient);
+        reg.register().bindToSelf(ApplicationContext.class)
+                .livesAsA(LifetimeType.Transient);
         
         reg.register().bind(StorageFileConfigs.class).to(BrokerStorageConfigs.class)
                 .livesAsA(LifetimeType.Singleton);
+        
+        reg.register().bind(TokenGenerator.class).to(DoubleUUIDTokenGenerator.class)
+                .livesAsA(LifetimeType.Transient);
 
     }
 
