@@ -14,7 +14,7 @@ public class Dto<TModel> {
 
     private TModel model;
     private boolean failure = false;
-    private Object error = new Object();
+    private Object error = "";
 
     public Dto() {
     }
@@ -22,7 +22,7 @@ public class Dto<TModel> {
     public Dto(TModel model) {
         this.model = model;
         failure = false;
-        error = new Object();
+        error = "";
     }
 
     public TModel getModel() {
