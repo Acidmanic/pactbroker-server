@@ -23,7 +23,11 @@ public class BrokerControllerProvider implements ControllersProvider {
 
     @Override
     public List<Object> provideAllControllerInstances() {
-        return resolver.resolveAllAnnotatedBy(Controller.class);
+
+        List<Object> controllers = resolver
+                .resolveAllAnnotatedBy(Controller.class);
+
+        return controllers;
     }
 
 }

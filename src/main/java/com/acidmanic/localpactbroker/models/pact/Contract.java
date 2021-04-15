@@ -26,7 +26,6 @@ package com.acidmanic.localpactbroker.models.pact;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import org.codehaus.jackson.map.ObjectMapper;
 
 /**
  *
@@ -77,11 +76,5 @@ public class Contract {
         this.metadata = metadata;
     }
 
-    public static Contract load(String path) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        Contract contract = objectMapper.readValue(new File(path), Contract.class);
-
-        return contract;
-    }
+ 
 }

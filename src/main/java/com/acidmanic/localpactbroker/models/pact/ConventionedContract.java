@@ -25,8 +25,6 @@ package com.acidmanic.localpactbroker.models.pact;
 
 import java.io.File;
 import java.io.IOException;
-import org.codehaus.jackson.map.ObjectMapper;
-
 /**
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
@@ -85,11 +83,4 @@ public class ConventionedContract extends Contract {
         return apiName;
     }
 
-    public static ConventionedContract load(String path) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        ConventionedContract contract = objectMapper.readValue(new File(path), ConventionedContract.class);
-
-        return contract;
-    }
 }

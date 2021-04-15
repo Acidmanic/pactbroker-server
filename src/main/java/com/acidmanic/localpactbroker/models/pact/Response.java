@@ -24,8 +24,6 @@
 package com.acidmanic.localpactbroker.models.pact;
 
 import java.util.HashMap;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.annotate.JsonRawValue;
 
 /**
  *
@@ -50,13 +48,8 @@ public class Response {
         this.status = status;
     }
 
-    @JsonRawValue
     public String getBody() {
         return body == null ? null : body.toString();
-    }
-
-    public void setBody(JsonNode body) {
-        this.body = body;
     }
 
     public HashMap<String, String> getHeaders() {
