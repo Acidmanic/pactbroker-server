@@ -13,6 +13,7 @@ import com.acidmanic.commandline.commands.TypeRegistery;
 import com.acidmanic.lightweight.logger.ConsoleLogger;
 import com.acidmanic.lightweight.logger.Logger;
 import com.acidmanic.localpactbroker.application.services.ConsoleService;
+import com.acidmanic.localpactbroker.application.services.web.BrokerControllerProvider;
 import com.acidmanic.localpactbroker.commands.ApplicationContext;
 import com.acidmanic.localpactbroker.commands.Token;
 import com.acidmanic.localpactbroker.storage.PactStorage;
@@ -20,6 +21,7 @@ import com.acidmanic.localpactbroker.storage.StorageFileConfigs;
 import com.acidmanic.localpactbroker.storage.TokenStorage;
 import com.acidmanic.localpactbroker.tokengenerate.DoubleUUIDTokenGenerator;
 import com.acidmanic.localpactbroker.tokengenerate.TokenGenerator;
+import com.acidmanic.resteasywrapper.ControllersProvider;
 import com.acidmanic.utility.myoccontainer.Installer;
 import com.acidmanic.utility.myoccontainer.Registerer;
 import com.acidmanic.utility.myoccontainer.Resolver;
@@ -81,6 +83,9 @@ public class BrokerIocRegistry implements Installer {
                 .livesAsA(LifetimeType.Singleton);
         
         reg.register().bind(TokenGenerator.class).to(DoubleUUIDTokenGenerator.class)
+                .livesAsA(LifetimeType.Transient);
+        
+        reg.register().bind(ControllersProvider.class).to(BrokerControllerProvider.class)
                 .livesAsA(LifetimeType.Transient);
 
     }

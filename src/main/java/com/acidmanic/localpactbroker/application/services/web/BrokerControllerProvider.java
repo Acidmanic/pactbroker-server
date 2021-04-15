@@ -1,0 +1,29 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.acidmanic.localpactbroker.application.services.web;
+
+import com.acidmanic.localpactbroker.application.BrokerResolver;
+import com.acidmanic.resteasywrapper.ControllersProvider;
+import java.util.List;
+
+/**
+ *
+ * @author diego
+ */
+public class BrokerControllerProvider implements ControllersProvider {
+
+    private final BrokerResolver resolver;
+
+    public BrokerControllerProvider(BrokerResolver resolver) {
+        this.resolver = resolver;
+    }
+
+    @Override
+    public List<Object> provideAllControllerInstances() {
+        return resolver.resolveAllAnnotatedBy(Controller.class);
+    }
+
+}
