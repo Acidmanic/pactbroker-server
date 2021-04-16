@@ -14,6 +14,7 @@ import com.acidmanic.lightweight.logger.ConsoleLogger;
 import com.acidmanic.lightweight.logger.Logger;
 import com.acidmanic.localpactbroker.application.services.BrokerWebService;
 import com.acidmanic.localpactbroker.application.services.ConsoleService;
+import com.acidmanic.localpactbroker.application.services.KillFileService;
 import com.acidmanic.localpactbroker.application.services.web.BrokerControllerProvider;
 import com.acidmanic.localpactbroker.commands.ApplicationContext;
 import com.acidmanic.localpactbroker.commands.ApplicationSwitch;
@@ -52,6 +53,8 @@ public class BrokerIocRegistry implements Installer {
         reg.register().bindToSelf(ConsoleService.class).livesAsA(LifetimeType.Singleton);
 
         reg.register().bindToSelf(BrokerWebService.class).livesAsA(LifetimeType.Singleton);
+
+        reg.register().bindToSelf(KillFileService.class).livesAsA(LifetimeType.Singleton);
     }
 
     private void configureInfrastructureServices(Registerer reg) {

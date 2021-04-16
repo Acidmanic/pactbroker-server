@@ -9,6 +9,7 @@ import com.acidmanic.applicationpattern.ApplicationBase;
 import com.acidmanic.applicationpattern.ApplicationService;
 import com.acidmanic.applicationpattern.ServiceManager;
 import com.acidmanic.lightweight.logger.Logger;
+import com.acidmanic.localpactbroker.utility.KillFile;
 
 /**
  *
@@ -41,6 +42,8 @@ public class BrokerApplication extends ApplicationBase {
         super.beforeStartingServices(args);
 
         this.logger.log("Starting services");
+        
+        new KillFile().delete();
     }
 
     @Override
