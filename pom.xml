@@ -67,7 +67,7 @@
         
         <dependency>
             <groupId>com.acidmanic</groupId>
-            <artifactId>resteasywrapper</artifactId>
+            <artifactId>resteasy-wrapper</artifactId>
             <version>1.0.0</version>
         </dependency>
         
