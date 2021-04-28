@@ -14,7 +14,7 @@ import com.acidmanic.commandline.utility.LineParser;
 import com.acidmanic.lightweight.logger.Logger;
 import com.acidmanic.localpactbroker.commands.ApplicationContext;
 import java.io.InputStream;
-import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -75,7 +75,7 @@ public class ConsoleService extends SyncLoopApplicationServiceBase {
         
         String[] args = new LineParser().analyseLine(command);
         
-        HashMap<Command,String[]> commands = factory.make(args, true);
+        Map<Command,String[]> commands = factory.make(args, true);
         
         commands.forEach((c,ar) -> c.execute(args));
     }
