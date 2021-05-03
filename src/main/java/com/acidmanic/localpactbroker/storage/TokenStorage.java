@@ -5,8 +5,8 @@
  */
 package com.acidmanic.localpactbroker.storage;
 
+import com.acidmanic.lightweight.jsonstorage.JsonStorageBase;
 import com.acidmanic.lightweight.logger.Logger;
-import com.acidmanic.localpactbroker.jsonstorage.JsonStorageBase;
 import com.acidmanic.localpactbroker.models.TokenModel;
 import com.acidmanic.localpactbroker.utility.Result;
 
