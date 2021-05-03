@@ -7,10 +7,10 @@ package com.acidmanic.localpactbroker.jsonstorage;
 
 import com.acidmanic.lightweight.logger.Logger;
 import com.acidmanic.lightweight.logger.SilentLogger;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
-import org.codehaus.jackson.map.DeserializationConfig;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.SerializationConfig;
+
 
 /**
  *
@@ -76,9 +76,9 @@ public abstract class JsonStorageBase<T> {
     private ObjectMapper createmapper() {
         ObjectMapper mapper = new ObjectMapper();
 
-        mapper.configure(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS, false);
-
-        mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper.configure(DeserializationFeature.FAIL_ON_NULL_CREATOR_PROPERTIES, false);
+        mapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, false);
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         return mapper;
     }
