@@ -51,14 +51,14 @@ public class BadgesController extends ControllerBase {
                 type = badges.getValue().get(tag);
             }
         }
-        byte[] data = new Badges().getBadgeBytes(type);
 
-        return Response
-                .status(Response.Status.OK)
-                .type("image/svg+xml")
-                .entity(data)
+        String data = new Badges().getBadgeSvg(type);
+
+        Response res = Response
+                .ok(data, "image/svg+xml")
                 .build();
 
+        return res;
     }
 
     @POST
@@ -68,7 +68,7 @@ public class BadgesController extends ControllerBase {
     public Dto<BadgeMap> setBadges(BadgeMap badges, @HeaderParam("token") String token) {
 
         return super.authorize(token, () -> {
-            
+
             Dto< BadgeMap> response = new Dto<>();
 
             boolean success = this.badgeStorage.write(badges);
