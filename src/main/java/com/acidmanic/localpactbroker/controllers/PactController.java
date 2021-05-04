@@ -25,16 +25,13 @@ import javax.ws.rs.Produces;
  */
 @Controller
 @Path("/")
-public class PactController {
+public class PactController extends ControllerBase {
 
     private final PactStorage pactStorage;
-    private final TokenStorage tokenStorage;
-    private final Logger logger;
 
     public PactController(PactStorage pactStorage, TokenStorage tokenStorage, Logger logger) {
+        super(tokenStorage, logger);
         this.pactStorage = pactStorage;
-        this.tokenStorage = tokenStorage;
-        this.logger = logger;
     }
 
     @GET
@@ -92,22 +89,4 @@ public class PactController {
         return response;
     }
 
-    private <T> Dto<T> authorize(String token, Function<Dto<T>> innerCode) {
-
-        if (token != null) {
-
-            Result<String> tokenResult = this.tokenStorage.read();
-
-            if (tokenResult.isSuccessfull()) {
-
-                if (tokenResult.getValue().equals(token)) {
-
-                    return innerCode.perform();
-                }
-            }
-        }
-        this.logger.warning("Un authorized attempt to brocker api.");
-        
-        return Models.failureDto(HttpStatus.UNAUTHORIZED);
-    }
 }
