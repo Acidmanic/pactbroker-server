@@ -5,6 +5,7 @@
  */
 package com.acidmanic.localpactbroker.controllers;
 
+import com.acidmanic.localpactbroker.utility.Badges;
 import com.acidmanic.lightweight.logger.Logger;
 import com.acidmanic.localpactbroker.application.services.web.Controller;
 import com.acidmanic.localpactbroker.models.BadgeMap;
@@ -52,7 +53,7 @@ public class BadgesController extends ControllerBase {
             }
         }
 
-        String data = new Badges().getBadgeSvg(type);
+        byte[] data = new Badges().getBadgeBytes(type);
 
         Response res = Response
                 .ok(data, "image/svg+xml")
