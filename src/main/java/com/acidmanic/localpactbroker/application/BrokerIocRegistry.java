@@ -20,7 +20,9 @@ import com.acidmanic.localpactbroker.commands.ApplicationContext;
 import com.acidmanic.localpactbroker.commands.ApplicationSwitch;
 import com.acidmanic.localpactbroker.commands.Exit;
 import com.acidmanic.localpactbroker.commands.Token;
+import com.acidmanic.localpactbroker.controllers.BadgesController;
 import com.acidmanic.localpactbroker.controllers.PactController;
+import com.acidmanic.localpactbroker.storage.BadgeStorage;
 import com.acidmanic.localpactbroker.storage.PactStorage;
 import com.acidmanic.localpactbroker.storage.StorageFileConfigs;
 import com.acidmanic.localpactbroker.storage.TokenStorage;
@@ -45,6 +47,8 @@ public class BrokerIocRegistry implements Installer {
 
         configureInfrastructureServices(reg);
 
+        configureRepositories(reg);
+        
         configureControllers(reg);
 
     }
@@ -69,13 +73,7 @@ public class BrokerIocRegistry implements Installer {
         reg.register().bind(Resolver.class).withBuilder(() -> BrokerResolver.makeInstance());
 
         reg.register().bind(BrokerResolver.class).withBuilder(() -> BrokerResolver.makeInstance());
-
-        reg.register().bindToSelf(TokenStorage.class)
-                .livesAsA(LifetimeType.Transient);
-
-        reg.register().bindToSelf(PactStorage.class)
-                .livesAsA(LifetimeType.Transient);
-
+        
         reg.register().bind(ServiceManager.class).to(DefaultServiceManager.class)
                 .livesAsA(LifetimeType.Singleton);
 
@@ -110,6 +108,9 @@ public class BrokerIocRegistry implements Installer {
     private void configureControllers(Registerer reg) {
         reg.register().bindToSelf(PactController.class)
                 .livesAsA(LifetimeType.Singleton);
+
+        reg.register().bindToSelf(BadgesController.class)
+                .livesAsA(LifetimeType.Singleton);
     }
 
     private void configureCommands(TypeRegistery reg) {
@@ -117,6 +118,17 @@ public class BrokerIocRegistry implements Installer {
         reg.registerClass(Token.class);
         reg.registerClass(Help.class);
         reg.registerClass(Exit.class);
+    }
+
+    private void configureRepositories(Registerer reg) {
+        reg.register().bindToSelf(TokenStorage.class)
+                .livesAsA(LifetimeType.Transient);
+
+        reg.register().bindToSelf(PactStorage.class)
+                .livesAsA(LifetimeType.Transient);
+        
+        reg.register().bindToSelf(BadgeStorage.class)
+                .livesAsA(LifetimeType.Transient);
     }
 
 }
