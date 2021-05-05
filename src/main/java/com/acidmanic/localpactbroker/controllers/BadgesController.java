@@ -40,8 +40,8 @@ public class BadgesController extends ControllerBase {
     }
 
     @GET
-    @Path("{tag}")
-    public Response getBadge(@PathParam("tag") String tag) {
+    @Path("{format}/{tag}")
+    public Response getBadge(@PathParam("format") String format, @PathParam("tag") String tag) {
 
         Result<BadgeMap> badges = this.badgeStorage.read();
 
@@ -53,10 +53,12 @@ public class BadgesController extends ControllerBase {
             }
         }
 
-        byte[] data = new Badges().getBadgeBytes(type);
+        String mime = "png".equalsIgnoreCase(format) ? "image/png" : "image/svg+xml";
+
+        byte[] data = new Badges().getBadgeBytes(type, format);
 
         Response res = Response
-                .ok(data, "image/svg+xml")
+                .ok(data, mime)
                 .build();
 
         return res;

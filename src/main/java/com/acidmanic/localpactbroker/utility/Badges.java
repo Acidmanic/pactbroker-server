@@ -17,24 +17,26 @@ public class Badges {
 
     public String getBadgeSvg(BadgeType type) {
 
-        byte[] binary = getBadgeBytes(type);
+        byte[] binary = getBadgeBytes(type,"svg");
 
         return new String(binary);
     }
 
-    public byte[] getBadgeBytes(BadgeType type) {
+    public byte[] getBadgeBytes(BadgeType type,String format) {
 
-        String name = "unknown.svg";
+        String extention = "svg".equalsIgnoreCase(format)?".svg":".png";
+        
+        String name = "unknown";
 
         if (type == BadgeType.Success) {
-            name = "success.svg";
+            name = "success";
         }
         if (type == BadgeType.Failure) {
-            name = "failure.svg";
+            name = "failure";
         }
         Path resourceBase = Paths.get("badges");
 
-        name = resourceBase.resolve(name).normalize().toString();
+        name = resourceBase.resolve(name+extention).normalize().toString();
 
         return new ResourceHelper().readResource(name);
 
