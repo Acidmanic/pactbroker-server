@@ -22,6 +22,7 @@ import com.acidmanic.localpactbroker.commands.Exit;
 import com.acidmanic.localpactbroker.commands.Token;
 import com.acidmanic.localpactbroker.controllers.BadgesController;
 import com.acidmanic.localpactbroker.controllers.PactController;
+import com.acidmanic.localpactbroker.controllers.VerificationResultController;
 import com.acidmanic.localpactbroker.storage.BadgeStorage;
 import com.acidmanic.localpactbroker.storage.PactStorage;
 import com.acidmanic.localpactbroker.storage.StorageFileConfigs;
@@ -110,6 +111,9 @@ public class BrokerIocRegistry implements Installer {
                 .livesAsA(LifetimeType.Singleton);
 
         reg.register().bindToSelf(BadgesController.class)
+                .livesAsA(LifetimeType.Singleton);
+        
+        reg.register().bindToSelf(VerificationResultController.class)
                 .livesAsA(LifetimeType.Singleton);
     }
 
