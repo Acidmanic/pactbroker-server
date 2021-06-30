@@ -74,11 +74,21 @@ public class BadgesController extends ControllerBase {
 
             Dto< BadgeMap> response = new Dto<>();
 
-            boolean success = this.badgeStorage.write(badges);
+            Result<BadgeMap> readResult = this.badgeStorage.read();
+
+            BadgeMap storageBadges = readResult.getValue();
+
+            if (!readResult.isSuccessfull()) {
+                storageBadges = new BadgeMap();
+            }
+
+            update(storageBadges, badges);
+
+            boolean success = this.badgeStorage.write(storageBadges);
 
             response.setFailure(!success);
 
-            response.setModel(badges);
+            response.setModel(storageBadges);
 
             return response;
         });
@@ -99,6 +109,18 @@ public class BadgesController extends ControllerBase {
         response.setModel(result.getValue());
 
         return response;
+    }
+
+    private void update(BadgeMap storageBadges, BadgeMap badges) {
+
+        for (String key : badges.keySet()) {
+
+            if (storageBadges.containsKey(key)) {
+
+                storageBadges.remove(key);
+            }
+            storageBadges.put(key, badges.get(key));
+        }
     }
 
 }
