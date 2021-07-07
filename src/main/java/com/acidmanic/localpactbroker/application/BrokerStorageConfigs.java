@@ -18,6 +18,7 @@ public class BrokerStorageConfigs implements StorageFileConfigs {
     private final File pacts;
     private final File token;
     private final File badges;
+    private final File pactMaps;
 
     public BrokerStorageConfigs() {
         this.pacts = new ResourceHelper().getExecutionDirectory()
@@ -26,6 +27,8 @@ public class BrokerStorageConfigs implements StorageFileConfigs {
                 .resolve("Token.json").toFile();
         this.badges = new ResourceHelper().getExecutionDirectory()
                 .resolve("Badges.json").toFile();
+        this.pactMaps = new ResourceHelper().getExecutionDirectory()
+                .resolve("PactMaps.json").toFile();
     }
 
     @Override
@@ -41,6 +44,11 @@ public class BrokerStorageConfigs implements StorageFileConfigs {
     @Override
     public File getBadgesFileStorage() {
         return this.badges;
+    }
+
+    @Override
+    public File getPactMapFileStorage() {
+        return this.pactMaps;
     }
 
 }

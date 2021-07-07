@@ -17,5 +17,6 @@ public interface StorageFileConfigs {
     File getPactFileStorage();
     File getTokenFileStorage();
     File getBadgesFileStorage();
+    File getPactMapFileStorage();
     
 }

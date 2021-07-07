@@ -23,7 +23,9 @@ import com.acidmanic.localpactbroker.commands.Token;
 import com.acidmanic.localpactbroker.controllers.BadgesController;
 import com.acidmanic.localpactbroker.controllers.PactController;
 import com.acidmanic.localpactbroker.controllers.VerificationResultController;
+import com.acidmanic.localpactbroker.services.PactsManagerService;
 import com.acidmanic.localpactbroker.storage.BadgeStorage;
+import com.acidmanic.localpactbroker.storage.PactMapStorage;
 import com.acidmanic.localpactbroker.storage.PactStorage;
 import com.acidmanic.localpactbroker.storage.StorageFileConfigs;
 import com.acidmanic.localpactbroker.storage.TokenStorage;
@@ -103,6 +105,8 @@ public class BrokerIocRegistry implements Installer {
 
         reg.register().bind(ShutdownDetect.class).withBuilder(() -> bus)
                 .livesAsA(LifetimeType.Singleton);
+        
+        reg.register().bindToSelf(PactsManagerService.class).livesAsA(LifetimeType.Singleton);
 
     }
 
@@ -132,6 +136,9 @@ public class BrokerIocRegistry implements Installer {
                 .livesAsA(LifetimeType.Transient);
         
         reg.register().bindToSelf(BadgeStorage.class)
+                .livesAsA(LifetimeType.Transient);
+        
+        reg.register().bindToSelf(PactMapStorage.class)
                 .livesAsA(LifetimeType.Transient);
     }
 
