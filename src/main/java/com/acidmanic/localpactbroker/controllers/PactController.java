@@ -65,7 +65,7 @@ public class PactController extends ControllerBase {
     @POST
     @Path("/push")
     @Produces("application/json")
-    public Dto<String> push(@HeaderParam("token") String token, Pact pact) {
+    public Dto push(@HeaderParam("token") String token, Pact pact) {
 
         Function<Dto<String>> innerCode = () -> {
 
@@ -73,7 +73,7 @@ public class PactController extends ControllerBase {
 
         };
 
-        Dto<String> response = authorize(token, innerCode);
+        Dto response = authorize(token, innerCode);
 
         return response;
     }
@@ -88,16 +88,16 @@ public class PactController extends ControllerBase {
     @POST
     @Path("/store/{tag}")
     @Produces("application/json")
-    public Dto<String> store(@HeaderParam("token") String token,
+    public Dto<Object> store(@HeaderParam("token") String token,
             @PathParam("tag") String tag,
             Pact pact) {
 
-        Function<Dto<String>> innerCode = () -> {
+        Function<Dto<Object>> innerCode = () -> {
 
             return this.pactsManagerService.store(tag, pact);
         };
 
-        Dto<String> response = authorize(token, innerCode);
+        Dto<Object> response = authorize(token, innerCode);
 
         return response;
     }

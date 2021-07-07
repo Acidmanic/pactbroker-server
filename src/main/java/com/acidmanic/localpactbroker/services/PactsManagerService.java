@@ -52,7 +52,7 @@ public class PactsManagerService {
         );
     }
 
-    public Dto<String> push(Pact pact) {
+    public Dto push(Pact pact) {
 
         return runThreadSafe(
                 () -> {
@@ -74,7 +74,7 @@ public class PactsManagerService {
         );
     }
 
-    public Dto<String> store(String tag, Pact pact) {
+    public Dto store(String tag, Pact pact) {
 
         return runThreadSafe(
                 () -> {
