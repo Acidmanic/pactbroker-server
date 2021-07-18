@@ -1,5 +1,5 @@
 
-BASE=target/broker-server
+BASE=target/cicd-assistant
 
 rm -rf $BASE
 
