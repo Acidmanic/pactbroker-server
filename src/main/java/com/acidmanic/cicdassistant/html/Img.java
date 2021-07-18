@@ -11,6 +11,13 @@ package com.acidmanic.cicdassistant.html;
  */
 public class Img extends HtmlTagBase {
 
+    public Img() {
+    }
+
+    public Img(String src) {
+        setAttribute("src", src);
+    }
+
     @Override
     protected boolean isSingleTag() {
         return true;

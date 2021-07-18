@@ -8,33 +8,47 @@ package functional;
 import com.acidmanic.cicdassistant.html.Body;
 import com.acidmanic.cicdassistant.html.H1;
 import com.acidmanic.cicdassistant.html.Hr;
+import com.acidmanic.cicdassistant.html.Html;
+import com.acidmanic.cicdassistant.html.Img;
+import com.acidmanic.cicdassistant.html.Ol;
 import com.acidmanic.cicdassistant.html.P;
 import com.acidmanic.cicdassistant.html.RawString;
 import com.acidmanic.cicdassistant.html.Span;
+import com.acidmanic.cicdassistant.html.Ul;
 
 /**
  *
  * @author diego
  */
 public class HtmlEmail {
-    
-    
-    
-    
-    public static void main(String[] args){
-        
+
+    public static void main(String[] args) {
+
         Body body = new Body();
-        
+
         body.addChild(new P());
         body
                 .addChild(new H1().addChild(new RawString("This is a title")))
                 .addChild(new Hr())
                 .addChild(new Span()
-                        .addChild(new RawString("Hellooo"))
-                );
-        
-        String htmlBody = body.toString();
-        
+                        .addChild(new RawString("Hellooo")))
+                .addChild(new Ol()
+                        .addChild(new RawString("First Item"))
+                        .addChild(new RawString("SecondItem"))
+                        .addChild(new Img("https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png")))
+                .addChild(new Span().addChild(new RawString("Another List")))
+                .addChild(new Ul()
+                        .addChild(new RawString("Instruction a"))
+                        .addChild(new RawString("Instruction b")));
+
+        Html html = new Html();
+
+        html.setTitle("Test page");
+
+        body.copyInto(html.getBody());
+
+        String htmlBody = html.toString();
+
         System.out.println(htmlBody);
     }
 }

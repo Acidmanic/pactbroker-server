@@ -185,4 +185,10 @@ public abstract class HtmlTagBase implements Tag {
         setCssClass(cssClasses);
     }
 
+    public void copyAttributesInto(HtmlTagBase node) {
+
+        node.attributes.clear();
+
+        node.attributes.putAll(attributes);
+    }
 }
