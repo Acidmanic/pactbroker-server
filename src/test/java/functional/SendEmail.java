@@ -52,7 +52,9 @@ public class SendEmail {
             message.setSubject("Hi JAXenter");
 
             // Put the content of your message
-            message.setText("Hi there,we are just experimenting with JavaMail here");
+            //message.setText();
+            
+            message.setContent("Hi there,we are just experimenting with JavaMail here", "application/text");
 
             // Send message
             Transport.send(message);
