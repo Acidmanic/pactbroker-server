@@ -6,6 +6,11 @@
 package functional;
 
 import com.acidmanic.cicdassistant.html.Body;
+import com.acidmanic.cicdassistant.html.H1;
+import com.acidmanic.cicdassistant.html.Hr;
+import com.acidmanic.cicdassistant.html.P;
+import com.acidmanic.cicdassistant.html.RawString;
+import com.acidmanic.cicdassistant.html.Span;
 
 /**
  *
@@ -20,7 +25,13 @@ public class HtmlEmail {
         
         Body body = new Body();
         
-        
+        body.addChild(new P());
+        body
+                .addChild(new H1().addChild(new RawString("This is a title")))
+                .addChild(new Hr())
+                .addChild(new Span()
+                        .addChild(new RawString("Hellooo"))
+                );
         
         String htmlBody = body.toString();
         

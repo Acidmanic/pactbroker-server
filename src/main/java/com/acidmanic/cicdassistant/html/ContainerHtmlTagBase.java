@@ -13,7 +13,7 @@ import java.util.List;
  * @author diego
  */
 public abstract class ContainerHtmlTagBase extends HtmlTagBase {
-
+    
     @Override
     protected boolean isSingleTag() {
         return false;
@@ -26,15 +26,15 @@ public abstract class ContainerHtmlTagBase extends HtmlTagBase {
         this.children = new ArrayList<>();
     }
 
-    public boolean addChild(Tag child) {
+    public ContainerHtmlTagBase addChild(Tag child) {
 
         if (isSingleTag()) {
 
-            return false;
+            return this;
         }
         this.children.add(child);
 
-        return true;
+        return this;
     }
 
     @Override

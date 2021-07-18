@@ -17,13 +17,13 @@ public class StyleSheet extends ContainerHtmlTagBase {
     }
 
     @Override
-    public boolean addChild(Tag child) {
+    public ContainerHtmlTagBase addChild(Tag child) {
 
         if (child instanceof Style) {
 
             return super.addChild(child);
         }
-        return false;
+        return this;
     }
 
 }
