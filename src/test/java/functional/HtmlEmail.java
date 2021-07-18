@@ -14,7 +14,12 @@ import com.acidmanic.cicdassistant.html.Ol;
 import com.acidmanic.cicdassistant.html.P;
 import com.acidmanic.cicdassistant.html.RawString;
 import com.acidmanic.cicdassistant.html.Span;
+import com.acidmanic.cicdassistant.html.Table;
+import com.acidmanic.cicdassistant.html.Tr;
 import com.acidmanic.cicdassistant.html.Ul;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 
 /**
  *
@@ -39,7 +44,15 @@ public class HtmlEmail {
                 .addChild(new Span().addChild(new RawString("Another List")))
                 .addChild(new Ul()
                         .addChild(new RawString("Instruction a"))
-                        .addChild(new RawString("Instruction b")));
+                        .addChild(new RawString("Instruction b")))
+                .addChild(new Table()
+                        .setStyle("border: 2px solid gray")
+                        .addChild(new RawString(" 1 - 1 ")).addChild(new RawString(" 1 - 2 "))
+                        .addChild(new Tr())
+                        .addChild(new RawString(" 2 - 1 ")).addChild(new RawString(" 2 - 2 "))
+                        .addChild(new Tr())
+                        .addChild(new RawString(" 3 - 1 ")).addChild(new RawString(" 3 - 2 ")))
+                ;
 
         Html html = new Html();
 
@@ -50,5 +63,10 @@ public class HtmlEmail {
         String htmlBody = html.toString();
 
         System.out.println(htmlBody);
+        
+        try {
+            Files.write(Paths.get("html.html"), htmlBody.getBytes(), StandardOpenOption.CREATE);
+        } catch (Exception e) {
+        }
     }
 }

@@ -54,4 +54,12 @@ public abstract class ContainerHtmlTagBase extends HtmlTagBase {
         this.copyAttributesInto(node);
     }
 
+    @Override
+    public ContainerHtmlTagBase setStyle(String style) {
+
+        super.setStyle(style);
+
+        return this;
+    }
+
 }

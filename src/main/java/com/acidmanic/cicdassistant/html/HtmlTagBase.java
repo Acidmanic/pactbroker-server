@@ -111,9 +111,11 @@ public abstract class HtmlTagBase implements Tag {
         return getAttribute("id");
     }
 
-    public void setId(String id) {
+    public HtmlTagBase setId(String id) {
 
         setAttribute("id", id);
+
+        return this;
     }
 
     public String getCssClass() {
@@ -121,9 +123,11 @@ public abstract class HtmlTagBase implements Tag {
         return getAttribute("class");
     }
 
-    public void setCssClass(String cssClass) {
+    public HtmlTagBase setCssClass(String cssClass) {
 
         setAttribute("class", cssClass);
+
+        return this;
     }
 
     private List<String> getCssClasses() {
@@ -149,7 +153,7 @@ public abstract class HtmlTagBase implements Tag {
         return classesList;
     }
 
-    public void addCssClass(String cssClass) {
+    public HtmlTagBase addCssClass(String cssClass) {
 
         List<String> classes = getCssClasses();
 
@@ -159,9 +163,11 @@ public abstract class HtmlTagBase implements Tag {
         }
 
         putCssClasses(classes);
+
+        return this;
     }
 
-    public void removeCssClass(String cssClass) {
+    public HtmlTagBase removeCssClass(String cssClass) {
 
         List<String> classes = getCssClasses();
 
@@ -171,6 +177,8 @@ public abstract class HtmlTagBase implements Tag {
         }
 
         putCssClasses(classes);
+
+        return this;
     }
 
     private void putCssClasses(List<String> classes) {
@@ -190,5 +198,21 @@ public abstract class HtmlTagBase implements Tag {
         node.attributes.clear();
 
         node.attributes.putAll(attributes);
+    }
+
+    public String getStyle() {
+
+        return getAttribute("style");
+    }
+
+    public HtmlTagBase setStyle(String style) {
+
+        setAttribute("style", style);
+
+        return this;
+    }
+
+    public <T> T as() {
+        return (T) this;
     }
 }
