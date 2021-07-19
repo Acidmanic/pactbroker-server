@@ -48,24 +48,24 @@ public class SmtpClient {
         return this;
     }
 
-    public boolean sendTextMail(String from, String to, String body, String subject) {
+    public boolean sendTextMail(String from, String recipients, String body, String subject) {
 
-        return this.send(from, to, body, subject, MailMimeTypes.PlainText);
+        return this.send(from, recipients, body, subject, MailMimeTypes.PlainText);
     }
 
-    public boolean sendHtmlMail(String from, String to, String body, String subject) {
+    public boolean sendHtmlMail(String from, String recipients, String body, String subject) {
 
-        return this.send(from, to, body, subject, MailMimeTypes.Html);
+        return this.send(from, recipients, body, subject, MailMimeTypes.Html);
     }
 
-    public boolean send(String from, String to, String body, String subject, MailMimeTypes mime) {
+    public boolean send(String from, String recipients, String body, String subject, MailMimeTypes mime) {
 
         String mimeString = mime == MailMimeTypes.Html ? "text/html" : "text/plain";
 
-        return send(from, to, body, subject, mimeString);
+        return send(from, recipients, body, subject, mimeString);
     }
 
-    private boolean send(String from, String to, String body, String subject, String mime) {
+    private boolean send(String from, String recipients, String body, String subject, String mime) {
 
         Session session = getSession();
 
@@ -75,7 +75,7 @@ public class SmtpClient {
             message.setFrom(new InternetAddress(from));
 
             message.setRecipients(Message.RecipientType.TO,
-                    InternetAddress.parse(to));
+                    InternetAddress.parse(recipients));
 
             message.setSubject(subject);
 

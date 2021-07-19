@@ -12,14 +12,14 @@ package com.acidmanic.cicdassistant.models;
 public class SendMailRequest {
 
     private String from;
-    private String to;
+    private String[] recipients;
     private String base64Content;
     private boolean html;
     private String subject;
 
-    public SendMailRequest(String from, String to, String base64Content, boolean html, String subject) {
+    public SendMailRequest(String from, String[] recipients, String base64Content, boolean html, String subject) {
         this.from = from;
-        this.to = to;
+        this.recipients = recipients;
         this.base64Content = base64Content;
         this.html = html;
         this.subject = subject;
@@ -36,12 +36,12 @@ public class SendMailRequest {
         this.from = from;
     }
 
-    public String getTo() {
-        return to;
+    public String[] getRecipients() {
+        return recipients;
     }
 
-    public void setTo(String to) {
-        this.to = to;
+    public void setRecipients(String[] recipients) {
+        this.recipients = recipients;
     }
 
     public String getBase64Content() {

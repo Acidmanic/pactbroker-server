@@ -66,14 +66,16 @@ public class MailController extends ControllerBase {
                 body = new String(Base64.getDecoder().decode(request.getBase64Content()));
 
             } catch (Exception e) {
-                
+
                 result.setError(e);
-                
+
                 return result;
             }
 
+            String recipients = appendAll(request.getRecipients());
+
             if (this.smtpClient.send(request.getFrom(),
-                    request.getTo(),
+                    recipients,
                     body, request.getSubject(), mime)) {
 
                 result.setFailure(false);
@@ -85,6 +87,20 @@ public class MailController extends ControllerBase {
         Dto response = authorize(token, innerCode);
 
         return response;
+    }
+
+    private String appendAll(String[] addresses) {
+
+        String recipients = "";
+        String sep = "";
+
+        for (String recipient : addresses) {
+            
+            recipients += sep + recipient;
+
+            sep = " , ";
+        }
+        return recipients;
     }
 
 }
