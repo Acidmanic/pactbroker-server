@@ -25,10 +25,26 @@ import java.nio.file.StandardOpenOption;
  *
  * @author diego
  */
-public class HtmlEmail {
+public class HtmlGenerating {
 
     public static void main(String[] args) {
 
+        Html html = createHtmlContent();
+
+        String htmlBody = html.toString();
+
+        System.out.println(htmlBody);
+        
+        try {
+            Files.write(Paths.get("debug/html.html"), htmlBody.getBytes(), StandardOpenOption.CREATE);
+        } catch (Exception e) {
+        }
+    }
+    
+    
+    
+    public static Html createHtmlContent(){
+        
         Body body = new Body();
 
         body.addChild(new P());
@@ -59,14 +75,7 @@ public class HtmlEmail {
         html.setTitle("Test page");
 
         body.copyInto(html.getBody());
-
-        String htmlBody = html.toString();
-
-        System.out.println(htmlBody);
         
-        try {
-            Files.write(Paths.get("debug/html.html"), htmlBody.getBytes(), StandardOpenOption.CREATE);
-        } catch (Exception e) {
-        }
+        return html;
     }
 }

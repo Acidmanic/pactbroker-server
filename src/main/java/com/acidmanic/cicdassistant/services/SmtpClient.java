@@ -48,17 +48,21 @@ public class SmtpClient {
         return this;
     }
 
-    public boolean send(String from, String to, String body, String subject) {
+    public boolean sendTextMail(String from, String to, String body, String subject) {
 
         return this.send(from, to, body, subject, "text/plain");
     }
+    
+    public boolean sendHtmlMail(String from, String to, String body, String subject) {
 
-    public boolean send(String from, String to, String body, String subject, String mime) {
+        return this.send(from, to, body, subject, "text/html");
+    }
+
+    private boolean send(String from, String to, String body, String subject, String mime) {
 
         Session session = getSession();
 
         try {
-            // Create a default MimeMessage object
             Message message = new MimeMessage(session);
 
             message.setFrom(new InternetAddress(from));
