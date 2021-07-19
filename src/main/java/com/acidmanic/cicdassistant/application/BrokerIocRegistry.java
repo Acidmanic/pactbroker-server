@@ -8,6 +8,7 @@ package com.acidmanic.cicdassistant.application;
 import com.acidmanic.applicationpattern.Application;
 import com.acidmanic.applicationpattern.DefaultServiceManager;
 import com.acidmanic.applicationpattern.ServiceManager;
+import com.acidmanic.cicdassistant.application.configurations.ApplicationConfigurationBuilder;
 import com.acidmanic.commandline.commands.Help;
 import com.acidmanic.commandline.commands.TypeRegistery;
 import com.acidmanic.lightweight.logger.ConsoleLogger;
@@ -21,9 +22,11 @@ import com.acidmanic.cicdassistant.commands.ApplicationSwitch;
 import com.acidmanic.cicdassistant.commands.Exit;
 import com.acidmanic.cicdassistant.commands.Token;
 import com.acidmanic.cicdassistant.controllers.BadgesController;
+import com.acidmanic.cicdassistant.controllers.MailController;
 import com.acidmanic.cicdassistant.controllers.PactController;
 import com.acidmanic.cicdassistant.controllers.VerificationResultController;
 import com.acidmanic.cicdassistant.services.PactsManagerService;
+import com.acidmanic.cicdassistant.services.SmtpClient;
 import com.acidmanic.cicdassistant.storage.BadgeStorage;
 import com.acidmanic.cicdassistant.storage.PactMapStorage;
 import com.acidmanic.cicdassistant.storage.PactStorage;
@@ -107,6 +110,13 @@ public class BrokerIocRegistry implements Installer {
                 .livesAsA(LifetimeType.Singleton);
         
         reg.register().bindToSelf(PactsManagerService.class).livesAsA(LifetimeType.Singleton);
+        
+        reg.register().bind(SmtpClient.class)
+                .withBuilder(() -> new SmtpClient(
+                        ApplicationConfigurationBuilder
+                                .makeInstance()
+                                .readConfigurations()
+                .getMailSmtpServer()));
 
     }
 
@@ -118,6 +128,9 @@ public class BrokerIocRegistry implements Installer {
                 .livesAsA(LifetimeType.Singleton);
         
         reg.register().bindToSelf(VerificationResultController.class)
+                .livesAsA(LifetimeType.Singleton);
+        
+        reg.register().bindToSelf(MailController.class)
                 .livesAsA(LifetimeType.Singleton);
     }
 
