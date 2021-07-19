@@ -50,12 +50,19 @@ public class SmtpClient {
 
     public boolean sendTextMail(String from, String to, String body, String subject) {
 
-        return this.send(from, to, body, subject, "text/plain");
+        return this.send(from, to, body, subject, MailMimeTypes.PlainText);
     }
-    
+
     public boolean sendHtmlMail(String from, String to, String body, String subject) {
 
-        return this.send(from, to, body, subject, "text/html");
+        return this.send(from, to, body, subject, MailMimeTypes.Html);
+    }
+
+    public boolean send(String from, String to, String body, String subject, MailMimeTypes mime) {
+
+        String mimeString = mime == MailMimeTypes.Html ? "text/html" : "text/plain";
+
+        return send(from, to, body, subject, mimeString);
     }
 
     private boolean send(String from, String to, String body, String subject, String mime) {
@@ -75,11 +82,11 @@ public class SmtpClient {
             message.setContent(body, mime);
 
             Transport.send(message);
-                    
+
             return true;
 
         } catch (Exception e) {
-            
+
             return false;
         }
     }
