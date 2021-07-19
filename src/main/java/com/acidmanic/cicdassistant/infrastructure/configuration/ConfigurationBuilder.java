@@ -45,12 +45,10 @@ public abstract class ConfigurationBuilder<T> {
 
         this.defaults = createDefaults();
 
-        this.storage = makeStorage(this.defaults.getClass());
+        this.storage = makeStorage((Class<T>) this.defaults.getClass());
     }
 
-    private ConfigurationStorage<T> makeStorage(Object model) {
-
-        Class<T> modelType = (Class<T>) model.getClass();
+    private ConfigurationStorage<T> makeStorage(Class<T> modelType) {
 
         File jsonFile = new ResourceHelper().getExecutionDirectory()
                 .resolve(modelType.getSimpleName() + ".json").toFile();
