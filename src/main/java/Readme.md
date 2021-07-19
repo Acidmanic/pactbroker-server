@@ -29,6 +29,7 @@ Features:
   * Uses smtp server address and credentials from configurations
   * Api for self-contained email body 
   * Api for template based email body
+  * Api for registering templates
   
 
 Features to be implemented in future
