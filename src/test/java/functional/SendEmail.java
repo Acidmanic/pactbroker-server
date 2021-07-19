@@ -6,10 +6,11 @@ public class SendEmail {
 
     public static void main(String[] args) {
         
-        SmtpClient client = new SmtpClient("127.0.0.1");
+        SmtpClient client = new SmtpClient("mail.acidmanic.com")
+                .authenticate("info@acidmanic.com", Passwords.InfoAtAcidmanicPassword);
         
-        client.send("diego@acidmanic.com", "info@localhost",
-                "\n This is test \n", "Test email");
+        client.send("info@acidmanic.com", "goj_loj@yahoo.com",
+                "\n This is test \n", "Text / plain");
         
     }
 }

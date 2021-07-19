@@ -50,7 +50,7 @@ public class SmtpClient {
 
     public boolean send(String from, String to, String body, String subject) {
 
-        return this.send(from, to, body, subject, "application/text");
+        return this.send(from, to, body, subject, "text/plain");
     }
 
     public boolean send(String from, String to, String body, String subject, String mime) {
@@ -71,11 +71,11 @@ public class SmtpClient {
             message.setContent(body, mime);
 
             Transport.send(message);
-
+                    
             return true;
 
         } catch (Exception e) {
-
+            
             return false;
         }
     }
