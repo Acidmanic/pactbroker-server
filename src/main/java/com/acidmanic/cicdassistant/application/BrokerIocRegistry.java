@@ -26,6 +26,7 @@ import com.acidmanic.cicdassistant.controllers.BadgesController;
 import com.acidmanic.cicdassistant.controllers.MailController;
 import com.acidmanic.cicdassistant.controllers.PactController;
 import com.acidmanic.cicdassistant.controllers.VerificationResultController;
+import com.acidmanic.cicdassistant.services.HtmlTemplateManager;
 import com.acidmanic.cicdassistant.services.PactsManagerService;
 import com.acidmanic.cicdassistant.services.SmtpClient;
 import com.acidmanic.cicdassistant.storage.BadgeStorage;
@@ -55,7 +56,7 @@ public class BrokerIocRegistry implements Installer {
         configureInfrastructureServices(reg);
 
         configureRepositories(reg);
-        
+
         configureControllers(reg);
 
     }
@@ -80,7 +81,7 @@ public class BrokerIocRegistry implements Installer {
         reg.register().bind(Resolver.class).withBuilder(() -> BrokerResolver.makeInstance());
 
         reg.register().bind(BrokerResolver.class).withBuilder(() -> BrokerResolver.makeInstance());
-        
+
         reg.register().bind(ServiceManager.class).to(DefaultServiceManager.class)
                 .livesAsA(LifetimeType.Singleton);
 
@@ -109,22 +110,24 @@ public class BrokerIocRegistry implements Installer {
 
         reg.register().bind(ShutdownDetect.class).withBuilder(() -> bus)
                 .livesAsA(LifetimeType.Singleton);
-        
+
         reg.register().bindToSelf(PactsManagerService.class).livesAsA(LifetimeType.Singleton);
-        
+
         reg.register().bind(SmtpClient.class)
                 .withBuilder(() -> new SmtpClient(
-                        ApplicationConfigurationBuilder
-                                .makeInstance()
-                                .readConfigurations()
-                .getMailSmtpServer()))
+                ApplicationConfigurationBuilder
+                        .makeInstance()
+                        .readConfigurations()
+                        .getMailSmtpServer()))
                 .livesAsA(LifetimeType.Transient);
-        
+
         reg.register().bind(Configurations.class)
                 .withBuilder(() -> ApplicationConfigurationBuilder
-                        .makeInstance()
-                        .readConfigurations())
+                .makeInstance()
+                .readConfigurations())
                 .livesAsA(LifetimeType.Transient);
+
+        reg.register().bindToSelf(HtmlTemplateManager.class);
 
     }
 
@@ -134,10 +137,10 @@ public class BrokerIocRegistry implements Installer {
 
         reg.register().bindToSelf(BadgesController.class)
                 .livesAsA(LifetimeType.Singleton);
-        
+
         reg.register().bindToSelf(VerificationResultController.class)
                 .livesAsA(LifetimeType.Singleton);
-        
+
         reg.register().bindToSelf(MailController.class)
                 .livesAsA(LifetimeType.Singleton);
     }
@@ -155,10 +158,10 @@ public class BrokerIocRegistry implements Installer {
 
         reg.register().bindToSelf(PactStorage.class)
                 .livesAsA(LifetimeType.Transient);
-        
+
         reg.register().bindToSelf(BadgeStorage.class)
                 .livesAsA(LifetimeType.Transient);
-        
+
         reg.register().bindToSelf(PactMapStorage.class)
                 .livesAsA(LifetimeType.Transient);
     }

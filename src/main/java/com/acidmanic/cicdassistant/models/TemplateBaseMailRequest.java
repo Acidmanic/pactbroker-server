@@ -5,27 +5,28 @@
  */
 package com.acidmanic.cicdassistant.models;
 
+import java.util.HashMap;
+
 /**
  *
  * @author diego
  */
-public class SendMailRequest {
+public class TemplateBaseMailRequest {
 
     private String from;
     private String[] recipients;
-    private String base64Content;
-    private boolean html;
+    private HashMap<String, String> substitutions = new HashMap<>();
     private String subject;
+    private String templateName;
 
-    public SendMailRequest(String from, String[] recipients, String base64Content, boolean html, String subject) {
+    public TemplateBaseMailRequest(String from, String[] recipients, String subject, String templateName) {
         this.from = from;
         this.recipients = recipients;
-        this.base64Content = base64Content;
-        this.html = html;
         this.subject = subject;
+        this.templateName = templateName;
     }
 
-    public SendMailRequest() {
+    public TemplateBaseMailRequest() {
     }
 
     public String getFrom() {
@@ -44,20 +45,12 @@ public class SendMailRequest {
         this.recipients = recipients;
     }
 
-    public String getBase64Content() {
-        return base64Content;
+    public HashMap<String, String> getSubstitutions() {
+        return substitutions;
     }
 
-    public void setBase64Content(String base64Content) {
-        this.base64Content = base64Content;
-    }
-
-    public boolean isHtml() {
-        return html;
-    }
-
-    public void setHtml(boolean html) {
-        this.html = html;
+    public void setSubstitutions(HashMap<String, String> substitutions) {
+        this.substitutions = substitutions;
     }
 
     public String getSubject() {
@@ -66,6 +59,14 @@ public class SendMailRequest {
 
     public void setSubject(String subject) {
         this.subject = subject;
+    }
+
+    public String getTemplateName() {
+        return templateName;
+    }
+
+    public void setTemplateName(String templateName) {
+        this.templateName = templateName;
     }
 
 }
