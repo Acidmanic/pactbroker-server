@@ -9,6 +9,7 @@ import com.acidmanic.applicationpattern.Application;
 import com.acidmanic.applicationpattern.DefaultServiceManager;
 import com.acidmanic.applicationpattern.ServiceManager;
 import com.acidmanic.cicdassistant.application.configurations.ApplicationConfigurationBuilder;
+import com.acidmanic.cicdassistant.application.configurations.Configurations;
 import com.acidmanic.commandline.commands.Help;
 import com.acidmanic.commandline.commands.TypeRegistery;
 import com.acidmanic.lightweight.logger.ConsoleLogger;
@@ -116,7 +117,14 @@ public class BrokerIocRegistry implements Installer {
                         ApplicationConfigurationBuilder
                                 .makeInstance()
                                 .readConfigurations()
-                .getMailSmtpServer()));
+                .getMailSmtpServer()))
+                .livesAsA(LifetimeType.Transient);
+        
+        reg.register().bind(Configurations.class)
+                .withBuilder(() -> ApplicationConfigurationBuilder
+                        .makeInstance()
+                        .readConfigurations())
+                .livesAsA(LifetimeType.Transient);
 
     }
 

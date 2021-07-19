@@ -20,6 +20,7 @@ import com.acidmanic.cicdassistant.html.Ul;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.Base64;
 
 /**
  *
@@ -39,6 +40,15 @@ public class HtmlGenerating {
             Files.write(Paths.get("debug/html.html"), htmlBody.getBytes(), StandardOpenOption.CREATE);
         } catch (Exception e) {
         }
+        
+        String bodyBase64 = Base64.getEncoder()
+                .encodeToString(
+                        html.getBody().toString().getBytes()
+                );
+        
+        System.out.println("----------------------");
+        System.out.println(bodyBase64);
+        System.out.println("----------------------");
     }
     
     
