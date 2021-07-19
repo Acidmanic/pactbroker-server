@@ -65,7 +65,7 @@ public class HtmlEmail {
         System.out.println(htmlBody);
         
         try {
-            Files.write(Paths.get("html.html"), htmlBody.getBytes(), StandardOpenOption.CREATE);
+            Files.write(Paths.get("debug/html.html"), htmlBody.getBytes(), StandardOpenOption.CREATE);
         } catch (Exception e) {
         }
     }
