@@ -30,19 +30,15 @@ Features:
   * Api for self-contained email body 
   * Api for template based email body
   * Api for registering templates
-  
+* Provides an artifact server
+  * artifacts can be uploaded to artifacts server through multipart post call to artifacts/upload
+  * uploaded artifacts can be downloaded by their names from artifacts/<artifact-file-name>
 
-Features to be implemented in future
-------------------------------------
 
-
-* Serving as a download proxy
-* Serving as an artifact server
 
 
 Multipart Download
 ---------------------
-
 
 For implementing Multipart (resumable) downloads, i used the code from 
 [davinkevin](https://github.com/davinkevin/Podcast-Server/blob/d927d9b8cb9ea1268af74316cd20b7192ca92da7/src/main/java/lan/dk/podcastserver/utils/multipart/MultipartFileSender.java)
