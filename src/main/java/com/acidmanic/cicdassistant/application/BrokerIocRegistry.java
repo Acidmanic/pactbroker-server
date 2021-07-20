@@ -22,6 +22,7 @@ import com.acidmanic.cicdassistant.commands.ApplicationContext;
 import com.acidmanic.cicdassistant.commands.ApplicationSwitch;
 import com.acidmanic.cicdassistant.commands.Exit;
 import com.acidmanic.cicdassistant.commands.Token;
+import com.acidmanic.cicdassistant.controllers.ArtifactsController;
 import com.acidmanic.cicdassistant.controllers.BadgesController;
 import com.acidmanic.cicdassistant.controllers.MailController;
 import com.acidmanic.cicdassistant.controllers.PactController;
@@ -130,7 +131,7 @@ public class BrokerIocRegistry implements Installer {
 
         reg.register().bindToSelf(HtmlTemplateManager.class);
 
-        reg.register().bind(ArtifactManager.class);
+        reg.register().bindToSelf(ArtifactManager.class);
 
     }
 
@@ -145,6 +146,9 @@ public class BrokerIocRegistry implements Installer {
                 .livesAsA(LifetimeType.Singleton);
 
         reg.register().bindToSelf(MailController.class)
+                .livesAsA(LifetimeType.Singleton);
+
+        reg.register().bindToSelf(ArtifactsController.class)
                 .livesAsA(LifetimeType.Singleton);
     }
 

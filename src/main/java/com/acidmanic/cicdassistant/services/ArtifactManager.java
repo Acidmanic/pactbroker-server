@@ -33,6 +33,18 @@ public class ArtifactManager {
         }
     }
 
+    public Result<Path> mapPath(String uri) {
+
+        Path artifactPath = this.artifactsDirectory.resolve(uri);
+
+        if (artifactPath.toFile().exists()) {
+
+            return new Result<>(true, artifactPath);
+        }
+
+        return new Result(false, null);
+    }
+
     public Result<byte[]> readArtifact(String uri) {
 
         Path artifactPath = this.artifactsDirectory.resolve(uri);
