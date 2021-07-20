@@ -118,5 +118,17 @@
             <version>1.6.2</version>
         </dependency>
         
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-multipart-provider</artifactId>
+            <version>3.14.0.Final</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-multipart</artifactId>
+            <version>3.0.2</version>
+        </dependency>
+        
     </dependencies>
 </project>

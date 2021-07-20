@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.acidmanic.cicdassistant.controllers;
+package com.acidmanic.cicdassistant.controllers.models;
 
+import com.acidmanic.cicdassistant.controllers.HttpStatus;
 import com.acidmanic.cicdassistant.models.Dto;
 
 /**

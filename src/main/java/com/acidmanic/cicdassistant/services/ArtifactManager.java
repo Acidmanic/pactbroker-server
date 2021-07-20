@@ -33,9 +33,10 @@ public class ArtifactManager {
         }
     }
 
-    public Result<Path> mapPath(String uri) {
+    public Result<Path> mapPathVerify(String uri) {
 
-        Path artifactPath = this.artifactsDirectory.resolve(uri);
+        Path artifactPath = this.artifactsDirectory.resolve(uri)
+                .toAbsolutePath().normalize();
 
         if (artifactPath.toFile().exists()) {
 
@@ -45,9 +46,17 @@ public class ArtifactManager {
         return new Result(false, null);
     }
 
+    public Path mapPath(String uri) {
+
+        Path artifactPath = this.artifactsDirectory.resolve(uri)
+                .toAbsolutePath().normalize();
+
+        return artifactPath;
+    }
+
     public Result<byte[]> readArtifact(String uri) {
 
-        Path artifactPath = this.artifactsDirectory.resolve(uri);
+        Path artifactPath = mapPath(uri);
 
         if (artifactPath.toFile().exists()) {
 
@@ -66,7 +75,8 @@ public class ArtifactManager {
 
     public boolean writeArtifact(String uri, byte[] data) {
 
-        Path artifactPath = this.artifactsDirectory.resolve(uri);
+        Path artifactPath = mapPath(uri);
+        
         try {
 
             if (artifactPath.toFile().exists()) {
@@ -74,6 +84,43 @@ public class ArtifactManager {
             }
 
             Files.write(artifactPath, data, StandardOpenOption.CREATE);
+
+            return true;
+        } catch (Exception e) {
+        }
+        return false;
+    }
+
+    public boolean clearArtifact(String uri) {
+
+        Path artifactPath = mapPath(uri);
+
+        try {
+
+            if (artifactPath.toFile().exists()) {
+                artifactPath.toFile().delete();
+            }
+            return true;
+
+        } catch (Exception e) {
+        }
+        return false;
+    }
+
+    public boolean appendToArtifact(String uri, byte[] data) {
+
+        Path artifactPath = mapPath(uri);
+
+        try {
+
+            if (!artifactPath.toFile().exists()) {
+
+                artifactPath.getParent().toFile().mkdirs();
+
+                artifactPath.toFile().createNewFile();
+            }
+
+            Files.write(artifactPath, data, StandardOpenOption.APPEND);
 
             return true;
         } catch (Exception e) {

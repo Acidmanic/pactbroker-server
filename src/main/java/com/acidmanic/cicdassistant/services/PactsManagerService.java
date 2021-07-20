@@ -7,7 +7,7 @@ package com.acidmanic.cicdassistant.services;
 
 import com.acidmanic.delegates.Function;
 import com.acidmanic.cicdassistant.controllers.HttpStatus;
-import com.acidmanic.cicdassistant.controllers.Models;
+import com.acidmanic.cicdassistant.controllers.models.Models;
 import com.acidmanic.cicdassistant.models.Dto;
 import com.acidmanic.cicdassistant.models.PactMap;
 import com.acidmanic.cicdassistant.storage.PactMapStorage;

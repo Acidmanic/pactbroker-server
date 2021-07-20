@@ -5,6 +5,7 @@
  */
 package com.acidmanic.cicdassistant.controllers;
 
+import com.acidmanic.cicdassistant.controllers.models.Models;
 import com.acidmanic.delegates.Function;
 import com.acidmanic.lightweight.logger.Logger;
 import com.acidmanic.cicdassistant.models.Dto;
