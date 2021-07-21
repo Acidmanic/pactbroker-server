@@ -1,5 +1,7 @@
 
-BASE=target/cicd-assistant
+DIST_DIR=target
+
+BASE=$DIST_DIR/cicd-assistant
 
 rm -rf $BASE
 
@@ -20,3 +22,5 @@ echo 'DIR=$(realpath $DIR)' >> $BASE/token.sh && \
 echo 'JAR=$DIR/application.jar' >> $BASE/token.sh && \
 echo 'java -jar "$JAR" token' >> $BASE/token.sh && \
 chmod +x $BASE/token.sh
+rm -rf $DIST_DIR/cicd-assistant.zip && (cd $DIST_DIR/cicd-assistant &&  zip ../cicd-assistant.zip **/* *)
+
