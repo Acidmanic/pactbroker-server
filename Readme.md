@@ -331,7 +331,7 @@ to receiver(s).
 
 |                       |                               |
 |:---------------------:|:-----------------------------:|
-|endpoint path          |  &lt;base-url&gt;/mail/send   |
+|endpoint path          |  &lt;base-url&gt;/mail/send-selfcontained   |
 |Http Method            |  POST                         |
 |Headers                |  token: &lt;token&gt;         |
 
