@@ -12,10 +12,10 @@ import java.util.HashMap;
  * @author diego
  */
 public class Configurations {
-    
-    
+
     private String mailSmtpServer;
-    private HashMap<String,String> credencials = new HashMap<>();
+    private HashMap<String, String> credencials = new HashMap<>();
+    private int servicePort;
 
     public String getMailSmtpServer() {
         return mailSmtpServer;
@@ -32,5 +32,13 @@ public class Configurations {
     public void setCredencials(HashMap<String, String> credencials) {
         this.credencials = credencials;
     }
-    
+
+    public int getServicePort() {
+        return servicePort;
+    }
+
+    public void setServicePort(int servicePort) {
+        this.servicePort = servicePort;
+    }
+
 }

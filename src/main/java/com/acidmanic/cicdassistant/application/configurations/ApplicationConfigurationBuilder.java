@@ -30,6 +30,8 @@ public class ApplicationConfigurationBuilder extends ConfigurationBuilder<Config
         
         configurations.setMailSmtpServer("mail.acidmanic.com");
         
+        configurations.setServicePort(8585);
+        
         return configurations;
     }
 
