@@ -31,7 +31,7 @@ Features:
   * Api for self-contained email body 
   * Api for template based email body
   * Api for registering templates
-* Provides an artifact server
+* [Provides an artifact server](#Artifact-Server-Apis)
   * artifacts can be uploaded to artifacts server through multipart post call to artifacts/upload
   * uploaded artifacts can be downloaded by their names from artifacts/<artifact-file-name>
 
@@ -456,6 +456,113 @@ For example, this substitution can change the example html template from
 ```html
 <body><span> Dear Morty Smith, You can register your purchased product via this <a href = "http://somewhere/register/T728-11-AG67"> link. </a> Regards. </span></body>
 ```
+
+
+Artifact Server Apis
+====================
+
+With this feature, you can upload and store your artifacts to cicd-assistant and 
+download them in other machines from it's own url. 
+
+
+Upload Artifacts
+----------------
+
+a multi-part form post request towards the url: &lt;base-url&gt;/artifacts/upload 
+will upload your file to cicd-assistant. you should provide the file name in a form 
+input-part ```name=<your-file-name>``` and the file data itself with form input-part 
+```file=<file-content>```.
+
+To use this api, you need to be authorized, so you will have to provide the 
+token header (token : &lt;token&gt;) within the request. Following script shows 
+how to use [curl](https://curl.se/) to do so:
+
+```bash
+
+    curl -v -F file=@<path-to-file> <base-url>/artifacts/upload -F name=<file-name> -H "token: <token>"
+    
+    #Example:
+    # curl -v -F file=@data/reports.zip http://some.where:8585/artifacts/upload -F name=daily-reports.zip -H "token: e3e45...ab513f"
+
+``` 
+
+Download Artifacts
+----------------
+
+Downloading the previously uploaded artifacts, does not required authorization, 
+you can use wget or any download manager to download the artifact.
+
+Any uploaded artifact, can be downloaded from &gt;base-url&lt;/artifacts/&lt;file-name&gt;
+
+where __file-name__ is the name of the file you provided when using the upload api.
+
+
+
+Authorization
+============
+
+Most of the Apis, need the consumer to authorize their access using a token in the header. When you install (unzip the binary package),
+cicd-assistant on your server, you can use start.sh script to start the server. you can also use token.sh script to run the application 
+just to generate a token. The generate token will printed out on the terminal like this:
+
+```
+Console service's state: Created.
+BrokerWeb service's state: Created.
+KillFile service's state: Created.
+Checking for pre start commands.
+=============================================
+use following token for authentication over network:
+---------------------------------------------
+23a910bc-3661-45ae-8d1e-8fcf75cf2304.a603a884-c211-4292-a656-06674476d3f8
+=============================================
+BrokerWeb service's state: Stopping....
+KillFile service's state: Stopping....
+Console service's state: Stopping....
+```
+
+you can copy this and use it on your requests. All application data would be stored in json files. including this token. So if you ever lost it, and did not want to re generate it, you can just open the file Token.json alongside the application binaries and copy the value 
+from it.
+
+
+Configurations
+==============
+
+Cicd-Assistant, stores all its configurations inside a json file, named Configurations.json. This file will be created first time you run the application and looks like this:
+
+```json
+{
+    "mailSmtpServer": "mail.example.com",
+    "credentials": {},
+    "servicePort": 8585
+}
+
+```
+
+* servicePort: This field determines what port the server will be started on. by default it's 8585. For example if you start 
+your cicd-assistant instance on a server with the ip 23.128.23.4 with the port 8585, then your &lt;base-url&gt; would be 
+http(s)://23.128.23.4:8585.
+
+* mailSmtpServer: This field must be set to the address of your smtp mail server. It's usually like mail.example.com or smtp.example.com.
+
+* credentials: This is where you put your smtp server accounts credential. Its a dictionary of username and passwords. When you send an email, using the email apis, based on the _from_ field, cicd-assistant finds the account and it's password from this configurations and uses
+it to communicate with the smtp server. For example you might update your configurations as flowing to use Google smtp servers:
+
+```json
+{
+    "mailSmtpServer": "smtp.gmail.com",
+    "credentials": {
+        "info.awsomecompany@gmail.com":"50m353(Ur3P4$$w0rd",
+        "support.awsomecompany@gmail.com":"S3(0nD53(Ur3P4$$w0rd",
+        "admin.awsomecompany@gmail.com":"07#3r53(Ur3P4$$w0rd"
+    },
+    "servicePort": 8585
+}
+
+```
+
+Then you can close and re-start the application for configurations to take effect. After that, a call to email apis having the _from_ field 
+equal to "info.awsomecompany@gmail.com", will cause cicd-assistant to pick the password associated with this account ("50m353(Ur3P4$$w0rd") 
+and use it to send email(s).
 
 
 License
