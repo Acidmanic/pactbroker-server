@@ -23,7 +23,7 @@ public class ArtifactManager {
     public ArtifactManager() {
 
         this.artifactsDirectory = new ResourceHelper()
-                .getExecutableFilePath()
+                .getExecutionDirectory()
                 .resolve("artifacts");
 
         File artifactsDir = this.artifactsDirectory.toFile();
