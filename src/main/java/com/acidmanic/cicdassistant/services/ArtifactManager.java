@@ -76,7 +76,7 @@ public class ArtifactManager {
     public boolean writeArtifact(String uri, byte[] data) {
 
         Path artifactPath = mapPath(uri);
-        
+
         try {
 
             if (artifactPath.toFile().exists()) {
@@ -86,22 +86,6 @@ public class ArtifactManager {
             Files.write(artifactPath, data, StandardOpenOption.CREATE);
 
             return true;
-        } catch (Exception e) {
-        }
-        return false;
-    }
-
-    public boolean clearArtifact(String uri) {
-
-        Path artifactPath = mapPath(uri);
-
-        try {
-
-            if (artifactPath.toFile().exists()) {
-                artifactPath.toFile().delete();
-            }
-            return true;
-
         } catch (Exception e) {
         }
         return false;
@@ -126,6 +110,64 @@ public class ArtifactManager {
         } catch (Exception e) {
         }
         return false;
+    }
+
+    public boolean deleteArtifact(String uri) {
+
+        Path artifactPath = mapPath(uri);
+
+        try {
+
+            if (artifactPath.toFile().exists()) {
+
+                artifactPath.toFile().delete();
+            }
+            return true;
+        } catch (Exception e) {
+        }
+        return false;
+    }
+
+    public boolean clearArtifacts() {
+
+        if(delete(this.artifactsDirectory.toFile())){
+            
+            this.artifactsDirectory.toFile().mkdirs();
+            
+            return true;
+        }
+        return false;
+    }
+
+    private boolean delete(File file) {
+
+        if (!file.isDirectory()) {
+            
+            try {
+                
+                file.delete();
+
+                return true;
+                
+            } catch (Exception e) {
+                
+                return false;
+            }
+        } else {
+
+            File[] children = file.listFiles();
+
+            for (File child : children) {
+
+                if (!delete(child)) {
+                    
+                    return false;
+                }
+            }
+            file.delete();
+            
+            return true;
+        }
     }
 
 }

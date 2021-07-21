@@ -497,6 +497,34 @@ Any uploaded artifact, can be downloaded from &gt;base-url&lt;/artifacts/&lt;fil
 where __file-name__ is the name of the file you provided when using the upload api.
 
 
+Delete Artifact
+---------------
+
+This api deletes a specific artifact.
+
+|                       |                               |
+|:---------------------:|:-----------------------------:|
+|endpoint path          |  &lt;base-url&gt;/artifacts   |
+|Http Method            |  DELETE                       |
+|Headers                |  token: &lt;token&gt;         |
+|Query Params:          |  filename=&lt;file-name&gt;   |
+
+Where &lt;file-name&gt; is the name you provided while uploading the artifact. To prevent 
+growing space usage on the server you run cicd-assistant, it can be a good practice to delete
+ artifacts when you don't need them anymore.
+
+
+Clear Artifacts
+---------------
+
+This api deletes all existing artifacts
+
+|                       |                               |
+|:---------------------:|:-----------------------------:|
+|endpoint path          |  &lt;base-url&gt;/artifacts/clear   |
+|Http Method            |  DELETE                       |
+|Headers                |  token: &lt;token&gt;         |
+
 
 Authorization
 ============

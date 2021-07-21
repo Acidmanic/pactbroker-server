@@ -16,11 +16,15 @@ import com.acidmanic.lightweight.logger.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import static javax.ws.rs.client.Entity.form;
 import javax.ws.rs.core.Response;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
@@ -94,9 +98,48 @@ public class ArtifactsController extends ControllerBase {
 
             return Response.status(Response.Status.UNAUTHORIZED).build();
         } else {
-            
+
             return authorizedResult.getModel();
         }
+    }
+
+    @DELETE
+    @Path("/")
+    @Produces("application/json")
+    public Response deleteArtifact(
+            @QueryParam("filename") String filename,
+            @HeaderParam("token") String token) {
+
+        Function<Dto<Object>> code = () -> {
+
+            this.artifactManager.deleteArtifact(filename);
+
+            return new Dto<>();
+        };
+
+        authorize(token, code);
+
+        return Response.status(Response.Status.OK).build();
+
+    }
+    
+    @DELETE
+    @Path("/clear")
+    @Produces("application/json")
+    public Response clearArtifacts(
+            @HeaderParam("token") String token) {
+
+        Function<Dto<Object>> code = () -> {
+
+            this.artifactManager.clearArtifacts();
+
+            return new Dto<>();
+        };
+
+        authorize(token, code);
+
+        return Response.status(Response.Status.OK).build();
+
     }
 
 }
