@@ -49,7 +49,7 @@ at the moment.
 
 |                       |                           |
 |:---------------------:|:-------------------------:|
-|endpoint path          |  <base-url>/pull          |
+|endpoint path          |  &lt;base-url&gt;/pull          |
 |Http Method            |  GET                      |
 |Headers                |  token: <token>           |
 
@@ -104,7 +104,7 @@ the broker.
 
 |                       |                           |
 |:---------------------:|:-------------------------:|
-|endpoint path          |  <base-url>/push          |
+|endpoint path          |  &lt;base-url&gt;/push          |
 |Http Method            |  POST                     |
 |Headers                |  token: <token>           |
 
@@ -174,7 +174,7 @@ should be served through pull api.
 
 |                       |                           |
 |:---------------------:|:-------------------------:|
-|endpoint path          |  <base-url>/store/<tag>   |
+|endpoint path          |  &lt;base-url&gt;/store/<tag>   |
 |Http Method            |  POST                     |
 |Headers                |  token: <token>           |
 
@@ -222,7 +222,7 @@ pact to be delivered via pull api.
 
 |                       |                           |
 |:---------------------:|:-------------------------:|
-|endpoint path          |  <base-url>/elect/<tag>   |
+|endpoint path          |  &lt;base-url&gt;/elect/<tag>   |
 |Http Method            |  POST                     |
 |Headers                |  token: <token>           |
 
@@ -270,7 +270,7 @@ Badges (POST)
 
 |                       |                           |
 |:---------------------:|:-------------------------:|
-|endpoint path          |  <base-url>/badges        |
+|endpoint path          |  &lt;base-url&gt;/badges        |
 |Http Method            |  POST                     |
 |Headers                |  token: <token>           |
 
@@ -308,15 +308,18 @@ To get badges, you just add the tag at eht end of the url
 
 |                                        |                                     |
 |:--------------------------------------:|:-----------------------------------:|
-|<base-url>/badges/png/tag-sucessfull    |![Badge](Graphics/Badges/success.png)|
-|<base-url>/badges/png/tag-failed        |![Badge](Graphics/Badges/failure.png)|
-|<base-url>/badges/png/tag-not-registered|![Badge](Graphics/Badges/unknown.png)|
+|&lt;base-url&gt;/badges/png/tag-sucessfull    |![Badge](Graphics/Badges/success.png)|
+|&lt;base-url&gt;/badges/png/tag-failed        |![Badge](Graphics/Badges/failure.png)|
+|&lt;base-url&gt;/badges/png/tag-not-registered|![Badge](Graphics/Badges/unknown.png)|
 
 
 
-Multipart Download
----------------------
+License
+======
 
-For implementing Multipart (resumable) downloads, i used the code from 
+This software is published under MIT license, as described in LICENSE.txt file. 
+But I think i have to mention the code used for serving artifacts as resumable 
+multipart downloads, is the from 
 [davinkevin](https://github.com/davinkevin/Podcast-Server/blob/d927d9b8cb9ea1268af74316cd20b7192ca92da7/src/main/java/lan/dk/podcastserver/utils/multipart/MultipartFileSender.java)
- which is working pretty well.
+ which handles the job pretty well.
+
