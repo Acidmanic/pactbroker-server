@@ -21,7 +21,7 @@ public class TestDataProvider {
         Properties properties = new Properties();
 
         try {
-            properties.load(new FileInputStream(DATA_FILE));
+            properties.loadFromXML(new FileInputStream(DATA_FILE));
 
         } catch (Exception e) {
         }
