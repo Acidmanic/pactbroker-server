@@ -28,7 +28,7 @@ public class ApplicationConfigurationBuilder extends ConfigurationBuilder<Config
         
         Configurations configurations = new Configurations();
         
-        configurations.setMailSmtpServer("mail.acidmanic.com");
+        configurations.setMailSmtpServer("mail.example.com");
         
         configurations.setServicePort(8585);
         

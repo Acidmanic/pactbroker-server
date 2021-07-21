@@ -14,7 +14,7 @@ import java.util.HashMap;
 public class Configurations {
 
     private String mailSmtpServer;
-    private HashMap<String, String> credencials = new HashMap<>();
+    private HashMap<String, String> credentials = new HashMap<>();
     private int servicePort;
 
     public String getMailSmtpServer() {
@@ -25,12 +25,12 @@ public class Configurations {
         this.mailSmtpServer = mailSmtpServer;
     }
 
-    public HashMap<String, String> getCredencials() {
-        return credencials;
+    public HashMap<String, String> getCredentials() {
+        return credentials;
     }
 
-    public void setCredencials(HashMap<String, String> credencials) {
-        this.credencials = credencials;
+    public void setCredentials(HashMap<String, String> credentials) {
+        this.credentials = credentials;
     }
 
     public int getServicePort() {

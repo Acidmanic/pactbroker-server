@@ -53,9 +53,9 @@ public class MailController extends ControllerBase {
 
             String username = request.getFrom();
 
-            if (configurations.getCredencials().containsKey(username)) {
+            if (configurations.getCredentials().containsKey(username)) {
 
-                String password = configurations.getCredencials().get(username);
+                String password = configurations.getCredentials().get(username);
 
                 smtpClient.authenticate(username, password);
             }
@@ -105,9 +105,9 @@ public class MailController extends ControllerBase {
 
             String username = request.getFrom();
 
-            if (configurations.getCredencials().containsKey(username)) {
+            if (configurations.getCredentials().containsKey(username)) {
 
-                String password = configurations.getCredencials().get(username);
+                String password = configurations.getCredentials().get(username);
 
                 smtpClient.authenticate(username, password);
             }
