@@ -6,6 +6,8 @@
 package com.acidmanic.cicdassistant.application.services;
 
 import com.acidmanic.applicationpattern.SyncOrientedApplicationServiceBase;
+import com.acidmanic.cicdassistant.application.configurations.ApplicationConfigurationBuilder;
+import com.acidmanic.cicdassistant.application.configurations.Configurations;
 import com.acidmanic.lightweight.logger.Logger;
 import com.acidmanic.cicdassistant.utility.ResourceHelper;
 import com.acidmanic.resteasywrapper.ControllersProvider;
@@ -20,10 +22,14 @@ public class BrokerWebService extends SyncOrientedApplicationServiceBase {
 
     private WebService webService;
     private final ControllersProvider controllersProvider;
+    private final Configurations configurations;
 
-    public BrokerWebService(ControllersProvider controllersProvider, Logger logger) {
+    public BrokerWebService(ControllersProvider controllersProvider,
+             Logger logger,
+            ApplicationConfigurationBuilder configurationBuilder) {
         super(logger);
         this.controllersProvider = controllersProvider;
+        this.configurations = configurationBuilder.readConfigurations();
     }
 
     @Override
@@ -32,7 +38,8 @@ public class BrokerWebService extends SyncOrientedApplicationServiceBase {
         File webDirectory = new ResourceHelper().getExecutionDirectory().toFile();
 
         webService = new WebService(getLogger(),
-                 8585, webDirectory,
+                this.configurations.getServicePort(),
+                webDirectory,
                 this.controllersProvider);
 
         webService.syncStart();

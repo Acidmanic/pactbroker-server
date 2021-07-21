@@ -27,6 +27,7 @@ import com.acidmanic.cicdassistant.controllers.BadgesController;
 import com.acidmanic.cicdassistant.controllers.MailController;
 import com.acidmanic.cicdassistant.controllers.PactController;
 import com.acidmanic.cicdassistant.controllers.VerificationResultController;
+import com.acidmanic.cicdassistant.infrastructure.configuration.ConfigurationBuilder;
 import com.acidmanic.cicdassistant.services.ArtifactManager;
 import com.acidmanic.cicdassistant.services.HtmlTemplateManager;
 import com.acidmanic.cicdassistant.services.PactsManagerService;
@@ -53,13 +54,15 @@ public class BrokerIocRegistry implements Installer {
     @Override
     public void configure(Registerer reg) {
 
-        configureApplicationServices(reg);
+        
 
         configureInfrastructureServices(reg);
 
         configureRepositories(reg);
 
         configureControllers(reg);
+        
+        configureApplicationServices(reg);
 
     }
 
@@ -127,6 +130,11 @@ public class BrokerIocRegistry implements Installer {
                 .withBuilder(() -> ApplicationConfigurationBuilder
                 .makeInstance()
                 .readConfigurations())
+                .livesAsA(LifetimeType.Transient);
+        
+        reg.register().bind(ApplicationConfigurationBuilder.class)
+                .withBuilder(() -> ApplicationConfigurationBuilder
+                .makeInstance())
                 .livesAsA(LifetimeType.Transient);
 
         reg.register().bindToSelf(HtmlTemplateManager.class);
