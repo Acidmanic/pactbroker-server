@@ -7,8 +7,10 @@ public class SendEmail {
 
     public static void main(String[] args) {
 
+        String password = TestDataProvider.get().getProperty("InfoAtAcidmanicPassword");
+
         SmtpClient client = new SmtpClient("mail.acidmanic.com")
-                .authenticate("info@acidmanic.com", Passwords.InfoAtAcidmanicPassword);
+                .authenticate("info@acidmanic.com", password);
 
         Html html = HtmlGenerating.createHtmlContent();
 

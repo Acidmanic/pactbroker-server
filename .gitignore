@@ -1,5 +1,5 @@
 target
 update.litbid.sh
 debug
-src/test/java/functional/Passwords.java
 nbactions.xml
+testdata.xml
