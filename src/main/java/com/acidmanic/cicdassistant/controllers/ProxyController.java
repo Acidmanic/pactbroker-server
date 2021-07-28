@@ -10,14 +10,9 @@ import com.acidmanic.lightweight.logger.ConsoleLogger;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
@@ -43,16 +38,12 @@ public class ProxyController {
             InputStream input = con.getInputStream();
 
             String mime = con.getHeaderField("Content-Type");
-
-            //StringBuilder content = new StringBuilder();
             
             ByteArrayOutputStream content = new ByteArrayOutputStream();
 
             int value = input.read();
 
             while (value != -1) {
-
-                //content.append((char) value);
                 
                 content.write(value);
 
