@@ -26,8 +26,8 @@ import com.acidmanic.cicdassistant.controllers.ArtifactsController;
 import com.acidmanic.cicdassistant.controllers.BadgesController;
 import com.acidmanic.cicdassistant.controllers.MailController;
 import com.acidmanic.cicdassistant.controllers.PactController;
+import com.acidmanic.cicdassistant.controllers.ProxyController;
 import com.acidmanic.cicdassistant.controllers.VerificationResultController;
-import com.acidmanic.cicdassistant.infrastructure.configuration.ConfigurationBuilder;
 import com.acidmanic.cicdassistant.services.ArtifactManager;
 import com.acidmanic.cicdassistant.services.HtmlTemplateManager;
 import com.acidmanic.cicdassistant.services.PactsManagerService;
@@ -157,6 +157,9 @@ public class BrokerIocRegistry implements Installer {
                 .livesAsA(LifetimeType.Singleton);
 
         reg.register().bindToSelf(ArtifactsController.class)
+                .livesAsA(LifetimeType.Singleton);
+        
+        reg.register().bindToSelf(ProxyController.class)
                 .livesAsA(LifetimeType.Singleton);
     }
 
