@@ -34,7 +34,8 @@ Features:
 * [Provides an artifact server](#Artifact-Server-Apis)
   * artifacts can be uploaded to artifacts server through multipart post call to artifacts/upload
   * uploaded artifacts can be downloaded by their names from artifacts/<artifact-file-name>
-
+* Simple proxy
+  * A small proxy endpoint suitable for text files and small artifacts.
 
 Pact Broker Api
 ====================
@@ -525,6 +526,17 @@ This api deletes all existing artifacts
 |Http Method            |  DELETE                       |
 |Headers                |  token: &lt;token&gt;         |
 
+Proxy
+=======
+
+
+In some cases when deployment target machine, for some reasons (security, etc...) 
+ does not have access to a specific file over the internet, you can use cicd-asistant's 
+proxy. This work better for text files and small binary files. To use this proxy,
+ you you pass your destination url as a query argument ```url``` to &lt;base-url&gt;/proxy?url=
+
+For example, &lt;base-url&gt;/proxy?url=http://www.example.com/data/list.asc will fetch and serve 
+the file list.asc from http://www.example.com/data/list.asc. 
 
 Authorization
 ============
