@@ -53,6 +53,7 @@ public class InMemoryResources {
             + "    font-weight: bolder;\n"
             + "    color: #18c8bb;;\n"
             + "    text-shadow: 0 0 10px #0003c86e;\n"
+            + "    vertical-align: top;\n"
             + "}\n"
             + "table {\n"
             + "    max-width: 60%;\n"
