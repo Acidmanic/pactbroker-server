@@ -17,9 +17,9 @@ import kong.unirest.jackson.JacksonObjectMapper;
  *
  * @author diego
  */
-public class GitlabInterface implements GitRepositoryInterface<GitlabConfigurations> {
+public class GitlabInterface implements GitRepositoryInterface<GitlabConfiguration> {
 
-    private GitlabConfigurations configurations;
+    private GitlabConfiguration configurations;
 
     @Override
     public List<Commit> getRepositoryCommits() {
@@ -92,7 +92,7 @@ public class GitlabInterface implements GitRepositoryInterface<GitlabConfigurati
     }
 
     @Override
-    public void setConfigurations(GitlabConfigurations configurations) {
+    public void setConfigurations(GitlabConfiguration configurations) {
         this.configurations = configurations;
     }
 

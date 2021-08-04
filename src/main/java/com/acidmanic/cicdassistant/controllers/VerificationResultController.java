@@ -7,14 +7,12 @@ package com.acidmanic.cicdassistant.controllers;
 
 import com.acidmanic.lightweight.logger.Logger;
 import com.acidmanic.cicdassistant.application.services.web.Controller;
-import com.acidmanic.cicdassistant.models.Dto;
 import com.acidmanic.cicdassistant.models.Link;
 import com.acidmanic.cicdassistant.models.VerificationResult;
 import java.io.InputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
-import javax.ws.rs.HttpMethod;
 import javax.ws.rs.OPTIONS;
 import javax.ws.rs.PATCH;
 import javax.ws.rs.POST;

@@ -6,6 +6,7 @@
 package com.acidmanic.cicdassistant.wiki.convert.flexmark.extensions;
 
 import com.acidmanic.cicdassistant.utility.PathHelpers;
+import com.acidmanic.cicdassistant.utility.StringUtils;
 import com.vladsch.flexmark.html.HtmlRenderer;
 import com.vladsch.flexmark.html.LinkResolver;
 import com.vladsch.flexmark.html.LinkResolverFactory;
@@ -25,9 +26,16 @@ import java.util.Set;
 public class GitlabLinkResolverExtension implements HtmlRenderer.HtmlRendererExtension, Parser.ParserExtension {
 
     private final String currentUri;
+    private final String prefixSegments;
 
-    public GitlabLinkResolverExtension(String requestUri) {
-        this.currentUri = requestUri;
+    public GitlabLinkResolverExtension(String currentUri) {
+        this(currentUri, "");
+    }
+
+    public GitlabLinkResolverExtension(String currentUri, String prefixSegments) {
+        this.currentUri = currentUri;
+
+        this.prefixSegments = "/" + StringUtils.stripSides(prefixSegments, "/");
     }
 
     @Override
@@ -37,19 +45,17 @@ public class GitlabLinkResolverExtension implements HtmlRenderer.HtmlRendererExt
 
     @Override
     public void extend(HtmlRenderer.Builder builder, String string) {
-        System.out.println("Register factory for link resolvers");
+
         builder.linkResolverFactory(new GitlabLinkResolverFactory());
     }
 
     @Override
     public void parserOptions(MutableDataHolder mdh) {
-        System.out.println("Parser options called");
 
     }
 
     @Override
     public void extend(Parser.Builder builder) {
-        System.out.println("Register factory for link resolvers - On Parser");
     }
 
     private class GitlabLinkResolver implements LinkResolver {
@@ -68,7 +74,7 @@ public class GitlabLinkResolverExtension implements HtmlRenderer.HtmlRendererExt
 
                 System.out.println("GITLAB LINK: " + target);
 
-                target = "/" + target;
+                target =  prefixSegments + "/" + target;
 
             }
 

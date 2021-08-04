@@ -62,4 +62,18 @@ public class StringUtils {
 
         return title == null || title.length() == 0;
     }
+
+    public static String stripSides(String string, String find) {
+
+        if (isNullOrEmpty(string) || isNullOrEmpty(find)) {
+            return string;
+        }
+        if (string.startsWith(find)) {
+            string = string.substring(find.length(), string.length());
+        }
+        if (string.endsWith(find)) {
+            string = string.substring(0, string.length() - find.length());
+        }
+        return string;
+    }
 }

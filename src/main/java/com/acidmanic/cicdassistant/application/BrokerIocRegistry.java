@@ -28,10 +28,13 @@ import com.acidmanic.cicdassistant.controllers.MailController;
 import com.acidmanic.cicdassistant.controllers.PactController;
 import com.acidmanic.cicdassistant.controllers.ProxyController;
 import com.acidmanic.cicdassistant.controllers.VerificationResultController;
+import com.acidmanic.cicdassistant.controllers.WikiController;
 import com.acidmanic.cicdassistant.services.ArtifactManager;
 import com.acidmanic.cicdassistant.services.HtmlTemplateManager;
 import com.acidmanic.cicdassistant.services.PactsManagerService;
 import com.acidmanic.cicdassistant.services.SmtpClient;
+import com.acidmanic.cicdassistant.services.routing.Router;
+import com.acidmanic.cicdassistant.services.routing.WikiRouter;
 import com.acidmanic.cicdassistant.storage.BadgeStorage;
 import com.acidmanic.cicdassistant.storage.PactMapStorage;
 import com.acidmanic.cicdassistant.storage.PactStorage;
@@ -54,14 +57,12 @@ public class BrokerIocRegistry implements Installer {
     @Override
     public void configure(Registerer reg) {
 
-        
-
         configureInfrastructureServices(reg);
 
         configureRepositories(reg);
 
         configureControllers(reg);
-        
+
         configureApplicationServices(reg);
 
     }
@@ -131,7 +132,7 @@ public class BrokerIocRegistry implements Installer {
                 .makeInstance()
                 .readConfigurations())
                 .livesAsA(LifetimeType.Transient);
-        
+
         reg.register().bind(ApplicationConfigurationBuilder.class)
                 .withBuilder(() -> ApplicationConfigurationBuilder
                 .makeInstance())
@@ -140,6 +141,10 @@ public class BrokerIocRegistry implements Installer {
         reg.register().bindToSelf(HtmlTemplateManager.class);
 
         reg.register().bindToSelf(ArtifactManager.class);
+
+        reg.register().bind(Router.class)
+                .withBuilder(()-> new WikiRouter())
+                .livesAsA(LifetimeType.Singleton);
 
     }
 
@@ -158,8 +163,11 @@ public class BrokerIocRegistry implements Installer {
 
         reg.register().bindToSelf(ArtifactsController.class)
                 .livesAsA(LifetimeType.Singleton);
-        
+
         reg.register().bindToSelf(ProxyController.class)
+                .livesAsA(LifetimeType.Singleton);
+        
+        reg.register().bindToSelf(WikiController.class)
                 .livesAsA(LifetimeType.Singleton);
     }
 

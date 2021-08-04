@@ -5,7 +5,10 @@
  */
 package com.acidmanic.cicdassistant.application.configurations;
 
+import com.acidmanic.cicdassistant.repositoryinfo.gitlab.GitlabConfiguration;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  *
@@ -15,6 +18,7 @@ public class Configurations {
 
     private String mailSmtpServer;
     private HashMap<String, String> credentials = new HashMap<>();
+    private List<GitlabConfiguration> gitlabConfigurations = new ArrayList<>();
     private int servicePort;
 
     public String getMailSmtpServer() {
@@ -39,6 +43,14 @@ public class Configurations {
 
     public void setServicePort(int servicePort) {
         this.servicePort = servicePort;
+    }
+
+    public List<GitlabConfiguration> getGitlabConfigurations() {
+        return gitlabConfigurations;
+    }
+
+    public void setGitlabConfigurations(List<GitlabConfiguration> gitlabConfigurations) {
+        this.gitlabConfigurations = gitlabConfigurations;
     }
 
 }

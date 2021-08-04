@@ -9,7 +9,7 @@ package com.acidmanic.cicdassistant.repositoryinfo.gitlab;
  *
  * @author diego
  */
-public class GitlabConfigurations {
+public class GitlabConfiguration {
 
     private String token;
     private String gitlabBaseUrl;

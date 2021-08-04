@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.acidmanic.wiki.convert.storage;
+package com.acidmanic.cicdassistant.wiki.convert.storage;
 
 import com.acidmanic.wiki.convert.anchorsources.EncyclopediaEntry;
 import java.util.HashMap;

@@ -6,7 +6,7 @@
 package com.acidmanic.cicdassistant.wiki.convert.anchorsources;
 
 import com.acidmanic.cicdassistant.repositoryinfo.gitlab.GitlabCommit;
-import com.acidmanic.cicdassistant.repositoryinfo.gitlab.GitlabConfigurations;
+import com.acidmanic.cicdassistant.repositoryinfo.gitlab.GitlabConfiguration;
 import com.acidmanic.cicdassistant.repositoryinfo.gitlab.GitlabInterface;
 import com.acidmanic.cicdassistant.utility.CommonRegExes;
 import com.acidmanic.cicdassistant.utility.StringUtils;
@@ -21,9 +21,9 @@ import com.acidmanic.wiki.convert.autolink.Anchor;
 public class GitLabCommitHashAnchorSource extends RegexStringExtractorAnchorSource {
 
     private final KeyNormalizingDataFetchAnchorCache cache;
-    private final GitlabConfigurations configurations;
+    private final GitlabConfiguration configurations;
 
-    public GitLabCommitHashAnchorSource(GitlabConfigurations configurations) {
+    public GitLabCommitHashAnchorSource(GitlabConfiguration configurations) {
 
         this.cache = new KeyNormalizingDataFetchAnchorCache(
                 hash -> fetchHashAsAnchor(hash),

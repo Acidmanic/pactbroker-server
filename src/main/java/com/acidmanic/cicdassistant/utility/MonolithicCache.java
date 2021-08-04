@@ -6,9 +6,9 @@
 package com.acidmanic.cicdassistant.utility;
 
 import com.acidmanic.delegates.Function;
+import com.acidmanic.lightweight.jsonstorage.JsonStorageBase;
 import com.acidmanic.lightweight.logger.Logger;
 import com.acidmanic.lightweight.logger.SilentLogger;
-import com.acidmanic.wiki.convert.storage.JsonStorageBase;
 import java.io.File;
 import java.nio.file.Path;
 

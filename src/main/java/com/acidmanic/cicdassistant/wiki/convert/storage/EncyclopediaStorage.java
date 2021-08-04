@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.acidmanic.wiki.convert.storage;
+package com.acidmanic.cicdassistant.wiki.convert.storage;
 
+import com.acidmanic.lightweight.jsonstorage.JsonStorageBase;
 import com.acidmanic.lightweight.logger.Logger;
 import java.io.File;
 
@@ -27,6 +28,10 @@ public class EncyclopediaStorage extends JsonStorageBase<Encyclopedia> {
 
             model = super.load();
         } catch (Exception e) {
+        }
+
+        if (model == null) {
+            model = new Encyclopedia();
         }
 
         return model;
