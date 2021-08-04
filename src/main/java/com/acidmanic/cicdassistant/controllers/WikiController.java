@@ -7,8 +7,8 @@ package com.acidmanic.cicdassistant.controllers;
 
 import com.acidmanic.cicdassistant.application.configurations.Configurations;
 import com.acidmanic.cicdassistant.application.services.web.Controller;
+import com.acidmanic.cicdassistant.services.EncyclopediaStore;
 import com.acidmanic.cicdassistant.services.routing.Router;
-import com.acidmanic.cicdassistant.utility.ResourceHelper;
 import com.acidmanic.cicdassistant.utility.web.MimeTypeTable;
 import com.acidmanic.cicdassistant.wiki.convert.MarkdownToHtmlConvertor;
 import com.acidmanic.cicdassistant.wiki.convert.anchorsources.GitLabCommitHashAnchorSource;
@@ -16,14 +16,9 @@ import com.acidmanic.cicdassistant.wiki.convert.anchorsources.MailToAnchorSource
 import com.acidmanic.cicdassistant.wiki.convert.anchorsources.SmartWebLinkAnchorSource;
 import com.acidmanic.cicdassistant.wiki.convert.anchorsources.TerminologyAnchorSource;
 import com.acidmanic.cicdassistant.wiki.convert.flexmark.extensions.GitlabLinkResolverExtension;
-import com.acidmanic.cicdassistant.wiki.convert.storage.Encyclopedia;
-import com.acidmanic.cicdassistant.wiki.convert.storage.EncyclopediaStorage;
-import com.acidmanic.lightweight.logger.Logger;
 import java.io.File;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -40,14 +35,15 @@ import javax.ws.rs.core.Response;
 public class WikiController {
 
     private final Router router;
-    private final Logger logger;
     private final Configurations configurations;
+    private final EncyclopediaStore encyclopediaStore;
 
-    public WikiController(Router router, Logger logger, Configurations configurations) {
+    public WikiController(Router router, Configurations configurations, EncyclopediaStore encyclopediaStore) {
         this.router = router;
-        this.logger = logger;
         this.configurations = configurations;
+        this.encyclopediaStore = encyclopediaStore;
     }
+
     @GET
     @Produces(value = MediaType.TEXT_HTML)
     public Response index() {
@@ -89,18 +85,6 @@ public class WikiController {
         return tryReadAsBytes(file.toPath());
     }
 
-    private List<Encyclopedia> provideAllEncyclopedias() {
-
-        ArrayList<Encyclopedia> all = new ArrayList<>();
-
-        java.nio.file.Path execDir = new ResourceHelper().getExecutionDirectory();
-
-        all.add(new EncyclopediaStorage(execDir.resolve("Agile.json").toFile(), logger).read());
-
-        return all;
-
-    }
-
     private byte[] readMdAsHtml(File file, String requestUri) {
 
         try {
@@ -110,7 +94,8 @@ public class WikiController {
                     .addAnchorSource(new MailToAnchorSource())
                     .addExtension(new GitlabLinkResolverExtension(requestUri, "wiki"));
 
-            provideAllEncyclopedias().forEach(en -> convertor.addAnchorSource(new TerminologyAnchorSource().addEncyclopedia(en.getEntries())));
+            this.encyclopediaStore.getAvailables()
+                    .forEach(en -> convertor.addAnchorSource(new TerminologyAnchorSource().addEncyclopedia(en.getEntries())));
 
             this.configurations.getGitlabConfigurations()
                     .forEach(con -> convertor.addAnchorSource(new GitLabCommitHashAnchorSource(con)));

@@ -30,6 +30,7 @@ import com.acidmanic.cicdassistant.controllers.ProxyController;
 import com.acidmanic.cicdassistant.controllers.VerificationResultController;
 import com.acidmanic.cicdassistant.controllers.WikiController;
 import com.acidmanic.cicdassistant.services.ArtifactManager;
+import com.acidmanic.cicdassistant.services.EncyclopediaStore;
 import com.acidmanic.cicdassistant.services.HtmlTemplateManager;
 import com.acidmanic.cicdassistant.services.PactsManagerService;
 import com.acidmanic.cicdassistant.services.SmtpClient;
@@ -143,7 +144,10 @@ public class BrokerIocRegistry implements Installer {
         reg.register().bindToSelf(ArtifactManager.class);
 
         reg.register().bind(Router.class)
-                .withBuilder(()-> new WikiRouter())
+                .withBuilder(() -> new WikiRouter())
+                .livesAsA(LifetimeType.Singleton);
+
+        reg.register().bindToSelf(EncyclopediaStore.class)
                 .livesAsA(LifetimeType.Singleton);
 
     }
@@ -166,7 +170,7 @@ public class BrokerIocRegistry implements Installer {
 
         reg.register().bindToSelf(ProxyController.class)
                 .livesAsA(LifetimeType.Singleton);
-        
+
         reg.register().bindToSelf(WikiController.class)
                 .livesAsA(LifetimeType.Singleton);
     }
