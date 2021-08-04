@@ -26,7 +26,7 @@ import javax.ws.rs.Produces;
  * @author diego
  */
 @Controller
-@Path("/")
+@Path("broker")
 public class PactController extends ControllerBase {
 
     private final PactsManagerService pactsManagerService;
