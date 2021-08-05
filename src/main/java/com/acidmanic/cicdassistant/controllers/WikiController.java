@@ -120,6 +120,8 @@ public class WikiController extends ControllerBase {
             this.configurations.getGitlabConfigurations()
                     .forEach(con -> convertor.addAnchorSource(new GitLabCommitHashAnchorSource(con)));
 
+            convertor.setThemeName(configurations.getWikiConfigurations().getThemeName());
+
             String markdown = new String(Files.readAllBytes(file.toPath()));
 
             String html = convertor.convert(markdown);

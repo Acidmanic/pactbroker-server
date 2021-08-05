@@ -15,6 +15,7 @@ public class WikiConfigurations {
     private String username = "";
     private String password = "";
     private String wikiBranch = "";
+    private String themeName = "";
 
     private int autoRefetchMinutes = 10;
 
@@ -60,4 +61,13 @@ public class WikiConfigurations {
     public void setWikiBranch(String wikiBranch) {
         this.wikiBranch = wikiBranch;
     }
+
+    public String getThemeName() {
+        return themeName;
+    }
+
+    public void setThemeName(String themeName) {
+        this.themeName = themeName;
+    }
+
 }

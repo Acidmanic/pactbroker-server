@@ -11,7 +11,6 @@ import com.acidmanic.cicdassistant.utility.MarkdownCleanup;
 import com.acidmanic.cicdassistant.wiki.convert.autolink.AnchorSource;
 import com.acidmanic.cicdassistant.wiki.convert.autolink.AutoAnchorMachine;
 import com.acidmanic.cicdassistant.wiki.convert.flexmark.extensions.CodeFormatExtension;
-import com.acidmanic.wiki.convert.InMemoryResources;
 import com.vladsch.flexmark.ext.emoji.EmojiExtension;
 import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughExtension;
 import com.vladsch.flexmark.ext.tables.TablesExtension;
@@ -33,7 +32,8 @@ public class MarkdownToHtmlConvertor {
 
     private final List<AnchorSource> anchorSources = new ArrayList<>();
     private final List<Extension> extensions = new ArrayList<>();
-    private final StyleProcessor styleProcessor;
+    private StyleProcessor styleProcessor;
+    private String themeName="DarkGreen";
 
     public MarkdownToHtmlConvertor addAnchorSource(AnchorSource provider) {
 
@@ -49,11 +49,18 @@ public class MarkdownToHtmlConvertor {
         return this;
     }
 
-  
-
     public MarkdownToHtmlConvertor setTintColor(StyleColor tintColor) {
 
         this.styleProcessor.setTintColor(tintColor);
+
+        return this;
+    }
+
+    public MarkdownToHtmlConvertor setThemeName(String themeName) {
+
+        this.themeName = themeName;
+        
+        updateStyleProcessor();
 
         return this;
     }
@@ -67,9 +74,7 @@ public class MarkdownToHtmlConvertor {
 
     public MarkdownToHtmlConvertor() {
 
-        String style = InMemoryResources.WIKI_STYLES;
-
-        this.styleProcessor = new StyleProcessor(style);
+        updateStyleProcessor();
 
     }
 
@@ -140,6 +145,16 @@ public class MarkdownToHtmlConvertor {
         return styles.toString();
     }
 
-   
+    private void updateStyleProcessor() {
+        
+        String style = InMemoryResources.WIKI_STYLES_GREEN;
+        
+        if(InMemoryResources.NAMED_THEMES.containsKey(this.themeName)){
+            
+            style = InMemoryResources.NAMED_THEMES.get(this.themeName);
+        }
+
+        this.styleProcessor = new StyleProcessor(style);
+    }
 
 }
