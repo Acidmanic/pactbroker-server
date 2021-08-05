@@ -12,7 +12,9 @@ import com.acidmanic.cicdassistant.services.EncyclopediaStore;
 import com.acidmanic.cicdassistant.services.WikiRepoStatus;
 import com.acidmanic.cicdassistant.services.routing.Router;
 import com.acidmanic.cicdassistant.storage.TokenStorage;
+import com.acidmanic.cicdassistant.utility.StringUtils;
 import com.acidmanic.cicdassistant.utility.web.MimeTypeTable;
+import com.acidmanic.cicdassistant.wiki.convert.InMemoryResources;
 import com.acidmanic.cicdassistant.wiki.convert.MarkdownToHtmlConvertor;
 import com.acidmanic.cicdassistant.wiki.convert.anchorsources.GitLabCommitHashAnchorSource;
 import com.acidmanic.cicdassistant.wiki.convert.anchorsources.MailToAnchorSource;
@@ -23,13 +25,17 @@ import com.acidmanic.lightweight.logger.Logger;
 import java.io.File;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import javax.ws.rs.CookieParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 
 /**
@@ -55,8 +61,11 @@ public class WikiController extends ControllerBase {
 
     @GET
     @Produces(value = MediaType.TEXT_HTML)
-    public Response index() {
-        return provideResourse("");
+    public Response index(
+            @CookieParam("theme") String theme,
+            @QueryParam("theme") String setTheme) {
+
+        return provideResourse("", theme, setTheme);
     }
 
     @POST
@@ -72,26 +81,54 @@ public class WikiController extends ControllerBase {
 
     @GET
     @Path("{rawuri:.*}")
-    public Response get(@PathParam("rawuri") String rawUri) {
-        return provideResourse(rawUri);
+    public Response get(
+            @PathParam("rawuri") String rawUri,
+            @CookieParam("theme") String theme,
+            @QueryParam("theme") String setTheme) {
+
+        return provideResourse(rawUri, theme, setTheme);
     }
 
-    private Response provideResourse(String rawUri) {
+    private String grantThemeName(String theme) {
+
+        if (StringUtils.isNullOrEmpty(theme) || !InMemoryResources.NAMED_THEMES.containsKey(theme)) {
+
+            theme = configurations.getWikiConfigurations().getThemeName();
+
+            if (StringUtils.isNullOrEmpty(theme) || !InMemoryResources.NAMED_THEMES.containsKey(theme)) {
+
+                theme = InMemoryResources.WIKI_STYLES_GREEN;
+            }
+        }
+        return theme;
+    }
+
+    private Response provideResourse(String rawUri, String theme, String setTheme) {
+
+        if (!StringUtils.isNullOrEmpty(setTheme)) {
+
+            setTheme = grantThemeName(setTheme);
+
+            theme = setTheme;
+
+        } else {
+            theme = grantThemeName(theme);
+        }
 
         int status = 200;
 
         String type = new MimeTypeTable().getMimeTypeForUri(rawUri);
 
-        byte[] data = readFile(rawUri);
+        byte[] data = readFile(rawUri, theme);
 
         return Response
                 .status(status)
                 .type(type)
-                .entity(data)
+                .entity(data).cookie(new NewCookie("theme", theme, "/", "", "wiki theme", 10000000, false))
                 .build();
     }
 
-    private byte[] readFile(String uri) {
+    private byte[] readFile(String uri, String theme) {
 
         File file = this.router.mapPath(uri);
 
@@ -99,13 +136,13 @@ public class WikiController extends ControllerBase {
 
             if (file.getName().toLowerCase().endsWith(".md")) {
 
-                return readMdAsHtml(file, uri);
+                return readMdAsHtml(file, uri, theme);
             }
         }
         return tryReadAsBytes(file.toPath());
     }
 
-    private byte[] readMdAsHtml(File file, String requestUri) {
+    private byte[] readMdAsHtml(File file, String requestUri, String theme) {
 
         try {
 
@@ -120,7 +157,7 @@ public class WikiController extends ControllerBase {
             this.configurations.getGitlabConfigurations()
                     .forEach(con -> convertor.addAnchorSource(new GitLabCommitHashAnchorSource(con)));
 
-            convertor.setThemeName(configurations.getWikiConfigurations().getThemeName());
+            convertor.setThemeName(theme);
 
             String markdown = new String(Files.readAllBytes(file.toPath()));
 

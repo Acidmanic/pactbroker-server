@@ -19,6 +19,9 @@ public class StyleProcessor {
     private final List<String> extractedColorCodes;
     private final List<StyleColor> normalizedColors;
 
+    private final StyleColor mostSaturate;
+    private final StyleColor averageColor;
+
     private StyleColor tintColor;
 
     public StyleProcessor(String styleBase) {
@@ -30,8 +33,10 @@ public class StyleProcessor {
         List<StyleColor> extractedColors = listAllColors(extractedColorCodes);
 
         this.tintColor = StyleColorUtils.average(extractedColors);
-        
-        System.out.println("TINT: " + this.tintColor.toCode());
+
+        this.averageColor = StyleColorUtils.average(extractedColors);
+
+        this.mostSaturate = StyleColorUtils.mostSaturate(extractedColors);
 
         this.normalizedColors = StyleColorUtils.scaleOverColor(extractedColors, tintColor);
     }
@@ -87,6 +92,14 @@ public class StyleProcessor {
             indexes.add(i);
         }
         return indexes;
+    }
+
+    public StyleColor getMostSaturate() {
+        return mostSaturate;
+    }
+
+    public StyleColor getAverageColor() {
+        return averageColor;
     }
 
 }

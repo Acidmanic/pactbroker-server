@@ -5,6 +5,7 @@
  */
 package com.acidmanic.cicdassistant.html.styles;
 
+import com.acidmanic.cicdassistant.html.Style;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -172,4 +173,117 @@ public class StyleColorUtils {
 
         return value * factor;
     }
+
+    public static StyleColor saturateAtMax(StyleColor color) {
+
+        double red = color.getRed();
+        double green = color.getGreen();
+        double blue = color.getBlue();
+
+        double[] rgb = normalize(red, green, blue);
+
+        return new StyleColor(rgb[0], rgb[1], rgb[2], 1.0);
+    }
+
+    public static StyleColor saturateMore(StyleColor color, double percent) {
+
+        double red = color.getRed();
+        double green = color.getGreen();
+        double blue = color.getBlue();
+
+        double min = min(red, green, blue);
+        double max = max(red, green, blue);
+
+        if (min == max) {
+            return color;
+        }
+
+        double range = max - min;
+
+        double denuminator = percent * (range - 1) + 1;
+
+        return new StyleColor(
+                (red - min) / denuminator,
+                (green - min) / denuminator,
+                (blue - min) / denuminator, 1.0);
+    }
+
+    private static double min(double... values) {
+
+        double min = Double.POSITIVE_INFINITY;
+
+        for (double v : values) {
+
+            if (v < min) {
+                min = v;
+            }
+        }
+        return min;
+    }
+
+    private static double max(double... values) {
+
+        double max = Double.NEGATIVE_INFINITY;
+
+        for (double v : values) {
+
+            if (v > max) {
+                max = v;
+            }
+        }
+        return max;
+    }
+
+    private static double[] normalize(double... values) {
+
+        double[] result = new double[values.length];
+
+        double min = min(values);
+        double max = max(values);
+
+        if (min == max) {
+            return result;
+        }
+
+        double range = max - min;
+
+        for (int i = 0; i < values.length; i++) {
+
+            result[i] = (values[i] - min) / range;
+        }
+        return result;
+    }
+
+    private static double range(double... values) {
+
+        double min = min(values);
+        double max = max(values);
+        double range = max - min;
+
+        return range;
+    }
+
+    public static StyleColor mostSaturate(List<StyleColor> colors) {
+
+        double most = 0;
+        StyleColor saturate = new StyleColor();
+
+        String ranges = "";
+
+        for (StyleColor color : colors) {
+
+            double range = range(color.getRed(), color.getGreen(), color.getBlue());
+
+            ranges += range + ",";
+
+            if (range > most) {
+
+                most = range;
+
+                saturate = color;
+            }
+        }
+        return saturate;
+    }
+
 }

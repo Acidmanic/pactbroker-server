@@ -6,6 +6,7 @@
 package com.acidmanic.cicdassistant.wiki.convert;
 
 import com.acidmanic.cicdassistant.html.styles.StyleColor;
+import com.acidmanic.cicdassistant.html.styles.StyleColorUtils;
 import com.acidmanic.cicdassistant.html.styles.StyleProcessor;
 import com.acidmanic.cicdassistant.utility.MarkdownCleanup;
 import com.acidmanic.cicdassistant.wiki.convert.autolink.AnchorSource;
@@ -33,7 +34,7 @@ public class MarkdownToHtmlConvertor {
     private final List<AnchorSource> anchorSources = new ArrayList<>();
     private final List<Extension> extensions = new ArrayList<>();
     private StyleProcessor styleProcessor;
-    private String themeName="DarkGreen";
+    private String themeName = "DarkGreen";
 
     public MarkdownToHtmlConvertor addAnchorSource(AnchorSource provider) {
 
@@ -59,7 +60,7 @@ public class MarkdownToHtmlConvertor {
     public MarkdownToHtmlConvertor setThemeName(String themeName) {
 
         this.themeName = themeName;
-        
+
         updateStyleProcessor();
 
         return this;
@@ -119,7 +120,9 @@ public class MarkdownToHtmlConvertor {
         this.anchorSources.forEach(s -> s.preProcessInputString(body));
 
         String html = "<html><head>" + styles
-                + "</head><body>"
+                + "</head>"
+                + "<body>"
+                + createThemeContainer()
                 + InMemoryResources.COPY_TO_CLIPBOARD_JS
                 + InMemoryResources.TOAST_COMPONENT
                 + body + "</body></html>";
@@ -146,15 +149,37 @@ public class MarkdownToHtmlConvertor {
     }
 
     private void updateStyleProcessor() {
-        
+
         String style = InMemoryResources.WIKI_STYLES_GREEN;
-        
-        if(InMemoryResources.NAMED_THEMES.containsKey(this.themeName)){
-            
+
+        if (InMemoryResources.NAMED_THEMES.containsKey(this.themeName)) {
+
             style = InMemoryResources.NAMED_THEMES.get(this.themeName);
         }
 
         this.styleProcessor = new StyleProcessor(style);
+    }
+
+    private String createThemeContainer() {
+
+        String container = "<div class =\"theme-container\">";
+
+        for (String themeName : InMemoryResources.NAMED_THEMES.keySet()) {
+
+            String colorCode = InMemoryResources.NAMED_THEMES_FLAGS.get(themeName);
+
+            System.out.println("COLOR: " + colorCode);
+
+            container += "<a title=\"" + themeName + "\" href=\"?theme=" + themeName + "\">"
+                    + "<div class=\"theme-item\" "
+                    + "style=\"background-color: " + colorCode + "\">"
+                    + "</div>"
+                    + "</a>";
+        }
+
+        container += "</div>";
+
+        return container;
     }
 
 }

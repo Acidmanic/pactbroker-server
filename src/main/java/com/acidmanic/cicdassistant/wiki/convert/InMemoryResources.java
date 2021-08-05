@@ -12,9 +12,10 @@ import java.util.HashMap;
  * @author diego
  */
 public class InMemoryResources {
-    
-    public static final HashMap<String,String> NAMED_THEMES = new HashMap<>();
-    
+
+    public static final HashMap<String, String> NAMED_THEMES = new HashMap<>();
+    public static final HashMap<String, String> NAMED_THEMES_FLAGS = new HashMap<>();
+
     public static final String COPY_TO_CLIPBOARD_JS = "<script>\n"
             + "function copyToClipboard(id) {\n"
             + "  var copyText = document.getElementById(id);\n"
@@ -147,8 +148,26 @@ public class InMemoryResources {
             + "    padding-bottom: 2pt;\n"
             + "    padding-top: 2pt;\n"
             + "    border-radius: 3pt;\n"
+            + "}\n"// added
+            + ".theme-item {\n"
+            + "    height: 3pt;\n"
+            + "    color: white;\n"
+            + "    width: 20pt;\n"
+            + "    position: relative;\n"
+            + "}\n"
+            + ".theme-item:hover {\n"
+            + "    height: 20pt;\n"
+            + "    border: 1px solid #aab1b7;\n"
+            + "    border-radius: 20pt;\n"
+            + "}"
+            + ".theme-container {\n"
+            + "    cursor: pointer;\n"
+            + "    left: 5pt;\n"
+            + "    top: 5pt;\n"
+            + "    position: absolute;\n"
+            + "    display: block;\n"
             + "}";
-    
+
     public static final String WIKI_STYLES_BLUE
             = "body{\n"
             + "    font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Noto Sans\", Ubuntu, Cantarell, \"Helvetica Neue\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\";\n"
@@ -252,6 +271,24 @@ public class InMemoryResources {
             + "    padding-bottom: 2pt;\n"
             + "    padding-top: 2pt;\n"
             + "    border-radius: 3pt;\n"
+            + "}\n"// added
+            + ".theme-item {\n"
+            + "    height: 3pt;\n"
+            + "    color: white;\n"
+            + "    width: 20pt;\n"
+            + "    position: relative;\n"
+            + "}\n"
+            + ".theme-item:hover {\n"
+            + "    height: 20pt;\n"
+            + "    border: 1px solid #aab1b7;\n"
+            + "    border-radius: 20pt;\n"
+            + "}"
+            + ".theme-container {\n"
+            + "    cursor: pointer;\n"
+            + "    left: 5pt;\n"
+            + "    top: 5pt;\n"
+            + "    position: absolute;\n"
+            + "    display: block;\n"
             + "}";
     public static final String WIKI_STYLES_WHITE
             = "body{\n"
@@ -356,13 +393,34 @@ public class InMemoryResources {
             + "    padding-bottom: 2pt;\n"
             + "    padding-top: 2pt;\n"
             + "    border-radius: 3pt;\n"
+            + "}\n"// added
+            + ".theme-item {\n"
+            + "    height: 3pt;\n"
+            + "    color: white;\n"
+            + "    width: 20pt;\n"
+            + "    position: relative;\n"
+            + "}\n"
+            + ".theme-item:hover {\n"
+            + "    height: 20pt;\n"
+            + "    border: 1px solid #aab1b7;\n"
+            + "    border-radius: 20pt;\n"
+            + "}"
+            + ".theme-container {\n"
+            + "    cursor: pointer;\n"
+            + "    left: 5pt;\n"
+            + "    top: 5pt;\n"
+            + "    position: absolute;\n"
+            + "    display: block;\n"
             + "}";
-    
-    
-    static{
+
+    static {
         NAMED_THEMES.put("DarkGreen", WIKI_STYLES_GREEN);
         NAMED_THEMES.put("DarkBlue", WIKI_STYLES_BLUE);
         NAMED_THEMES.put("White", WIKI_STYLES_WHITE);
         
+        NAMED_THEMES_FLAGS.put("DarkGreen", "#36514f");
+        NAMED_THEMES_FLAGS.put("DarkBlue", "#2f3b51");
+        NAMED_THEMES_FLAGS.put("White", "#FBFBFB");
+
     }
 }
