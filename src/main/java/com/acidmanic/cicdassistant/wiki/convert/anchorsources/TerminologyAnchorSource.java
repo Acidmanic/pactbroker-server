@@ -6,11 +6,10 @@
 package com.acidmanic.cicdassistant.wiki.convert.anchorsources;
 
 import com.acidmanic.cicdassistant.utility.StringUtils;
-import com.acidmanic.wiki.convert.anchorsources.EncyclopediaEntry;
-import com.acidmanic.wiki.convert.autolink.Anchor;
-import com.acidmanic.wiki.convert.autolink.AnchorSource;
-import com.acidmanic.wiki.convert.autolink.AnchorReplacementMap;
-import com.acidmanic.wiki.convert.autolink.SearchTarget;
+import com.acidmanic.cicdassistant.wiki.convert.autolink.Anchor;
+import com.acidmanic.cicdassistant.wiki.convert.autolink.AnchorReplacementMap;
+import com.acidmanic.cicdassistant.wiki.convert.autolink.AnchorSource;
+import com.acidmanic.cicdassistant.wiki.convert.autolink.SearchTarget;
 import java.util.HashMap;
 
 /**

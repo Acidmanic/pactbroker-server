@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.acidmanic.wiki.convert.autolink;
+package com.acidmanic.cicdassistant.wiki.convert.autolink;
 
 import java.util.ArrayList;
 import java.util.List;

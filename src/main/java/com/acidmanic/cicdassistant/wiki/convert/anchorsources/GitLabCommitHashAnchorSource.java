@@ -10,9 +10,9 @@ import com.acidmanic.cicdassistant.repositoryinfo.gitlab.GitlabConfiguration;
 import com.acidmanic.cicdassistant.repositoryinfo.gitlab.GitlabInterface;
 import com.acidmanic.cicdassistant.utility.CommonRegExes;
 import com.acidmanic.cicdassistant.utility.StringUtils;
+import com.acidmanic.cicdassistant.wiki.convert.autolink.Anchor;
 import com.acidmanic.lightweight.logger.SilentLogger;
 import com.acidmanic.repositoryinfo.Commit;
-import com.acidmanic.wiki.convert.autolink.Anchor;
 
 /**
  *

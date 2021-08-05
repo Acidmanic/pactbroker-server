@@ -6,8 +6,7 @@
 package com.acidmanic.cicdassistant.wiki.convert.anchorsources;
 
 import com.acidmanic.cicdassistant.utility.StringUtils;
-import com.acidmanic.wiki.convert.anchorsources.DataExtractAnchorSourceBase;
-import com.acidmanic.wiki.convert.autolink.Anchor;
+import com.acidmanic.cicdassistant.wiki.convert.autolink.Anchor;
 import java.util.List;
 
 /**

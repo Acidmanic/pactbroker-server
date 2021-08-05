@@ -6,9 +6,9 @@
 package com.acidmanic.cicdassistant.wiki.convert.anchorsources;
 
 import com.acidmanic.cicdassistant.utility.AnchorCache;
+import com.acidmanic.cicdassistant.wiki.convert.autolink.Anchor;
 import com.acidmanic.delegates.arg1.Function;
 import com.acidmanic.lightweight.logger.Logger;
-import com.acidmanic.wiki.convert.autolink.Anchor;
 
 /**
  *

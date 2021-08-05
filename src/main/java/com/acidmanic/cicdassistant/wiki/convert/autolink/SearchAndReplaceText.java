@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.acidmanic.wiki.convert.autolink;
+package com.acidmanic.cicdassistant.wiki.convert.autolink;
 
+import com.acidmanic.cicdassistant.utility.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,41 +19,65 @@ public class SearchAndReplaceText {
     private final String searchText;
     private final List<Mark> searchables;
     private final List<Mark> toBeReplaced;
+
     private final boolean caseSensitive;
     private final boolean boundedWord;
+    private final boolean allowRepeating;
 
-    public SearchAndReplaceText(String text, boolean caseSensitive, boolean boundedWord) {
+    private final List<String> alreadyMarked;
+
+    public SearchAndReplaceText(String text, SearchAndReplaceOptions options) {
         this.originalText = text;
         this.searchables = new ArrayList<>();
         this.toBeReplaced = new ArrayList<>();
         Mark mark = new Mark(0, text.length());
         this.searchables.add(mark);
-        this.caseSensitive = caseSensitive;
+        this.caseSensitive = options.isCaseSensitive();
         this.searchText = caseSensitive ? text : text.toLowerCase();
-        this.boundedWord = boundedWord;
+        this.boundedWord = options.isBoundedWords();
+        this.alreadyMarked = new ArrayList<>();
+        this.allowRepeating = options.isAllowRepeating();
     }
 
     public SearchAndReplaceText(String text, boolean caseSensitive) {
-        this(text, caseSensitive, false);
+        this(text, new SearchAndReplaceOptions(caseSensitive, true, false));
     }
 
-    public void searchAndMarkForReplacement(String find, String replaceString) {
+    /**
+     * This method finds any occurrences of the find string. and marks them to
+     * be replaced.
+     *
+     * @param find
+     * @param replaceString
+     * @return the number of marked occurrences
+     */
+    public int searchAndMarkForReplacement(String find, String replaceString) {
 
         boolean dirty = true;
+
+        int occurrences = 0;
 
         while (dirty) {
 
             dirty = false;
 
-            Mark mark = indexOf(find);
+            if (this.allowRepeating || !isAlreadyMarkedForReplacement(find)) {
 
-            if (mark != null) {
+                Mark mark = indexOf(find);
 
-                dirty = true;
+                if (mark != null) {
 
-                replace(mark, find, replaceString);
+                    this.alreadyMarked.add(find);
+
+                    occurrences += 1;
+
+                    dirty = true;
+
+                    replace(mark, find, replaceString);
+                }
             }
         }
+        return occurrences;
     }
 
     private Mark indexOf(String find) {
@@ -141,6 +166,22 @@ public class SearchAndReplaceText {
 
             return isBoundIndex(chunk, st - 1) && isBoundIndex(chunk, nd);
 
+        }
+        return false;
+    }
+
+    private boolean isAlreadyMarkedForReplacement(String term) {
+
+        if (StringUtils.isNullOrEmpty(term)) {
+            return true;
+        }
+
+        for (String item : this.alreadyMarked) {
+
+            if ((this.caseSensitive && term.equals(item))
+                    || (!this.caseSensitive && term.equalsIgnoreCase(item))) {
+                return true;
+            }
         }
         return false;
     }

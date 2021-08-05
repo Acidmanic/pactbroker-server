@@ -5,11 +5,7 @@
  */
 package com.acidmanic.cicdassistant.wiki.convert.autolink;
 
-import com.acidmanic.wiki.convert.autolink.Anchor;
-import com.acidmanic.wiki.convert.autolink.AnchorSource;
-import com.acidmanic.wiki.convert.autolink.Mark;
-import com.acidmanic.wiki.convert.autolink.SearchAndReplaceText;
-import com.acidmanic.wiki.convert.autolink.SearchTarget;
+import com.acidmanic.cicdassistant.utility.StringUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -24,13 +20,14 @@ public class AutoAnchorMachine {
 
     private final HashMap<SearchTarget, String> allReplacements = new HashMap<>();
     private final List<SearchTarget> sortedKeys;
+    private final List<String> alreadyReplacedOnce;
 
     public AutoAnchorMachine(AnchorSource... providers) {
         this(Arrays.asList(providers));
     }
 
     public AutoAnchorMachine(Collection<AnchorSource> providers) {
-        
+
         for (AnchorSource provider : providers) {
 
             HashMap<SearchTarget, Anchor> map = provider.getAnchorsReplacementMap();
@@ -42,7 +39,7 @@ public class AutoAnchorMachine {
                     Anchor value = map.get(target);
 
                     if (value != null) {
-                        
+
                         String anchor = createAnchor(value);
 
                         allReplacements.put(target, anchor);
@@ -54,6 +51,8 @@ public class AutoAnchorMachine {
         this.sortedKeys = new ArrayList<>(allReplacements.keySet());
 
         this.sortedKeys.sort((t1, t2) -> t2.getTerm().length() - t1.getTerm().length());
+
+        this.alreadyReplacedOnce = new ArrayList<>();
     }
 
     public String scan(String html) {
@@ -80,17 +79,42 @@ public class AutoAnchorMachine {
     private String replaceLinksInHtmlChunk(String htmlChunk) {
 
         SearchAndReplaceText searchAndReplaceText
-                = new SearchAndReplaceText(htmlChunk, false, true);
+                = new SearchAndReplaceText(htmlChunk,
+                        new SearchAndReplaceOptions(false, true, false));
 
         for (SearchTarget target : this.sortedKeys) {
 
             String find = target.getTerm();
 
-            String replacement = this.allReplacements.get(target);
+            if (!isAlreadyMarkedForReplacement(find)) {
 
-            searchAndReplaceText.searchAndMarkForReplacement(find, replacement);
+                String replacement = this.allReplacements.get(target);
+
+                int occurrences = searchAndReplaceText.searchAndMarkForReplacement(find, replacement);
+
+                if (occurrences > 0) {
+                    
+                    this.alreadyReplacedOnce.add(find);
+                }
+            }
+
         }
         return searchAndReplaceText.replace();
+    }
+
+    private boolean isAlreadyMarkedForReplacement(String term) {
+
+        if (StringUtils.isNullOrEmpty(term)) {
+            return true;
+        }
+
+        for (String item : this.alreadyReplacedOnce) {
+
+            if (term.equalsIgnoreCase(item)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private String createAnchor(Anchor a) {

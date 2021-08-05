@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.acidmanic.wiki.convert.anchorsources;
+package com.acidmanic.cicdassistant.wiki.convert.anchorsources;
 
 /**
  *

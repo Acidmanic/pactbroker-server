@@ -8,8 +8,8 @@ package com.acidmanic.cicdassistant.wiki.convert.anchorsources;
 import com.acidmanic.cicdassistant.utility.CommonRegExes;
 import com.acidmanic.cicdassistant.utility.StringUtils;
 import com.acidmanic.cicdassistant.utility.WebPageInfo;
+import com.acidmanic.cicdassistant.wiki.convert.autolink.Anchor;
 import com.acidmanic.lightweight.logger.SilentLogger;
-import com.acidmanic.wiki.convert.autolink.Anchor;
 
 /**
  *

@@ -6,7 +6,6 @@
 package com.acidmanic.cicdassistant.wiki.convert.autolink;
 
 import com.acidmanic.cicdassistant.utility.StringUtils;
-import com.acidmanic.wiki.convert.autolink.Mark;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

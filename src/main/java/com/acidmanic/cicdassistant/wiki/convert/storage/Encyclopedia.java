@@ -5,7 +5,7 @@
  */
 package com.acidmanic.cicdassistant.wiki.convert.storage;
 
-import com.acidmanic.wiki.convert.anchorsources.EncyclopediaEntry;
+import com.acidmanic.cicdassistant.wiki.convert.anchorsources.EncyclopediaEntry;
 import java.util.HashMap;
 
 /**
