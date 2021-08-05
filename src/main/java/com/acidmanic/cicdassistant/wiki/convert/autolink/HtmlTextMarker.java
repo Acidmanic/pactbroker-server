@@ -26,7 +26,7 @@ public class HtmlTextMarker {
         "a", "applet", "audio", "base", "basefont", "canvas", "cite", "data",
         "dd", "del", "embed", "font", "isindex", "link", "nav", "output", "picture",
         "progress", "samp", "source", "svg", "template", "time", "title", "track",
-        "var", "video"};
+        "var", "video","thead","th","h1","h2","h3","h4","h5","h6"};
 
     public List<Mark> markTexts(String html) {
 
