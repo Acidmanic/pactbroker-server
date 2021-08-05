@@ -23,6 +23,8 @@
  */
 package com.acidmanic.cicdassistant.utility;
 
+import com.acidmanic.lightweight.logger.Logger;
+import com.acidmanic.lightweight.logger.SilentLogger;
 import java.io.File;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
@@ -32,6 +34,16 @@ import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
 public class JGit {
+
+    private final Logger logger;
+
+    public JGit(Logger logger) {
+        this.logger = logger;
+    }
+
+    public JGit() {
+        this(new SilentLogger());
+    }
 
     public boolean acceptLocalChanges(File directory, String commitMessage) {
         Git git = tryGetGit(directory);
@@ -47,6 +59,7 @@ public class JGit {
                 git.commit().setMessage(commitMessage).call();
                 return true;
             } catch (Exception ex) {
+                logException(ex, "commiting changes");
             }
         }
         return false;
@@ -60,6 +73,7 @@ public class JGit {
         try {
             return Git.open(directory);
         } catch (Exception e) {
+            logException(e, "creating git object");
         }
         return null;
     }
@@ -72,6 +86,7 @@ public class JGit {
                     .call();
             return true;
         } catch (Exception e) {
+            logException(e, "cloning repository");
         }
         return false;
     }
@@ -87,6 +102,7 @@ public class JGit {
                     .call();
             return true;
         } catch (Exception e) {
+            logException(e, "cloning repository");
         }
         return false;
     }
@@ -100,6 +116,7 @@ public class JGit {
                     .call();
             return true;
         } catch (Exception e) {
+            logException(e, "Pushing changes");
         }
         return false;
     }
@@ -116,7 +133,32 @@ public class JGit {
                     ).call();
             return true;
         } catch (Exception e) {
+            logException(e, "Pushing changes");
         }
         return false;
+    }
+
+    public boolean pull(String remote, String username, String password, String branch, File directory) {
+
+        Git git = tryGetGit(directory);
+
+        try {
+            git.pull()
+                    .setRemoteBranchName(branch)
+                    .setRemote(remote)
+                    .setCredentialsProvider(
+                            new UsernamePasswordCredentialsProvider(username, password)
+                    ).call();
+            return true;
+        } catch (Exception e) {
+            logException(e, "Pulling from repo");
+        }
+        return false;
+    }
+
+    private void logException(Exception ex, String underGoingTask) {
+
+        this.logger.error("Error " + underGoingTask + ": " + ex.getClass().getSimpleName());
+        this.logger.error(ex.getMessage());
     }
 }

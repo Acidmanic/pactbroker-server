@@ -20,6 +20,7 @@ public class Configurations {
     private HashMap<String, String> credentials = new HashMap<>();
     private List<GitlabConfiguration> gitlabConfigurations = new ArrayList<>();
     private int servicePort;
+    private WikiConfigurations wikiConfigurations = new WikiConfigurations();
 
     public String getMailSmtpServer() {
         return mailSmtpServer;
@@ -51,6 +52,14 @@ public class Configurations {
 
     public void setGitlabConfigurations(List<GitlabConfiguration> gitlabConfigurations) {
         this.gitlabConfigurations = gitlabConfigurations;
+    }
+
+    public WikiConfigurations getWikiConfigurations() {
+        return wikiConfigurations;
+    }
+
+    public void setWikiConfigurations(WikiConfigurations wikiConfigurations) {
+        this.wikiConfigurations = wikiConfigurations;
     }
 
 }

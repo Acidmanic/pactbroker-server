@@ -17,6 +17,7 @@ import com.acidmanic.lightweight.logger.Logger;
 import com.acidmanic.cicdassistant.application.services.BrokerWebService;
 import com.acidmanic.cicdassistant.application.services.ConsoleService;
 import com.acidmanic.cicdassistant.application.services.KillFileService;
+import com.acidmanic.cicdassistant.application.services.WikiFetchService;
 import com.acidmanic.cicdassistant.application.services.web.BrokerControllerProvider;
 import com.acidmanic.cicdassistant.commands.ApplicationContext;
 import com.acidmanic.cicdassistant.commands.ApplicationSwitch;
@@ -34,6 +35,7 @@ import com.acidmanic.cicdassistant.services.EncyclopediaStore;
 import com.acidmanic.cicdassistant.services.HtmlTemplateManager;
 import com.acidmanic.cicdassistant.services.PactsManagerService;
 import com.acidmanic.cicdassistant.services.SmtpClient;
+import com.acidmanic.cicdassistant.services.WikiRepoStatus;
 import com.acidmanic.cicdassistant.services.routing.Router;
 import com.acidmanic.cicdassistant.services.routing.WikiRouter;
 import com.acidmanic.cicdassistant.storage.BadgeStorage;
@@ -74,6 +76,8 @@ public class BrokerIocRegistry implements Installer {
         reg.register().bindToSelf(BrokerWebService.class).livesAsA(LifetimeType.Singleton);
 
         reg.register().bindToSelf(KillFileService.class).livesAsA(LifetimeType.Singleton);
+
+        reg.register().bindToSelf(WikiFetchService.class).livesAsA(LifetimeType.Singleton);
     }
 
     private void configureInfrastructureServices(Registerer reg) {
@@ -150,6 +154,7 @@ public class BrokerIocRegistry implements Installer {
         reg.register().bindToSelf(EncyclopediaStore.class)
                 .livesAsA(LifetimeType.Singleton);
 
+        reg.register().bindToSelf(WikiRepoStatus.class);
     }
 
     private void configureControllers(Registerer reg) {
