@@ -21,6 +21,7 @@ import com.acidmanic.cicdassistant.wiki.convert.anchorsources.MailToAnchorSource
 import com.acidmanic.cicdassistant.wiki.convert.anchorsources.SmartWebLinkAnchorSource;
 import com.acidmanic.cicdassistant.wiki.convert.anchorsources.TerminologyAnchorSource;
 import com.acidmanic.cicdassistant.wiki.convert.flexmark.extensions.GitlabLinkResolverExtension;
+import com.acidmanic.cicdassistant.wiki.convert.stylesheet.MaterialPaletteStyleProvider;
 import com.acidmanic.lightweight.logger.Logger;
 import java.io.File;
 import java.nio.charset.Charset;
@@ -90,14 +91,10 @@ public class WikiController extends ControllerBase {
 
     private String grantThemeName(String theme) {
 
-        if (StringUtils.isNullOrEmpty(theme) || !InMemoryResources.NAMED_THEMES.containsKey(theme)) {
+        if (StringUtils.isNullOrEmpty(theme)) {
 
             theme = configurations.getWikiConfigurations().getThemeName();
-
-            if (StringUtils.isNullOrEmpty(theme) || !InMemoryResources.NAMED_THEMES.containsKey(theme)) {
-
-                theme = InMemoryResources.WIKI_STYLES_GREEN;
-            }
+            
         }
         return theme;
     }
@@ -148,7 +145,8 @@ public class WikiController extends ControllerBase {
             MarkdownToHtmlConvertor convertor = new MarkdownToHtmlConvertor()
                     .addAnchorSource(new SmartWebLinkAnchorSource())
                     .addAnchorSource(new MailToAnchorSource())
-                    .addExtension(new GitlabLinkResolverExtension(requestUri, "wiki"));
+                    .addExtension(new GitlabLinkResolverExtension(requestUri, "wiki"))
+                    .setStyleProvider(new MaterialPaletteStyleProvider());
 
             this.encyclopediaStore.getAvailables()
                     .forEach(en -> convertor.addAnchorSource(new TerminologyAnchorSource().addEncyclopedia(en.getEntries())));

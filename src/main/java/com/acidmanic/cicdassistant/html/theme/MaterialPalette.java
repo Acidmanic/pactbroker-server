@@ -23,6 +23,11 @@ public class MaterialPalette {
 
         this.colors = new StyleColor[MaterialPaletteColors.Count.value()];
 
+        for (int i = 0; i < MaterialPaletteColors.Count.value(); i++) {
+
+            this.colors[i] = new StyleColor(1, 1, 1, 0);
+        }
+
     }
 
     public MaterialPalette(String paletteCodes) {
@@ -151,4 +156,11 @@ public class MaterialPalette {
         return this.colors[colorName.value()];
     }
 
+    public StyleColor getPrimaryColor() {
+        return this.colors[MaterialPaletteColors.primaryColor.value()];
+    }
+
+    public void setPrimaryColor(StyleColor secondaryText) {
+        this.colors[MaterialPaletteColors.primaryColor.value()] = secondaryText;
+    }
 }

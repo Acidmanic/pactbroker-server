@@ -10,8 +10,8 @@ package com.acidmanic.cicdassistant.html.theme;
  * @author diego
  */
 public enum MaterialPaletteColors {
-    darkPrimaryColor(0), accentColor(1), lightPrimaryColor(2), primaryText(3), secondaryText(4), textIcons(5), dividerColor(6), Count(7);
-    
+    darkPrimaryColor(0), accentColor(1), lightPrimaryColor(2), primaryText(3), primaryColor(4), secondaryText(5), textIcons(6), dividerColor(7), Count(8);
+
     private final int value;
 
     MaterialPaletteColors(int value) {
@@ -21,5 +21,5 @@ public enum MaterialPaletteColors {
     public int value() {
         return this.value;
     }
-    
+
 }

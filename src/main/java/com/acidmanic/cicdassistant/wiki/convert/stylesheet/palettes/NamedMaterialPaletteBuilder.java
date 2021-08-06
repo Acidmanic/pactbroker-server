@@ -63,6 +63,13 @@ public class NamedMaterialPaletteBuilder {
         return this;
     }
 
+    public NamedMaterialPaletteBuilder primary(String code) {
+
+        this.palette.setPrimaryColor(StyleColor.fromCode(code));
+
+        return this;
+    }
+
     public NamedMaterialPalette build() {
 
         return this.palette;

@@ -27,12 +27,13 @@ public class WikiStyleSheet extends StyleSheet {
         this.addChild(tableStyle());
         this.addChild(tdStyle());
         this.addChild(theadStyle());
+        this.addChild(theadTrStyle());
         this.addChild(trStyle());
         this.addChild(trEvenStyle());
         this.addChild(trOddStyle());
-        addSingleColorStyle(".json-string", MaterialPaletteColors.primaryText);
-        addSingleColorStyle(".json-number", MaterialPaletteColors.accentColor);
-        addSingleColorStyle(".json-key", MaterialPaletteColors.darkPrimaryColor);
+        addSingleColorStyle(".json-string", "#689F38");
+        addSingleColorStyle(".json-number", "#FF5722");
+        addSingleColorStyle(".json-key", "#448AFF");
         this.addChild(jsonObjectCodeStyle());
         this.addChild(btnCopyStyle());
         this.addChild(btnCopyActiveStyle());
@@ -41,6 +42,7 @@ public class WikiStyleSheet extends StyleSheet {
         this.addChild(themeItemStyle());
         this.addChild(themeContaonerStyle());
         this.addChild(themeItemHoverStyle());
+        this.addChild(hrStyle());
     }
 
     private Style bodyStyle() {
@@ -49,11 +51,11 @@ public class WikiStyleSheet extends StyleSheet {
 
         style.addProperty("font-family", "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Noto Sans\", Ubuntu, Cantarell, \"Helvetica Neue\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"");
 
-        style.addColorProperty("background-color", MaterialPaletteColors.primaryText)
+        style.addColorProperty("background-color", MaterialPaletteColors.lightPrimaryColor)
                 .addColorProperty("color", MaterialPaletteColors.textIcons);
 
-        style.addProperty("paddding-left", "5%");
-        style.addProperty("paddding-right", "5%");
+        style.addProperty("padding-left", "5%");
+        style.addProperty("padding-right", "5%");
 
         return style;
     }
@@ -66,7 +68,7 @@ public class WikiStyleSheet extends StyleSheet {
 
         style.addColorProperty("color", MaterialPaletteColors.accentColor);
 
-        style.addProperty("text-shadow", "0 0 10px #0003c86e");
+        style.addProperty("text-shadow", "0 0 10px #CCCCCC0F");
 
         style.addProperty("vertical-align", "top");
 
@@ -75,18 +77,21 @@ public class WikiStyleSheet extends StyleSheet {
 
     private Style tableStyle() {
 
-        Style style = new Style("table");
+        MaterialStyle style = new MaterialStyle(palette, "table");
 
         style.addProperty("max-width", "70%");
         style.addProperty("font-size", "0.9em");
         style.addProperty("display", "inline-table");
+
+        style.addProperty("border", "1px solid black");
+        style.addColorProperty("border-color", MaterialPaletteColors.dividerColor);
 
         return style;
     }
 
     private Style tdStyle() {
 
-        Style style = new Style("td");
+        MaterialStyle style = new MaterialStyle(palette, "td");
 
         style.addProperty("padding", "6pt");
 
@@ -97,7 +102,16 @@ public class WikiStyleSheet extends StyleSheet {
 
         MaterialStyle style = new MaterialStyle(palette, "thead");
 
-        style.addColorProperty("background-color", MaterialPaletteColors.secondaryText);
+        style.addColorProperty("background-color", MaterialPaletteColors.primaryColor);
+
+        return style;
+    }
+
+    private Style theadTrStyle() {
+
+        MaterialStyle style = new MaterialStyle(palette, "thead tr:nth-child(odd)");
+
+        style.addProperty("background-color", "#ffffff69");
 
         return style;
     }
@@ -115,7 +129,7 @@ public class WikiStyleSheet extends StyleSheet {
     private Style trEvenStyle() {
 
         MaterialStyle style = new MaterialStyle(palette, "tr:nth-child(even)");
-        
+
         style.addColorProperty("color", MaterialPaletteColors.textIcons);
 
         style.addColorProperty("background-color", MaterialPaletteColors.darkPrimaryColor);
@@ -141,13 +155,23 @@ public class WikiStyleSheet extends StyleSheet {
         this.addChild(style);
     }
 
+    private void addSingleColorStyle(String name, String code) {
+
+        Style style = new Style(name);
+
+        style.addProperty("color", code);
+
+        this.addChild(style);
+    }
+
     private Style jsonObjectCodeStyle() {
 
         MaterialStyle style = new MaterialStyle(palette, ".json-object,code");
 
-        style.addColorProperty("background", MaterialPaletteColors.secondaryText);
+        style.addProperty("background-color", "#00000061");
         style.addProperty("border", "solid 1px #000000");
         style.addColorProperty("border-color", MaterialPaletteColors.dividerColor);
+        style.addColorProperty("color", MaterialPaletteColors.dividerColor);
         style.addProperty("display", "inline-block");
         style.addProperty("padding", "5pt");
 
@@ -256,6 +280,17 @@ public class WikiStyleSheet extends StyleSheet {
         style.addProperty("top", "5pt");
         style.addProperty("position", "absolute");
         style.addProperty("display", "block");
+
+        return style;
+    }
+
+    private Style hrStyle() {
+
+        MaterialStyle style = new MaterialStyle(this.palette, "hr");
+
+        style.addProperty("border-width", "1pt");
+        style.addProperty("opacity", "0.4");
+        style.addColorProperty("background-color", MaterialPaletteColors.dividerColor);
 
         return style;
     }
