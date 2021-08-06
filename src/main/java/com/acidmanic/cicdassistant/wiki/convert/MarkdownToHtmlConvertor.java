@@ -6,12 +6,13 @@
 package com.acidmanic.cicdassistant.wiki.convert;
 
 import com.acidmanic.cicdassistant.html.styles.StyleColor;
-import com.acidmanic.cicdassistant.html.styles.StyleColorUtils;
 import com.acidmanic.cicdassistant.html.styles.StyleProcessor;
 import com.acidmanic.cicdassistant.utility.MarkdownCleanup;
 import com.acidmanic.cicdassistant.wiki.convert.autolink.AnchorSource;
 import com.acidmanic.cicdassistant.wiki.convert.autolink.AutoAnchorMachine;
 import com.acidmanic.cicdassistant.wiki.convert.flexmark.extensions.CodeFormatExtension;
+import com.acidmanic.cicdassistant.wiki.convert.style.HtmlStyleProvider;
+import com.acidmanic.cicdassistant.wiki.convert.style.NullStyleProvider;
 import com.vladsch.flexmark.ext.emoji.EmojiExtension;
 import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughExtension;
 import com.vladsch.flexmark.ext.tables.TablesExtension;
@@ -33,12 +34,24 @@ public class MarkdownToHtmlConvertor {
 
     private final List<AnchorSource> anchorSources = new ArrayList<>();
     private final List<Extension> extensions = new ArrayList<>();
-    private StyleProcessor styleProcessor;
-    private String themeName = "DarkGreen";
+//    private StyleProcessor styleProcessor;
+    private HtmlStyleProvider styleProvider;
+
+    public MarkdownToHtmlConvertor() {
+
+        this.styleProvider = new NullStyleProvider();
+    }
 
     public MarkdownToHtmlConvertor addAnchorSource(AnchorSource provider) {
 
         this.anchorSources.add(provider);
+
+        return this;
+    }
+
+    public MarkdownToHtmlConvertor setStyleProvider(HtmlStyleProvider styleProvider) {
+
+        this.styleProvider = styleProvider;
 
         return this;
     }
@@ -50,34 +63,19 @@ public class MarkdownToHtmlConvertor {
         return this;
     }
 
-    public MarkdownToHtmlConvertor setTintColor(StyleColor tintColor) {
-
-        this.styleProcessor.setTintColor(tintColor);
-
-        return this;
-    }
-
-    public MarkdownToHtmlConvertor setThemeName(String themeName) {
-
-        this.themeName = themeName;
-
-        updateStyleProcessor();
-
-        return this;
-    }
-
-    public MarkdownToHtmlConvertor setTintColor(String tintColorCode) {
-
-        this.styleProcessor.setTintColor(StyleColor.fromCode(tintColorCode));
-
-        return this;
-    }
-
-    public MarkdownToHtmlConvertor() {
-
-        updateStyleProcessor();
-
-    }
+//    public MarkdownToHtmlConvertor setTintColor(StyleColor tintColor) {
+//
+//        this.styleProcessor.setTintColor(tintColor);
+//
+//        return this;
+//    }
+//
+//    public MarkdownToHtmlConvertor setTintColor(String tintColorCode) {
+//
+//        this.styleProcessor.setTintColor(StyleColor.fromCode(tintColorCode));
+//
+//        return this;
+//    }
 
     private MutableDataSet provideOptions() {
 
@@ -103,6 +101,11 @@ public class MarkdownToHtmlConvertor {
 
     public String convert(String markdown) {
 
+        return convert(markdown, this.styleProvider.getDefaultName());
+    }
+
+    public String convert(String markdown, String styleName) {
+
         markdown = new MarkdownCleanup().clean(markdown);
 
         MutableDataSet options = provideOptions();
@@ -115,17 +118,22 @@ public class MarkdownToHtmlConvertor {
 
         String body = htmlRenderer.render(document);
 
-        String styles = this.getStyles();
+        String styles = this.styleProvider.getHeadInjectableHtml(styleName);
 
         this.anchorSources.forEach(s -> s.preProcessInputString(body));
 
-        String html = "<html><head>" + styles
+        String html = ""
+                + "<html>"
+                + "<head>"
+                + styles
                 + "</head>"
                 + "<body>"
                 + createThemeContainer()
                 + InMemoryResources.COPY_TO_CLIPBOARD_JS
                 + InMemoryResources.TOAST_COMPONENT
-                + body + "</body></html>";
+                + body
+                + "</body>"
+                + "</html>";
 
         AutoAnchorMachine anchorMachine = new AutoAnchorMachine(this.anchorSources);
 
@@ -135,40 +143,36 @@ public class MarkdownToHtmlConvertor {
 
     }
 
-    private String getStyles() {
-
-        StringBuilder styles = new StringBuilder();
-
-        styles.append("<style>");
-
-        styles.append(this.styleProcessor.getTintedStyle());
-
-        styles.append("</style>");
-
-        return styles.toString();
-    }
-
-    private void updateStyleProcessor() {
-
-        String style = InMemoryResources.WIKI_STYLES_GREEN;
-
-        if (InMemoryResources.NAMED_THEMES.containsKey(this.themeName)) {
-
-            style = InMemoryResources.NAMED_THEMES.get(this.themeName);
-        }
-
-        this.styleProcessor = new StyleProcessor(style);
-    }
-
+//    private String getStyles() {
+//
+//        StringBuilder styles = new StringBuilder();
+//
+//        styles.append("<style>");
+//
+//        styles.append(this.styleProcessor.getTintedStyle());
+//
+//        styles.append("</style>");
+//
+//        return styles.toString();
+//    }
+//    private void updateStyleProcessor() {
+//
+//        String style = InMemoryResources.WIKI_STYLES_GREEN;
+//
+//        if (InMemoryResources.NAMED_THEMES.containsKey(this.themeName)) {
+//
+//            style = InMemoryResources.NAMED_THEMES.get(this.themeName);
+//        }
+//
+//        this.styleProcessor = new StyleProcessor(style);
+//    }
     private String createThemeContainer() {
 
         String container = "<div class =\"theme-container\">";
 
-        for (String themeName : InMemoryResources.NAMED_THEMES.keySet()) {
+        for (String themeName : this.styleProvider.getNames()) {
 
-            String colorCode = InMemoryResources.NAMED_THEMES_FLAGS.get(themeName);
-
-            System.out.println("COLOR: " + colorCode);
+            String colorCode = this.styleProvider.getStyleFlagColorCode(themeName);
 
             container += "<a title=\"" + themeName + "\" href=\"?theme=" + themeName + "\">"
                     + "<div class=\"theme-item\" "

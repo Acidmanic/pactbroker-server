@@ -12,8 +12,12 @@ import java.util.List;
  * @author diego
  */
 public interface HtmlStyleProvider {
-    
+
     List<String> getNames();
-    
+
     String getHeadInjectableHtml(String name);
+
+    String getStyleFlagColorCode(String name);
+
+    String getDefaultName();
 }

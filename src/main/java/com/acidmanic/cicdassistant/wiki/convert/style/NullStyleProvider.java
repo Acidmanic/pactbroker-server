@@ -12,14 +12,14 @@ import java.util.List;
  *
  * @author diego
  */
-public class NullStyleProvider implements HtmlStyleProvider{
+public class NullStyleProvider implements HtmlStyleProvider {
 
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
-        
+
         names.add("No Style");
-        
+
         return names;
     }
 
@@ -27,5 +27,16 @@ public class NullStyleProvider implements HtmlStyleProvider{
     public String getHeadInjectableHtml(String name) {
         return "<style></style>";
     }
-    
+
+    @Override
+    public String getDefaultName() {
+
+        return "No Style";
+    }
+
+    @Override
+    public String getStyleFlagColorCode(String name) {
+        return "#FFFFFF00";
+    }
+
 }

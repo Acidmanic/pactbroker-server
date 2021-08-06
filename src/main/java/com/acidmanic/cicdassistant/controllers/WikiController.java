@@ -156,11 +156,9 @@ public class WikiController extends ControllerBase {
             this.configurations.getGitlabConfigurations()
                     .forEach(con -> convertor.addAnchorSource(new GitLabCommitHashAnchorSource(con)));
 
-            convertor.setThemeName(theme);
-
             String markdown = new String(Files.readAllBytes(file.toPath()));
 
-            String html = convertor.convert(markdown);
+            String html = convertor.convert(markdown, theme);
 
             return html.getBytes(Charset.forName("utf-8"));
 
