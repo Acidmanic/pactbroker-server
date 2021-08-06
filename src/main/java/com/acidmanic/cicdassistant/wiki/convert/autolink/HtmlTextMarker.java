@@ -20,13 +20,13 @@ public class HtmlTextMarker {
     public static final String MARK_TEXT = "TEXT";
     public static final String MARK_CONTENT = "CONTENT";
 
-    private static final String[] PROTECTED_TAGS = {"code", "head", "style", "script", 
+    private static final String[] PROTECTED_TAGS = {"code", "head", "style", "script",
         "area", "map", "param", "obj", "input", "textarea", "select", "option",
         "optgroup", "button", "label", "fieldset", "legend", "noscript",
         "a", "applet", "audio", "base", "basefont", "canvas", "cite", "data",
         "dd", "del", "embed", "font", "isindex", "link", "nav", "output", "picture",
         "progress", "samp", "source", "svg", "template", "time", "title", "track",
-        "var", "video","thead","th","h1","h2","h3","h4","h5","h6"};
+        "var", "video", "thead", "th", "h1", "h2", "h3", "h4", "h5", "h6", "li"};
 
     public List<Mark> markTexts(String html) {
 
