@@ -3,12 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.acidmanic.cicdassistant.wiki.convert.stylesheet;
+package com.acidmanic.cicdassistant.wiki.convert.styleproviders;
 
 import com.acidmanic.cicdassistant.html.theme.MaterialPaletteColors;
 import com.acidmanic.cicdassistant.wiki.convert.style.HtmlStyleProvider;
-import com.acidmanic.cicdassistant.wiki.convert.stylesheet.palettes.MaterialPalettes;
-import com.acidmanic.cicdassistant.wiki.convert.stylesheet.palettes.NamedMaterialPalette;
+import com.acidmanic.cicdassistant.wiki.convert.styleproviders.palettes.MaterialPalettes;
+import com.acidmanic.cicdassistant.wiki.convert.styleproviders.palettes.NamedMaterialPalette;
+import com.acidmanic.cicdassistant.wiki.convert.stylesheet.WikiStyleSheet;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

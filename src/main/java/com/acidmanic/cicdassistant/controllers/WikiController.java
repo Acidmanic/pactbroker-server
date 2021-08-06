@@ -21,7 +21,7 @@ import com.acidmanic.cicdassistant.wiki.convert.anchorsources.MailToAnchorSource
 import com.acidmanic.cicdassistant.wiki.convert.anchorsources.SmartWebLinkAnchorSource;
 import com.acidmanic.cicdassistant.wiki.convert.anchorsources.TerminologyAnchorSource;
 import com.acidmanic.cicdassistant.wiki.convert.flexmark.extensions.GitlabLinkResolverExtension;
-import com.acidmanic.cicdassistant.wiki.convert.stylesheet.MaterialPaletteStyleProvider;
+import com.acidmanic.cicdassistant.wiki.convert.styleproviders.MaterialPaletteStyleProvider;
 import com.acidmanic.lightweight.logger.Logger;
 import java.io.File;
 import java.nio.charset.Charset;

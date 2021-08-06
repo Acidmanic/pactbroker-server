@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.acidmanic.cicdassistant.wiki.convert.stylesheet.palettes;
+package com.acidmanic.cicdassistant.wiki.convert.styleproviders.palettes;
 
 import com.acidmanic.cicdassistant.html.styles.StyleColor;
 import com.acidmanic.cicdassistant.html.theme.MaterialPaletteColors;
