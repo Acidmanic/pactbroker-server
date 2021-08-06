@@ -10,6 +10,7 @@ import com.acidmanic.applicationpattern.DefaultServiceManager;
 import com.acidmanic.applicationpattern.ServiceManager;
 import com.acidmanic.cicdassistant.application.configurations.ApplicationConfigurationBuilder;
 import com.acidmanic.cicdassistant.application.configurations.Configurations;
+import com.acidmanic.cicdassistant.application.directoryproviders.WikiStylesCssDirectoryProvider;
 import com.acidmanic.commandline.commands.Help;
 import com.acidmanic.commandline.commands.TypeRegistery;
 import com.acidmanic.lightweight.logger.ConsoleLogger;
@@ -45,6 +46,9 @@ import com.acidmanic.cicdassistant.storage.StorageFileConfigs;
 import com.acidmanic.cicdassistant.storage.TokenStorage;
 import com.acidmanic.cicdassistant.tokengenerate.DoubleUUIDTokenGenerator;
 import com.acidmanic.cicdassistant.tokengenerate.TokenGenerator;
+import com.acidmanic.cicdassistant.wiki.convert.style.HtmlStyleProvider;
+import com.acidmanic.cicdassistant.wiki.convert.styleproviders.CssDirectoryProvider;
+import com.acidmanic.cicdassistant.wiki.convert.styleproviders.CssDirectoryStyleProvider;
 import com.acidmanic.resteasywrapper.ControllersProvider;
 import com.acidmanic.utility.myoccontainer.Installer;
 import com.acidmanic.utility.myoccontainer.Registerer;
@@ -155,6 +159,15 @@ public class BrokerIocRegistry implements Installer {
                 .livesAsA(LifetimeType.Singleton);
 
         reg.register().bindToSelf(WikiRepoStatus.class);
+
+        reg.register().bind(CssDirectoryProvider.class)
+                .to(WikiStylesCssDirectoryProvider.class)
+                .livesAsA(LifetimeType.Transient);
+
+        reg.register().bind(HtmlStyleProvider.class)
+                .to(CssDirectoryStyleProvider.class)
+                .livesAsA(LifetimeType.Transient);
+
     }
 
     private void configureControllers(Registerer reg) {

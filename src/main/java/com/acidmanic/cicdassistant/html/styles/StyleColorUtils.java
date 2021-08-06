@@ -267,6 +267,36 @@ public class StyleColorUtils {
         return result;
     }
 
+    private static double average(double... values) {
+
+        if (values.length == 0) {
+
+            return 0;
+        }
+        double sum = 0;
+        double count = 0;
+
+        for (double value : values) {
+
+            sum += value;
+            count += 1;
+        }
+        return sum / count;
+    }
+
+    private static double variance(double... values) {
+
+        double average = average(values);
+
+        double sumOfPowers = 0;
+
+        for (double value : values) {
+
+            sumOfPowers += Math.pow(value - average, 2);
+        }
+        return Math.sqrt(sumOfPowers);
+    }
+
     private static double range(double... values) {
 
         double min = min(values);
@@ -278,25 +308,27 @@ public class StyleColorUtils {
 
     public static StyleColor mostSaturate(List<StyleColor> colors) {
 
-        double most = 0;
-        StyleColor saturate = new StyleColor();
+        double maximumVariance = 0;
 
-        String ranges = "";
+        StyleColor mostSaturate = new StyleColor();
 
         for (StyleColor color : colors) {
 
-            double range = range(color.getRed(), color.getGreen(), color.getBlue());
+            double variance = range(color.getRed(), color.getGreen(), color.getBlue());
 
-            ranges += range + ",";
+            if (variance > maximumVariance) {
 
-            if (range > most) {
+                maximumVariance = variance;
 
-                most = range;
-
-                saturate = color;
+                mostSaturate = color;
             }
         }
-        return saturate;
+
+        System.out.println("Most saturate color: "
+                + mostSaturate.toCode()
+                + "with variance: " + maximumVariance);
+
+        return mostSaturate;
     }
 
 }

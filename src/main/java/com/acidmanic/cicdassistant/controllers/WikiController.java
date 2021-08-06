@@ -21,6 +21,7 @@ import com.acidmanic.cicdassistant.wiki.convert.anchorsources.MailToAnchorSource
 import com.acidmanic.cicdassistant.wiki.convert.anchorsources.SmartWebLinkAnchorSource;
 import com.acidmanic.cicdassistant.wiki.convert.anchorsources.TerminologyAnchorSource;
 import com.acidmanic.cicdassistant.wiki.convert.flexmark.extensions.GitlabLinkResolverExtension;
+import com.acidmanic.cicdassistant.wiki.convert.style.HtmlStyleProvider;
 import com.acidmanic.cicdassistant.wiki.convert.styleproviders.MaterialPaletteStyleProvider;
 import com.acidmanic.lightweight.logger.Logger;
 import java.io.File;
@@ -50,13 +51,15 @@ public class WikiController extends ControllerBase {
     private final Configurations configurations;
     private final EncyclopediaStore encyclopediaStore;
     private final WikiRepoStatus wikiRepoStatus;
+    private final HtmlStyleProvider htmlStyleProvider;
 
-    public WikiController(Router router, Configurations configurations, EncyclopediaStore encyclopediaStore, WikiRepoStatus wikiRepoStatus, TokenStorage tokenStorage, Logger logger) {
+    public WikiController(Router router, Configurations configurations, EncyclopediaStore encyclopediaStore, WikiRepoStatus wikiRepoStatus, HtmlStyleProvider htmlStyleProvider, TokenStorage tokenStorage, Logger logger) {
         super(tokenStorage, logger);
         this.router = router;
         this.configurations = configurations;
         this.encyclopediaStore = encyclopediaStore;
         this.wikiRepoStatus = wikiRepoStatus;
+        this.htmlStyleProvider = htmlStyleProvider;
     }
 
     @GET
@@ -94,7 +97,7 @@ public class WikiController extends ControllerBase {
         if (StringUtils.isNullOrEmpty(theme)) {
 
             theme = configurations.getWikiConfigurations().getThemeName();
-            
+
         }
         return theme;
     }
@@ -146,7 +149,7 @@ public class WikiController extends ControllerBase {
                     .addAnchorSource(new SmartWebLinkAnchorSource())
                     .addAnchorSource(new MailToAnchorSource())
                     .addExtension(new GitlabLinkResolverExtension(requestUri, "wiki"))
-                    .setStyleProvider(new MaterialPaletteStyleProvider());
+                    .setStyleProvider(this.htmlStyleProvider);
 
             this.encyclopediaStore.getAvailables()
                     .forEach(en -> convertor.addAnchorSource(new TerminologyAnchorSource().addEncyclopedia(en.getEntries())));
