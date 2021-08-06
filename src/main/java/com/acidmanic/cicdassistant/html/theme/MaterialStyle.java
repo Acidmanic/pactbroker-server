@@ -29,4 +29,19 @@ public class MaterialStyle extends Style {
 
         return this;
     }
+
+    public MaterialStyle addFadeToRightLineaGradiantProperty(String name, MaterialPaletteColors colorName) {
+
+        StyleColor color = this.palette.get(colorName);
+
+        FadeToRightLinearGradient property = new FadeToRightLinearGradient();
+
+        property.setName(name);
+        property.setColor(color);
+
+        super.addProperty(property);
+
+        return this;
+    }
+
 }

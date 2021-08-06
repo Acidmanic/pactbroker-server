@@ -75,21 +75,19 @@ public class MaterialPalette {
         StyleColor black = new StyleColor(0, 0, 0, 1);
 
         this.colors[MaterialPaletteColors.darkPrimaryColor.value()]
-                = colors.getOrDefault("darkPrimaryColor".toLowerCase(), black);
+                = colors.getOrDefault("darkprimarycolor", black);
         this.colors[MaterialPaletteColors.accentColor.value()]
-                = colors.getOrDefault("accentColor".toLowerCase(), black);
-        this.colors[MaterialPaletteColors.darkPrimaryColor.value()]
-                = colors.getOrDefault("darkPrimaryColor".toLowerCase(), black);
+                = colors.getOrDefault("accentcolor", black);
         this.colors[MaterialPaletteColors.dividerColor.value()]
-                = colors.getOrDefault("dividerColor".toLowerCase(), black);
+                = colors.getOrDefault("dividercolor", black);
         this.colors[MaterialPaletteColors.lightPrimaryColor.value()]
-                = colors.getOrDefault("lightPrimaryColor".toLowerCase(), black);
+                = colors.getOrDefault("lightprimarycolor", black);
         this.colors[MaterialPaletteColors.primaryText.value()]
-                = colors.getOrDefault("primaryText".toLowerCase(), black);
+                = colors.getOrDefault("primarytextcolor", black);
         this.colors[MaterialPaletteColors.secondaryText.value()]
-                = colors.getOrDefault("secondaryText".toLowerCase(), black);
+                = colors.getOrDefault("secondarytextcolor", black);
         this.colors[MaterialPaletteColors.textIcons.value()]
-                = colors.getOrDefault("textIcons".toLowerCase(), black);
+                = colors.getOrDefault("textprimarycolor", black);
     }
 
     public StyleColor getDarkPrimaryColor() {
