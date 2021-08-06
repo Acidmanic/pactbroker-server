@@ -3,16 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.acidmanic.cicdassistant.html;
+package com.acidmanic.cicdassistant.html.theme;
 
 /**
  *
  * @author diego
  */
-public interface Tag {
-    
-    StringBuilder append(StringBuilder sb);
-    
-    @Override
-    String toString();
+public interface Property {
+
+    String getName();
+
+    void setName(String name);
+
+    String getValue();
+
+    void setValue(String value);
+
 }

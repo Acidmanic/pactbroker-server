@@ -5,7 +5,6 @@
  */
 package com.acidmanic.cicdassistant.html.styles;
 
-import com.acidmanic.cicdassistant.html.Style;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -40,6 +39,20 @@ public class StyleColorUtils {
         alpha = alpha / count;
 
         return new StyleColor(red, green, blue, alpha);
+    }
+
+    public static List<StyleColor> parse(Collection<String> codes) {
+
+        List<StyleColor> colors = new ArrayList<>();
+
+        for (String code : codes) {
+
+            StyleColor color = StyleColor.fromCode(code);
+
+            colors.add(color);
+        }
+
+        return colors;
     }
 
     public static StyleColor median(Collection<StyleColor> colors) {

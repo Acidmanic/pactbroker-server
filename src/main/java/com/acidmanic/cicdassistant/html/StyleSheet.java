@@ -19,7 +19,7 @@ public class StyleSheet extends ContainerHtmlTagBase {
     @Override
     public ContainerHtmlTagBase addChild(Tag child) {
 
-        if (child instanceof Style) {
+        if (child instanceof com.acidmanic.cicdassistant.html.Style) {
 
             return super.addChild(child);
         }
