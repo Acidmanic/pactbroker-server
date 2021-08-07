@@ -34,8 +34,20 @@ Features:
 * [Provides an artifact server](#Artifact-Server-Apis)
   * artifacts can be uploaded to artifacts server through multipart post call to artifacts/upload
   * uploaded artifacts can be downloaded by their names from artifacts/<artifact-file-name>
-* Simple proxy
+* [Provides a Simple proxy](#Proxy)
   * A small proxy endpoint suitable for text files and small artifacts.
+* [Serves as a Wiki Server](#Wiki-Server)
+  * Serves Markdown wikis 
+  * Currently supports (only) gitlab link
+  * User can select themes.
+  * Wiki themes are extendible
+  * Auto-link feature:
+    * Replaces raw-text urls, with links having title and descriptive captions (if available)
+    * Replaces email addresses with __mailto__ links
+    * Replaces known keywords with links to external web pages (using json files stored at knowledge-base directory)
+    * Replaces git commit hashes with link to repository server if available
+      * Currently supports (only) gitlab
+      * uses configuration to communicate with git repository server
 
 Pact Broker Api
 ====================
@@ -562,6 +574,51 @@ Console service's state: Stopping....
 
 you can copy this and use it on your requests. All application data would be stored in json files. including this token. So if you ever lost it, and did not want to re generate it, you can just open the file Token.json alongside the application binaries and copy the value 
 from it.
+
+Wiki-Server
+===========
+
+To use Wiki server features, you need to add wiki configurations in your configuration json file:
+
+```json
+{
+    ...,
+"wikiConfigurations": {
+        "remote": "git@gitlab.example.com:awesome-project.git",
+        "username": "<username>",
+        "password": "<password>",
+        "autoRefetchMinutes": 10,
+        "wikiBranch":"master",
+        "themeName":"Dark Blue"
+    }
+}
+
+```
+
+The _autoRefetchMinutes_ field, determines the interval for service to fetch wiki content from remote repository. but also you can 
+trigger cicd assistant to re-fetch wiki content at any time by calling the fetch api:
+
+|                       |                               |
+|:---------------------:|:-----------------------------:|
+|endpoint path          |  &lt;base-url&gt;/wiki/fetch  |
+|Http Method            |  POST                         |
+|Headers                |  token: &lt;token&gt;         |
+
+With that, you can make a call from wiki repository to cicd-assistant whenever new content is pushed.
+
+Themes
+=======
+
+Wiki can be rendered with different themes. Each theme is a css file inside the _wiki-styles_ directory at the 
+application workspace. Cicd Assistant comes with three simple styles. You can add or edit these files to match your 
+taste and preferences. To Add a theme to cicd-assistant please:
+
+* Name the file &lt;theme-name&gt;-&lt;color-code&gt;.css
+  * theme name will be used to recognize your theme.
+  * color code, defines a color which describes the theme palette.
+  * both these values are being used to render small theme selector icons on the top-left corner of each page
+* Put your file under the directory _wiki-styles_
+* Restart the service and navigate to __&lt;base-url&gt;/wiki__ to use the wiki with your theme.
 
 
 Configurations
