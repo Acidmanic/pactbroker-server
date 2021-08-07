@@ -23,6 +23,7 @@ import com.acidmanic.cicdassistant.application.services.web.BrokerControllerProv
 import com.acidmanic.cicdassistant.commands.ApplicationContext;
 import com.acidmanic.cicdassistant.commands.ApplicationSwitch;
 import com.acidmanic.cicdassistant.commands.Exit;
+import com.acidmanic.cicdassistant.commands.InstallService;
 import com.acidmanic.cicdassistant.commands.Token;
 import com.acidmanic.cicdassistant.controllers.ArtifactsController;
 import com.acidmanic.cicdassistant.controllers.BadgesController;
@@ -198,6 +199,7 @@ public class BrokerIocRegistry implements Installer {
         reg.registerClass(Token.class);
         reg.registerClass(Help.class);
         reg.registerClass(Exit.class);
+        reg.registerClass(InstallService.class);
     }
 
     private void configureRepositories(Registerer reg) {

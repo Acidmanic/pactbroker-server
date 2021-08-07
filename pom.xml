@@ -73,11 +73,6 @@
                                     <include>wiki-styles/</include>
                                     <filtering>true</filtering>
                                 </resource>
-                                <resource>
-                                    <directory>.</directory>
-                                    <include>daemon/</include>
-                                    <filtering>true</filtering>
-                                </resource>
                             </resources>              
                         </configuration>            
                     </execution>

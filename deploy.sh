@@ -12,13 +12,18 @@ mkdir $BASE/dependency && \
 cp -R target/dependency/* $BASE/dependency/ && \
 mkdir $BASE/wiki-styles && \
 cp -R target/wiki-styles/* $BASE/wiki-styles/ && \
-mkdir $BASE/daemon && \
-cp -R target/daemon/* $BASE/daemon/ && \
 echo 'DIR=$(dirname $BASH_SOURCE)' > $BASE/start.sh && \
 echo 'DIR=$(realpath $DIR)' >> $BASE/start.sh && \
 echo 'JAR=$DIR/application.jar' >> $BASE/start.sh && \
 echo 'java -jar "$JAR" $@ &' >> $BASE/start.sh && \
 chmod +x $BASE/start.sh && \
+
+echo 'DIR=$(dirname $BASH_SOURCE)' > $BASE/install.sh && \
+echo 'DIR=$(realpath $DIR)' >> $BASE/install.sh && \
+echo 'JAR=$DIR/application.jar' >> $BASE/install.sh && \
+echo 'java -jar "$JAR" installService' >> $BASE/install.sh && \
+chmod +x $BASE/install.sh && \
+
 echo 'DIR=$(dirname $BASH_SOURCE)' > $BASE/stop.sh && \
 echo 'DIR=$(realpath $DIR)' >> $BASE/stop.sh && \
 echo 'touch "$DIR/.kill"' >> $BASE/stop.sh && \
