@@ -53,6 +53,31 @@
                 </configuration>
             </plugin>
             
+            
+            <!--For copying styles-->
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.0.1</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/wiki-styles</outputDirectory>
+                            <resources>          
+                                <resource>
+                                    <directory>Graphics/wiki-styles</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>              
+                        </configuration>            
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
     

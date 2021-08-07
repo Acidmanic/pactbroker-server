@@ -10,6 +10,8 @@ mkdir $BASE && \
 cp target/*.jar $BASE/application.jar && \
 mkdir $BASE/dependency && \
 cp -R target/dependency/* $BASE/dependency/ && \
+mkdir $BASE/wiki-styles && \
+cp -R target/wiki-styles/* $BASE/wiki-styles/ && \
 echo 'DIR=$(dirname $BASH_SOURCE)' > $BASE/start.sh && \
 echo 'DIR=$(realpath $DIR)' >> $BASE/start.sh && \
 echo 'JAR=$DIR/application.jar' >> $BASE/start.sh && \
