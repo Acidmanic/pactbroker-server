@@ -54,7 +54,7 @@
             </plugin>
             
             
-            <!--For copying styles-->
+            <!--For copying styles and daemon installation-->
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>3.0.1</version>
@@ -66,10 +66,16 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${basedir}/target/wiki-styles</outputDirectory>
+                            <outputDirectory>${basedir}/target</outputDirectory>
                             <resources>          
                                 <resource>
-                                    <directory>Graphics/wiki-styles</directory>
+                                    <directory>Graphics</directory>
+                                    <include>wiki-styles/</include>
+                                    <filtering>true</filtering>
+                                </resource>
+                                <resource>
+                                    <directory>.</directory>
+                                    <include>daemon/</include>
                                     <filtering>true</filtering>
                                 </resource>
                             </resources>              

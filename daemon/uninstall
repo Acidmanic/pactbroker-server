@@ -1,0 +1,19 @@
+
+
+echo "should be elevated"
+
+sudo echo "OK"
+
+APPLICATION=cicd-assistant
+
+(sudo systemctl stop $APPLICATION.service && echo "Service Stopped") || echo "Service wan not running"
+
+sudo update-rc.d $APPLICATION remove
+
+sudo rm -rf /etc/init.d/$APPLICATION
+
+sudo systemctl daemon-reload
+
+sudo systemctl status $APPLICATION.service || echo "Uninstalled successfully"
+# STX:Out: uninstall
+# STX:Rep: $1 cicd-assistant

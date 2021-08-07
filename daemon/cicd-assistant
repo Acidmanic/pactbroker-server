@@ -1,0 +1,66 @@
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:          cron
+# Required-Start:    $remote_fs $syslog $time
+# Required-Stop:     $remote_fs $syslog $time
+# Should-Start:      $network $named slapd autofs ypbind nscd nslcd winbind
+# Should-Stop:       $network $named slapd autofs ypbind nscd nslcd winbind
+# Default-Start:     2 3 4 5
+# Default-Stop:
+# Short-Description: Regular background program processing daemon
+# Description:       cron is a standard UNIX program that runs user-specified 
+#                    programs at periodic scheduled times. vixie cron adds a 
+#                    number of features to the basic UNIX cron, including better
+#                    security and more powerful configuration options.
+### END INIT INFO
+
+
+#Please change following line to match where you have put cicd-assistant binaries
+BASE=/root/cicd-assistant
+
+
+start() {
+	(cd $BASE && ./cicd-assistant/start.sh)
+}
+
+stop() {
+	(cd $BASE && ./cicd-assistant/stop.sh)
+}
+
+case "$1" in 
+    start)
+       start
+       ;;
+    stop)
+       stop
+       ;;
+    restart)
+       stop
+       start
+       ;;
+    status)
+	PIDS=$(pgrep cicd-assistant)
+
+	if [ ${#PIDS[@]} -eq 0 ]; then
+    		exit 1;
+	else
+		exit 0;
+	fi
+
+       ;;
+    *)
+       echo "Usage: $0 {start|stop|status|restart}"
+esac
+
+exit 0 
+
+
+
+
+
+# Synthesys app commands 
+# STX:Out: cicd-assistant
+# STX:Rep: $RUN_IN_BACKGROUND  (cd ./ && (./cicd-assistant &))
+# STX:Rep: $KILL_RUNNING_INSTANCES killall -9 cicd-assistant
+# STX:Rep: $RUNNING_NAME cicd-assistant
