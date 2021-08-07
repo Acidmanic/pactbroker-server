@@ -5,9 +5,7 @@
  */
 package com.acidmanic.cicdassistant.html.interception;
 
-import com.acidmanic.cicdassistant.utility.PathHelpers;
 import com.acidmanic.cicdassistant.utility.StringUtils;
-import com.sun.javafx.scene.shape.PathUtils;
 import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;
