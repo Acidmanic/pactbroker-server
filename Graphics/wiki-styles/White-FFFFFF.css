@@ -1,0 +1,128 @@
+body{
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", Ubuntu, Cantarell, "Helvetica Neue", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    background-color:  #fffafa;
+    color:#303035;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+a,a:hover {
+    text-decoration: none;
+    font-weight: bolder;
+    color: #103c80;
+    text-shadow: 0 0 10px #d7d7d799;
+    vertical-align: top;
+}
+table {
+    max-width: 60%;
+    font-size: 0.9em;
+    display: inline-table;
+}
+td,th {
+	padding: 5pt;
+	border-bottom: 1px solid #8f8ea2;
+}
+thead{
+    background: #eef1f7;
+}
+thead tr,thead td {
+
+
+}
+
+tr{
+    border: solid 1px #1d2831;
+    padding: 6pt;
+}
+tr:nth-child(even) {
+    background: #828da280;
+}
+tr:nth-child(odd) {
+    background: #a2a2a280;
+}
+h1{
+
+}
+hr {
+	border-bottom-color: #fff;
+	border-top-color: #ecedf0;
+	border-left-style: none;
+	border-right-style: none;
+}
+.json-string{
+    color: #0f6424;
+}
+.json-number{
+    color: #bd861c;
+}
+.json-number{
+    color: #bd861c;
+}
+.json-key{
+    color: #14297b;    
+}
+.json-object,code{
+	background: #00000008;
+	border: solid 1px #242d33a3;
+	font-size: 1em;
+	display: inline-block;
+	padding: 5pt;
+	border-radius: 3pt;
+}
+.btn-copy, .btn-copy:active{
+    width: 27pt;
+    height: 13pt;
+    border-radius: 3pt;
+    float: right;
+    margin: 0;
+    border: solid 1px #17568e;
+    cursor: pointer;
+    text-align: center;
+    font-size: 9pt;
+    color: #1a8cf0;
+}
+.btn-copy:active{
+    background-color: #2d3233;
+    text-shadow: 0px 0px 3pt #3b8a65;
+    border: solid 1px #535353;
+}
+.hidden-data{
+    width: 0px;
+    height: 0px;
+    position: absolute;
+    top:0px;
+    left: 0px;
+    border: none;
+    outline: none;
+    margin: 0px;
+    padding: 0px;
+}
+.code-message{
+    display: block;
+    visibility: hidden;
+    padding-top: -2pt;
+    margin-right: 20pt;
+    margin-bottom: 6pt;
+    color: #dbffe8;
+    background-image: linear-gradient(to right, #4fac9fa3 , #62ff0a0a);
+    text-align: center;
+    padding-bottom: 2pt;
+    padding-top: 2pt;
+    border-radius: 3pt;
+}
+.theme-item {
+    height: 3pt;
+    color: white;
+    width: 20pt;
+    position: relative;
+}
+.theme-item:hover {
+    height: 20pt;
+    border: 1px solid #aab1b7;
+    border-radius: 20pt;
+}.theme-container {
+    cursor: pointer;
+    left: 5pt;
+    top: 5pt;
+    position: absolute;
+    display: block;
+}
