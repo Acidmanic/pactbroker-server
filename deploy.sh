@@ -17,7 +17,9 @@ echo 'DIR=$(realpath $DIR)' >> $BASE/start.sh && \
 echo 'JAR=$DIR/application.jar' >> $BASE/start.sh && \
 echo 'java -jar "$JAR" $@ &' >> $BASE/start.sh && \
 chmod +x $BASE/start.sh && \
-echo 'touch .kill' > $BASE/stop.sh && \
+echo 'DIR=$(dirname $BASH_SOURCE)' > $BASE/stop.sh && \
+echo 'DIR=$(realpath $DIR)' >> $BASE/stop.sh && \
+echo 'touch "$DIR/.kill"' >> $BASE/stop.sh && \
 chmod +x $BASE/stop.sh && \
 echo 'DIR=$(dirname $BASH_SOURCE)' > $BASE/token.sh && \
 echo 'DIR=$(realpath $DIR)' >> $BASE/token.sh && \
