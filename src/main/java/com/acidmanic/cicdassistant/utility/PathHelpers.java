@@ -23,7 +23,10 @@
  */
 package com.acidmanic.cicdassistant.utility;
 
+import java.io.File;
+import java.nio.file.FileSystem;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  *
@@ -40,7 +43,97 @@ public class PathHelpers {
         Diverged
     }
 
+    public Path getFileSystemRoot() {
+
+        return getFileSystemRootOrDefault(null);
+    }
+
+    /**
+     * This method returns the root (or the main root) of current file system.
+     * If it fails to retrieve a root for current file system, it will return
+     * the given default value.
+     *
+     * @param defaultPath
+     * @return
+     */
+    public Path getFileSystemRootOrDefault(Path defaultPath) {
+
+        File[] roots = File.listRoots();
+
+        if (roots != null && roots.length > 0) {
+
+            return roots[0].toPath();
+        }
+        return defaultPath;
+    }
+
+    /**
+     * This method will determine the relation of two given links either they
+     * are absolute or relative. For a correct comparison, it first makes both
+     * links absolute if any of them are relative, based on given current
+     * directory. The given currentDirectory parameter, is considered to be and
+     * absolute path, even if it's not the method will work correctly.
+     *
+     * @param first
+     * @param second
+     * @param currentDirectory
+     * @return
+     */
+    public PathRelation relation(Path first, Path second, Path currentDirectory) {
+
+        if (!currentDirectory.isAbsolute()) {
+
+            currentDirectory = currentDirectory.toAbsolutePath().normalize();
+        }
+
+        if (!first.isAbsolute()) {
+
+            first = currentDirectory.resolve(first);
+        }
+
+        if (!second.isAbsolute()) {
+
+            second = currentDirectory.resolve(second);
+        }
+        return relation(first, second);
+    }
+
+    /**
+     * This method determines the relation between two given links, assuming
+     * they both are absolute or both are relative.
+     *
+     * @param first
+     * @param second
+     * @return
+     */
     public PathRelation relation(Path first, Path second) {
+
+        Path resolved;
+
+        resolved = first.resolve(second);
+
+        if (resolved.equals(second)) {
+
+            return PathRelation.ParentOf;
+        }
+        resolved = second.resolve(first);
+
+        if (resolved.equals(first)) {
+
+            return PathRelation.ChildOf;
+        }
+        return relationOfRelativePaths(first, second);
+    }
+
+    /**
+     * This method determines the relation between two given links, assuming
+     * they both are relative.
+     *
+     * @param first
+     * @param second
+     * @return
+     */
+    public PathRelation relationOfRelativePaths(Path first, Path second) {
 
         int firstCount = first.getNameCount();
 
@@ -80,8 +173,10 @@ public class PathHelpers {
             return PathRelation.Diverged;
         }
         if (firstCount < secondCount) {
-            return PathRelation.ChildOf;
+            // First is parent of second
+            return PathRelation.ParentOf;
         }
-        return PathRelation.ParentOf;
+        // First is child of second
+        return PathRelation.ChildOf;
     }
 }

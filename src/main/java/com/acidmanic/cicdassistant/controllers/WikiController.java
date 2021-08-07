@@ -7,6 +7,9 @@ package com.acidmanic.cicdassistant.controllers;
 
 import com.acidmanic.cicdassistant.application.configurations.Configurations;
 import com.acidmanic.cicdassistant.application.services.web.Controller;
+import static com.acidmanic.cicdassistant.controllers.WikiController.WIKI_ROUTE;
+import com.acidmanic.cicdassistant.html.interception.GitlabLinksHtmlInterceptor;
+import com.acidmanic.cicdassistant.html.interception.RebaseAnchorsHtmlInterceptor;
 import com.acidmanic.cicdassistant.models.Dto;
 import com.acidmanic.cicdassistant.services.EncyclopediaStore;
 import com.acidmanic.cicdassistant.services.WikiRepoStatus;
@@ -14,19 +17,17 @@ import com.acidmanic.cicdassistant.services.routing.Router;
 import com.acidmanic.cicdassistant.storage.TokenStorage;
 import com.acidmanic.cicdassistant.utility.StringUtils;
 import com.acidmanic.cicdassistant.utility.web.MimeTypeTable;
-import com.acidmanic.cicdassistant.wiki.convert.InMemoryResources;
 import com.acidmanic.cicdassistant.wiki.convert.MarkdownToHtmlConvertor;
 import com.acidmanic.cicdassistant.wiki.convert.anchorsources.GitLabCommitHashAnchorSource;
 import com.acidmanic.cicdassistant.wiki.convert.anchorsources.MailToAnchorSource;
 import com.acidmanic.cicdassistant.wiki.convert.anchorsources.SmartWebLinkAnchorSource;
 import com.acidmanic.cicdassistant.wiki.convert.anchorsources.TerminologyAnchorSource;
-import com.acidmanic.cicdassistant.wiki.convert.flexmark.extensions.GitlabLinkResolverExtension;
 import com.acidmanic.cicdassistant.wiki.convert.style.HtmlStyleProvider;
-import com.acidmanic.cicdassistant.wiki.convert.styleproviders.MaterialPaletteStyleProvider;
 import com.acidmanic.lightweight.logger.Logger;
 import java.io.File;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import javax.ws.rs.CookieParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -38,15 +39,19 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 /**
  *
  * @author diego
  */
-@Path("wiki")
+@Path(WIKI_ROUTE)
 @Controller
 public class WikiController extends ControllerBase {
 
+    public static final String WIKI_ROUTE = "wiki";
+    private static final java.nio.file.Path WIKI_ROUTE_PATH = Paths.get(WIKI_ROUTE);
     private final Router router;
     private final Configurations configurations;
     private final EncyclopediaStore encyclopediaStore;
@@ -135,20 +140,19 @@ public class WikiController extends ControllerBase {
 
             if (file.getName().toLowerCase().endsWith(".md")) {
 
-                return readMdAsHtml(file, uri, theme);
+                return readMdAsHtml(file, theme);
             }
         }
         return tryReadAsBytes(file.toPath());
     }
 
-    private byte[] readMdAsHtml(File file, String requestUri, String theme) {
+    private byte[] readMdAsHtml(File file, String theme) {
 
         try {
 
             MarkdownToHtmlConvertor convertor = new MarkdownToHtmlConvertor()
                     .addAnchorSource(new SmartWebLinkAnchorSource())
                     .addAnchorSource(new MailToAnchorSource())
-                    .addExtension(new GitlabLinkResolverExtension(requestUri, "wiki"))
                     .setStyleProvider(this.htmlStyleProvider);
 
             this.encyclopediaStore.getAvailables()
@@ -160,6 +164,8 @@ public class WikiController extends ControllerBase {
             String markdown = new String(Files.readAllBytes(file.toPath()));
 
             String html = convertor.convert(markdown, theme);
+
+            html = intercept(html);
 
             return html.getBytes(Charset.forName("utf-8"));
 
@@ -187,5 +193,16 @@ public class WikiController extends ControllerBase {
                 + "<h1>The page you are looking for, does not exists</h1>"
                 + "</body></html>";
         return notFoundString.getBytes(Charset.forName("utf-8"));
+    }
+
+    private String intercept(String html) {
+
+        Document document = Jsoup.parse(html);
+
+        new GitlabLinksHtmlInterceptor().manipulate(document);
+
+        new RebaseAnchorsHtmlInterceptor(WIKI_ROUTE_PATH).manipulate(document);
+
+        return document.html();
     }
 }
