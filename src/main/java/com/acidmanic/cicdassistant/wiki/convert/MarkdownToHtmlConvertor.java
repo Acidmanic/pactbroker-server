@@ -5,8 +5,6 @@
  */
 package com.acidmanic.cicdassistant.wiki.convert;
 
-import com.acidmanic.cicdassistant.html.styles.StyleColor;
-import com.acidmanic.cicdassistant.html.styles.StyleProcessor;
 import com.acidmanic.cicdassistant.utility.MarkdownCleanup;
 import com.acidmanic.cicdassistant.wiki.convert.autolink.AnchorSource;
 import com.acidmanic.cicdassistant.wiki.convert.autolink.AutoAnchorMachine;
@@ -34,7 +32,6 @@ public class MarkdownToHtmlConvertor {
 
     private final List<AnchorSource> anchorSources = new ArrayList<>();
     private final List<Extension> extensions = new ArrayList<>();
-//    private StyleProcessor styleProcessor;
     private HtmlStyleProvider styleProvider;
 
     public MarkdownToHtmlConvertor() {
@@ -63,30 +60,16 @@ public class MarkdownToHtmlConvertor {
         return this;
     }
 
-//    public MarkdownToHtmlConvertor setTintColor(StyleColor tintColor) {
-//
-//        this.styleProcessor.setTintColor(tintColor);
-//
-//        return this;
-//    }
-//
-//    public MarkdownToHtmlConvertor setTintColor(String tintColorCode) {
-//
-//        this.styleProcessor.setTintColor(StyleColor.fromCode(tintColorCode));
-//
-//        return this;
-//    }
-
     private MutableDataSet provideOptions() {
 
         MutableDataSet options = new MutableDataSet();
 
         List<Extension> allExtentions = new ArrayList<>();
 
-        allExtentions.addAll(Arrays.asList(//                        AnchorLinkExtension.create(), //Anchor headlines
-                StrikethroughExtension.create(), //Corresponds to strikethrough
-                TablesExtension.create(), //Compatible with tables
-                TocExtension.create(),// [TOC]Generate a table of contents in the part of
+        allExtentions.addAll(Arrays.asList(
+                StrikethroughExtension.create(),
+                TablesExtension.create(),
+                TocExtension.create(),
                 new CodeFormatExtension(),
                 EmojiExtension.create()
         ));
@@ -143,29 +126,6 @@ public class MarkdownToHtmlConvertor {
 
     }
 
-//    private String getStyles() {
-//
-//        StringBuilder styles = new StringBuilder();
-//
-//        styles.append("<style>");
-//
-//        styles.append(this.styleProcessor.getTintedStyle());
-//
-//        styles.append("</style>");
-//
-//        return styles.toString();
-//    }
-//    private void updateStyleProcessor() {
-//
-//        String style = InMemoryResources.WIKI_STYLES_GREEN;
-//
-//        if (InMemoryResources.NAMED_THEMES.containsKey(this.themeName)) {
-//
-//            style = InMemoryResources.NAMED_THEMES.get(this.themeName);
-//        }
-//
-//        this.styleProcessor = new StyleProcessor(style);
-//    }
     private String createThemeContainer() {
 
         String container = "<div class =\"theme-container\">";
@@ -180,7 +140,6 @@ public class MarkdownToHtmlConvertor {
                     + "</div>"
                     + "</a>";
         }
-
         container += "</div>";
 
         return container;
