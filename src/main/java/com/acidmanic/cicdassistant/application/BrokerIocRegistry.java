@@ -30,6 +30,7 @@ import com.acidmanic.cicdassistant.controllers.BadgesController;
 import com.acidmanic.cicdassistant.controllers.MailController;
 import com.acidmanic.cicdassistant.controllers.PactController;
 import com.acidmanic.cicdassistant.controllers.ProxyController;
+import com.acidmanic.cicdassistant.controllers.SshController;
 import com.acidmanic.cicdassistant.controllers.VerificationResultController;
 import com.acidmanic.cicdassistant.controllers.WikiController;
 import com.acidmanic.cicdassistant.infrastructure.MinaSshCommandExecuter;
@@ -197,6 +198,9 @@ public class BrokerIocRegistry implements Installer {
                 .livesAsA(LifetimeType.Singleton);
 
         reg.register().bindToSelf(WikiController.class)
+                .livesAsA(LifetimeType.Singleton);
+
+        reg.register().bindToSelf(SshController.class)
                 .livesAsA(LifetimeType.Singleton);
     }
 

@@ -21,6 +21,7 @@ public class Configurations {
     private List<GitlabConfiguration> gitlabConfigurations = new ArrayList<>();
     private int servicePort;
     private WikiConfigurations wikiConfigurations = new WikiConfigurations();
+    private List<SshSession> sshSessions = new ArrayList<>();
 
     public String getMailSmtpServer() {
         return mailSmtpServer;
@@ -62,4 +63,11 @@ public class Configurations {
         this.wikiConfigurations = wikiConfigurations;
     }
 
+    public List<SshSession> getSshSessions() {
+        return sshSessions;
+    }
+
+    public void setSshSessions(List<SshSession> sshSessions) {
+        this.sshSessions = sshSessions;
+    }
 }
