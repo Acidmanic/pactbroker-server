@@ -6,6 +6,7 @@
 package com.acidmanic.cicdassistant.infrastructure.contracts;
 
 import com.acidmanic.cicdassistant.utility.Result;
+import java.util.List;
 
 /**
  *
@@ -13,5 +14,5 @@ import com.acidmanic.cicdassistant.utility.Result;
  */
 public interface SshCommandExecuter {
 
-    Result<String> executeCommand(String command, SshSessionParameters session);
+    Result<List<String>> executeCommand(String command, SshSessionParameters session);
 }

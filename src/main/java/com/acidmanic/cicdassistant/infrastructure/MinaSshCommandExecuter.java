@@ -8,9 +8,12 @@ package com.acidmanic.cicdassistant.infrastructure;
 import com.acidmanic.cicdassistant.infrastructure.contracts.SshCommandExecuter;
 import com.acidmanic.cicdassistant.infrastructure.contracts.SshSessionParameters;
 import com.acidmanic.cicdassistant.utility.Result;
+import com.acidmanic.cicdassistant.utility.StringUtils;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.apache.sshd.client.SshClient;
 import org.apache.sshd.client.channel.ClientChannel;
@@ -25,20 +28,27 @@ import org.apache.sshd.common.channel.Channel;
 public class MinaSshCommandExecuter implements SshCommandExecuter {
 
     @Override
-    public Result<String> executeCommand(String command, SshSessionParameters sessionParams) {
+    public Result<List<String>> executeCommand(String command, SshSessionParameters sessionParams) {
 
         command = command.trim() + "\n";
 
-        return executeCommand(
+        String response = executeCommand(
                 sessionParams.getUsername(),
                 sessionParams.getPassword(),
                 sessionParams.getHost(),
                 sessionParams.getPort(),
                 10, command);
 
+        if (StringUtils.isNullOrEmpty(response)) {
+
+            return new Result<>(false, new ArrayList<>());
+        }
+        List<String> lines = StringUtils.split(response, "(\n|\r\n|\r)", false);
+
+        return new Result<>(true, lines);
     }
 
-    private Result<String> executeCommand(String username, String password,
+    private String executeCommand(String username, String password,
             String host, int port, long defaultTimeoutSeconds, String command) {
 
         SshClient client = SshClient.setUpDefaultClient();
@@ -73,7 +83,7 @@ public class MinaSshCommandExecuter implements SshCommandExecuter {
 
                     String responseString = new String(responseStream.toByteArray());
 
-                    return new Result<>(true, responseString);
+                    return responseString;
 
                 } finally {
                     channel.close(false);
@@ -81,7 +91,7 @@ public class MinaSshCommandExecuter implements SshCommandExecuter {
             }
         } catch (Exception e) {
 
-            return new Result<>(false, null);
+            return null;
         } finally {
             client.stop();
         }

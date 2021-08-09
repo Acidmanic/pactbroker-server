@@ -15,6 +15,7 @@ import com.acidmanic.cicdassistant.storage.TokenStorage;
 import com.acidmanic.cicdassistant.utility.Result;
 import com.acidmanic.cicdassistant.utility.StringUtils;
 import com.acidmanic.delegates.Function;
+import java.util.List;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
@@ -41,20 +42,20 @@ public class SshController extends ControllerBase {
     @POST
     @Path("/")
     @Produces("application/json")
-    public Dto<String> executeSshCommands(
+    public Dto<List<String>> executeSshCommands(
             @HeaderParam("token") String token,
             @FormParam("host") String host,
             @FormParam("command") String command) {
 
-        Function<Dto<String>> innerCode = () -> {
+        Function<Dto<List<String>>> innerCode = () -> {
 
-            Dto<String> result = new Dto<>(null);
+            Dto<List<String>> result = new Dto<>(null);
 
             SshSession sessionParams = findSessionParameters(host, configurations);
 
             if (sessionParams != null) {
 
-                Result<String> sshReponse = this.sshCommandExecuter
+                Result<List<String>> sshReponse = this.sshCommandExecuter
                         .executeCommand(command, sessionParams);
 
                 result.setFailure(!sshReponse.isSuccessfull());
