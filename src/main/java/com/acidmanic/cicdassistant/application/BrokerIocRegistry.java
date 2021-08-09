@@ -32,6 +32,8 @@ import com.acidmanic.cicdassistant.controllers.PactController;
 import com.acidmanic.cicdassistant.controllers.ProxyController;
 import com.acidmanic.cicdassistant.controllers.VerificationResultController;
 import com.acidmanic.cicdassistant.controllers.WikiController;
+import com.acidmanic.cicdassistant.infrastructure.MinaSshCommandExecuter;
+import com.acidmanic.cicdassistant.infrastructure.contracts.SshCommandExecuter;
 import com.acidmanic.cicdassistant.services.ArtifactManager;
 import com.acidmanic.cicdassistant.services.EncyclopediaStore;
 import com.acidmanic.cicdassistant.services.HtmlTemplateManager;
@@ -167,6 +169,10 @@ public class BrokerIocRegistry implements Installer {
 
         reg.register().bind(HtmlStyleProvider.class)
                 .to(CssDirectoryStyleProvider.class)
+                .livesAsA(LifetimeType.Transient);
+
+        reg.register().bind(SshCommandExecuter.class)
+                .to(MinaSshCommandExecuter.class)
                 .livesAsA(LifetimeType.Transient);
 
     }

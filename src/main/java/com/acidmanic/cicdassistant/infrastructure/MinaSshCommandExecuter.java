@@ -3,10 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package functional;
+package com.acidmanic.cicdassistant.infrastructure;
 
+import com.acidmanic.cicdassistant.infrastructure.contracts.SshCommandExecuter;
+import com.acidmanic.cicdassistant.infrastructure.contracts.SshSessionParameters;
+import com.acidmanic.cicdassistant.utility.Result;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.util.EnumSet;
 import java.util.concurrent.TimeUnit;
@@ -20,20 +22,24 @@ import org.apache.sshd.common.channel.Channel;
  *
  * @author diego
  */
-public class TestSshWithMina {
+public class MinaSshCommandExecuter implements SshCommandExecuter {
 
-    public static void main(String[] args) throws IOException {
+    @Override
+    public Result<String> executeCommand(String command, SshSessionParameters sessionParams) {
 
-        String command = "ls -a .. && lsb_release -a\n";
+        command = command.trim() + "\n";
 
-        String response = listFolderStructure("exampleuser", "53(ure", "localhost", 22, 10, command);
-
-        System.out.println("Reponse: " + response);
+        return executeCommand(
+                sessionParams.getUsername(),
+                sessionParams.getPassword(),
+                sessionParams.getHost(),
+                sessionParams.getPort(),
+                10, command);
 
     }
 
-    public static String listFolderStructure(String username, String password,
-            String host, int port, long defaultTimeoutSeconds, String command) throws IOException {
+    private Result<String> executeCommand(String username, String password,
+            String host, int port, long defaultTimeoutSeconds, String command) {
 
         SshClient client = SshClient.setUpDefaultClient();
 
@@ -67,14 +73,19 @@ public class TestSshWithMina {
 
                     String responseString = new String(responseStream.toByteArray());
 
-                    return responseString;
+                    return new Result<>(true, responseString);
 
                 } finally {
                     channel.close(false);
                 }
             }
+        } catch (Exception e) {
+
+            return new Result<>(false, null);
         } finally {
             client.stop();
         }
+
     }
+
 }
