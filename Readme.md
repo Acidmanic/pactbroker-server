@@ -639,7 +639,7 @@ creates an ssh session and executes your commands on the target machine.
 |Http Method            |  POST                         |
 |Headers                |  token: &lt;token&gt;         |
 |wwwform-url-encoded    |  host: &lt;example.host:22    |
-|wwwform-url-encoded    |  command: wget http://source.com/application.zip && unzip  application.zip -d application &gt;|
+|wwwform-url-encoded    |  command: wget http://source.com/application.zip && unzip  application.zip -d application |
 
 * Host parameter can be followed with a port number. If not, the default would be 22.
 * You can execute any commands that are available on the target machine.
