@@ -690,7 +690,13 @@ machines (usually deploy machines) with proper credentials in configurations lik
 
 ```
 
+Usage Example
+--------------
 
+
+```bash
+    curl -X POST http://cicd.source.server:8585/ssh -H "Content-Type: application/x-www-form-urlencoded" -d "command=ls -a&host=product.example.com:22424" -H "token: 23a910bc-...-06674476d3f8"
+```
 
 Configurations
 ==============
