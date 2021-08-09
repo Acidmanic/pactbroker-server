@@ -48,6 +48,10 @@ Features:
     * Replaces git commit hashes with link to repository server if available
       * Currently supports (only) gitlab
       * uses configuration to communicate with git repository server
+* [Proxies Your ssh commands](#Ssh-Proxy)
+    * WwwForm parameter api endpoint receives your host and shell command
+    * Credentials should be saved in configurations
+    * There is no need for installation of open-ssh for this to work.
 
 Pact Broker Api
 ====================
@@ -575,7 +579,7 @@ Console service's state: Stopping....
 you can copy this and use it on your requests. All application data would be stored in json files. including this token. So if you ever lost it, and did not want to re generate it, you can just open the file Token.json alongside the application binaries and copy the value 
 from it.
 
-Wiki-Server
+Wiki Server
 ===========
 
 To use Wiki server features, you need to add wiki configurations in your configuration json file:
@@ -619,6 +623,73 @@ taste and preferences. To Add a theme to cicd-assistant please:
   * both these values are being used to render small theme selector icons on the top-left corner of each page
 * Put your file under the directory _wiki-styles_
 * Restart the service and navigate to __&lt;base-url&gt;/wiki__ to use the wiki with your theme.
+
+Ssh Proxy
+=========
+
+In some cases you cant execute ssh commands from cicd pipelines directly. For example if your pipeline is being 
+executed on a docker, for ssh to work, you need to install ssh on the docker image and also do some work-arouds 
+for authentication over ssh. In such cases, you can put any target machin's credentials inside the cicd-assistant's 
+configurations and just call ssh api with host name and command. The api finds correct credentials for given host,
+creates an ssh session and executes your commands on the target machine.
+
+|                       |                               |
+|:---------------------:|:-----------------------------:|
+|endpoint path          |  &lt;base-url&gt;/ssh  |
+|Http Method            |  POST                         |
+|Headers                |  token: &lt;token&gt;         |
+|wwwform-url-encoded    |  host: &lt;example.host:22&gt;|
+|wwwform-url-encoded    |  command: &lt;wget http://source.com/application.zip && unzip  application.zip -d application &gt;|
+
+* Host parameter can be followed with a port number. If not, the default would be 22.
+* You can execute any commands that are available on the target machine.
+
+__Response Body__:
+
+
+```json
+{
+    "model": [
+        "Welcome to Ubuntu 20.04.2 LTS (GNU/Linux 5.4.0-80-generic x86_64)",
+        "",
+        " * Documentation:  https://help.ubuntu.com",
+        " * Management:     https://landscape.canonical.com",
+        " * Support:        https://ubuntu.com/advantage",
+        "",
+        "0 updates can be applied immediately.",
+        "",
+        "Last login: Mon Aug  9 12:37:47 2021 from 127.0.0.1",
+        "",
+        "wget http://source.com/application.zip",
+        ...
+        "application.jar      13%[=>                  ]   1.98M   418KB/s    eta 31s    ",
+        ...
+    ],
+    "failure": false,
+    "error": ""
+}
+```
+Credentials - Configurations
+--------------
+
+in a cicd design, you might target several machines with default or alternative ssh ports. You can add all targeted 
+machines (usually deploy machines) with proper credentials in configurations like this:
+
+```json
+{
+    ...,
+    "sshSessions":[
+        {
+            "host": "product.example.com",
+            "username": "root",
+            "password": "4_v3ry-57r0n9-r007_P4$$w0rd",
+            "port": 22424
+        },...
+    ] 
+}
+
+```
+
 
 
 Configurations
