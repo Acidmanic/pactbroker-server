@@ -635,10 +635,10 @@ creates an ssh session and executes your commands on the target machine.
 
 |                       |                               |
 |:---------------------:|:-----------------------------:|
-|endpoint path          |  &lt;base-url&gt;/ssh  |
+|endpoint path          |  &lt;base-url&gt;/ssh         |
 |Http Method            |  POST                         |
 |Headers                |  token: &lt;token&gt;         |
-|wwwform-url-encoded    |  host: &lt;example.host:22&gt;|
+|wwwform-url-encoded    |  host: &lt;example.host:22    |
 |wwwform-url-encoded    |  command: wget http://source.com/application.zip && unzip  application.zip -d application &gt;|
 
 * Host parameter can be followed with a port number. If not, the default would be 22.
