@@ -5,7 +5,7 @@
  */
 package com.acidmanic.cicdassistant.controllers;
 
-import com.acidmanic.cicdassistant.utility.Badges;
+import com.acidmanic.cicdassistant.utility.GraphicResources;
 import com.acidmanic.lightweight.logger.Logger;
 import com.acidmanic.cicdassistant.application.services.web.Controller;
 import com.acidmanic.cicdassistant.models.BadgeMap;
@@ -55,7 +55,7 @@ public class BadgesController extends ControllerBase {
 
         String mime = "png".equalsIgnoreCase(format) ? "image/png" : "image/svg+xml";
 
-        byte[] data = new Badges().getBadgeBytes(type, format);
+        byte[] data = new GraphicResources().getBadgeBytes(type, format);
 
         Response res = Response
                 .ok(data, mime)

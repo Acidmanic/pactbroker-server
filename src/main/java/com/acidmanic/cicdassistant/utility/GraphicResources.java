@@ -13,7 +13,7 @@ import java.nio.file.Paths;
  *
  * @author diego
  */
-public class Badges {
+public class GraphicResources {
 
     public String getBadgeSvg(BadgeType type) {
 
@@ -41,4 +41,18 @@ public class Badges {
         return new ResourceHelper().readResource(name);
 
     }
+    
+    public byte[] getIconBytes() {
+        
+        String name = "icon.png";
+        
+        Path resourceBase = Paths.get("icons").resolve(name);
+
+        String resourceName = resourceBase.normalize().toString();
+
+        return new ResourceHelper().readResource(resourceName);
+
+    }
+    
+    
 }
