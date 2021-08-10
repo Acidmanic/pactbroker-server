@@ -1,16 +1,13 @@
 
 
-Cicd Assistant
+![image](Graphics/logo.png) __Cicd Assistant__
 ==============
-
-
 
 About
 -----
 
 This application is a standalone server providing some features helpful for 
 setting up and performing cicd tasks.
-
 
 
 Features:
@@ -52,6 +49,7 @@ Features:
     * WwwForm parameter api endpoint receives your host and shell command
     * Credentials should be saved in configurations
     * There is no need for installation of open-ssh for this to work.
+* [Fav Icon](#Fav-Icon)
 
 Pact Broker Api
 ====================
@@ -697,6 +695,11 @@ Usage Example
 ```bash
     curl -X POST http://cicd.source.server:8585/ssh -H "Content-Type: application/x-www-form-urlencoded" -d "command=ls -a&host=product.example.com:22424" -H "token: 23a910bc-...-06674476d3f8"
 ```
+
+Fav Icon
+========
+
+You can provide an image file named favicon (ex: favicon.png, Favicon.bmp and etc.) beside the Configuration file inside the application directory. This image would be presented as Wiki's FavIcon. If the file is not present or in case of any issues loading the image file, the cicd-assistant logo will be used as default fav-icon.
 
 Configurations
 ==============
