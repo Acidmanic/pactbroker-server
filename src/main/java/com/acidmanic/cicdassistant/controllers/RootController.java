@@ -6,8 +6,10 @@
 package com.acidmanic.cicdassistant.controllers;
 
 import com.acidmanic.cicdassistant.application.services.web.Controller;
+import com.acidmanic.cicdassistant.services.FavIconService;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.core.Response;
 
 /**
  *
@@ -17,11 +19,18 @@ import javax.ws.rs.Produces;
 @Path("/")
 public class RootController {
 
-    
     @Path("favicon.ico")
-    @Produces("image/x-icon")
-    public void getFavIcon() {
+    @GET
+    public Response getFavIcon() {
 
-        
+        FavIconService favIconService = new FavIconService();
+
+        byte[] data = favIconService.getFavIconBytes();
+
+        Response res = Response
+                .ok(data, "image/x-icon")
+                .build();
+
+        return res;
     }
 }
