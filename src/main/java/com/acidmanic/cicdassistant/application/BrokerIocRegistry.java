@@ -38,6 +38,7 @@ import com.acidmanic.cicdassistant.infrastructure.MinaSshCommandExecuter;
 import com.acidmanic.cicdassistant.infrastructure.contracts.SshCommandExecuter;
 import com.acidmanic.cicdassistant.services.ArtifactManager;
 import com.acidmanic.cicdassistant.services.EncyclopediaStore;
+import com.acidmanic.cicdassistant.services.FavIconService;
 import com.acidmanic.cicdassistant.services.HtmlTemplateManager;
 import com.acidmanic.cicdassistant.services.PactsManagerService;
 import com.acidmanic.cicdassistant.services.SmtpClient;
@@ -177,6 +178,10 @@ public class BrokerIocRegistry implements Installer {
                 .to(MinaSshCommandExecuter.class)
                 .livesAsA(LifetimeType.Transient);
 
+        reg.register().bind(FavIconService.class)
+                .withBuilder(() -> new FavIconService(true))
+                .livesAsA(LifetimeType.Singleton);
+
     }
 
     private void configureControllers(Registerer reg) {
@@ -203,7 +208,7 @@ public class BrokerIocRegistry implements Installer {
 
         reg.register().bindToSelf(SshController.class)
                 .livesAsA(LifetimeType.Singleton);
-        
+
         reg.register().bindToSelf(RootController.class)
                 .livesAsA(LifetimeType.Singleton);
     }

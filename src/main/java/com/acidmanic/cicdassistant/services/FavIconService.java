@@ -6,9 +6,10 @@
 package com.acidmanic.cicdassistant.services;
 
 import com.acidmanic.cicdassistant.utility.GraphicResources;
+import com.acidmanic.cicdassistant.utility.ResourceHelper;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import javax.imageio.ImageIO;
 import net.sf.image4j.codec.ico.ICOEncoder;
 
@@ -18,30 +19,74 @@ import net.sf.image4j.codec.ico.ICOEncoder;
  */
 public class FavIconService {
 
-    public byte[] getFavIconBytes() {
+    private boolean cached;
+    private byte[] imageData;
 
-        byte[] pngData = new GraphicResources().getIconBytes();
+    public FavIconService(boolean cached) {
+        this.cached = cached;
+    }
 
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(pngData);
+    public FavIconService() {
+        this(false);
+    }
 
-        BufferedImage pngImage = new BufferedImage(32, 32, BufferedImage.TYPE_3BYTE_BGR);
+    public synchronized byte[] getFavIconBytes() {
 
-        try {
-            pngImage = ImageIO.read(inputStream);
-        } catch (Exception e) {
+        if (!cached || imageData == null || imageData.length == 0) {
+
+            this.imageData = produceFavIconBytes();
         }
+
+        return this.imageData;
+    }
+
+    private byte[] produceFavIconBytes() {
+
+        BufferedImage pngImage = getAvailableFavIconImage();
+
+        byte[] iconData = imageToIconBytes(pngImage);
+
+        return iconData;
+    }
+
+    private BufferedImage getAvailableFavIconImage() {
+
+        File baseDirectory = new ResourceHelper().getExecutionDirectory().toFile();
+
+        File files[] = baseDirectory.listFiles();
+
+        for (File file : files) {
+
+            if (file.isFile()) {
+
+                if (file.getName().toLowerCase().startsWith("favicon.")) {
+
+                    try {
+
+                        BufferedImage readImage = ImageIO.read(file);
+
+                        return readImage;
+
+                    } catch (Exception e) {
+                    }
+                }
+            }
+        }
+        return new GraphicResources().getIconImage();
+    }
+
+    private byte[] imageToIconBytes(BufferedImage image) {
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
         try {
-            ICOEncoder.write(pngImage, outputStream);
-            
+            ICOEncoder.write(image, outputStream);
+
         } catch (Exception e) {
         }
 
         byte[] iconData = outputStream.toByteArray();
 
         return iconData;
-
     }
 }

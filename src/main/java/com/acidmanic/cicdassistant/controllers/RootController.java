@@ -19,13 +19,17 @@ import javax.ws.rs.core.Response;
 @Path("/")
 public class RootController {
 
+    private final FavIconService favIconService;
+
+    public RootController(FavIconService favIconService) {
+        this.favIconService = favIconService;
+    }
+
     @Path("favicon.ico")
     @GET
     public Response getFavIcon() {
 
-        FavIconService favIconService = new FavIconService();
-
-        byte[] data = favIconService.getFavIconBytes();
+        byte[] data = this.favIconService.getFavIconBytes();
 
         Response res = Response
                 .ok(data, "image/x-icon")
