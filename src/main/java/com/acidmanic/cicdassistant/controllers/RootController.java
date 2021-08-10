@@ -7,6 +7,7 @@ package com.acidmanic.cicdassistant.controllers;
 
 import com.acidmanic.cicdassistant.application.services.web.Controller;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 
 /**
  *
@@ -15,9 +16,12 @@ import javax.ws.rs.Path;
 @Controller
 @Path("/")
 public class RootController {
+
     
-    
-    
-    
-    
+    @Path("favicon.ico")
+    @Produces("image/x-icon")
+    public void getFavIcon() {
+
+        
+    }
 }
