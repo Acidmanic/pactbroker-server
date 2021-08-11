@@ -22,6 +22,7 @@ public class Configurations {
     private int servicePort;
     private WikiConfigurations wikiConfigurations = new WikiConfigurations();
     private List<SshSession> sshSessions = new ArrayList<>();
+    private WikiAuthorizationConfigurations authorizationConfigurations = new WikiAuthorizationConfigurations();
 
     public String getMailSmtpServer() {
         return mailSmtpServer;
@@ -70,4 +71,13 @@ public class Configurations {
     public void setSshSessions(List<SshSession> sshSessions) {
         this.sshSessions = sshSessions;
     }
+
+    public WikiAuthorizationConfigurations getAuthorizationConfigurations() {
+        return authorizationConfigurations;
+    }
+
+    public void setAuthorizationConfigurations(WikiAuthorizationConfigurations authorizationConfigurations) {
+        this.authorizationConfigurations = authorizationConfigurations;
+    }
+
 }

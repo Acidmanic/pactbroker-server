@@ -8,7 +8,6 @@ package functional;
 import com.acidmanic.cicdassistant.utility.MarkdownCleanup;
 import com.acidmanic.cicdassistant.utility.PathHelpers;
 import com.acidmanic.cicdassistant.utility.StringUtils;
-import com.sun.javafx.scene.shape.PathUtils;
 import com.vladsch.flexmark.ast.Link;
 import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.util.ast.Node;

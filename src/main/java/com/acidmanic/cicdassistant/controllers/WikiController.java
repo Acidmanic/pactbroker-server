@@ -22,6 +22,8 @@ import com.acidmanic.cicdassistant.wiki.convert.anchorsources.GitLabCommitHashAn
 import com.acidmanic.cicdassistant.wiki.convert.anchorsources.MailToAnchorSource;
 import com.acidmanic.cicdassistant.wiki.convert.anchorsources.SmartWebLinkAnchorSource;
 import com.acidmanic.cicdassistant.wiki.convert.anchorsources.TerminologyAnchorSource;
+import com.acidmanic.cicdassistant.wiki.convert.authorization.GitlabAuthorizationProvider;
+import com.acidmanic.cicdassistant.wiki.convert.authorization.RequestDataProvider;
 import com.acidmanic.cicdassistant.wiki.convert.style.HtmlStyleProvider;
 import com.acidmanic.lightweight.logger.Logger;
 import java.io.File;
@@ -57,23 +59,23 @@ public class WikiController extends ControllerBase {
     private final EncyclopediaStore encyclopediaStore;
     private final WikiRepoStatus wikiRepoStatus;
     private final HtmlStyleProvider htmlStyleProvider;
+    private final RequestDataProvider requestDataProvider;
 
-    public WikiController(Router router, Configurations configurations, EncyclopediaStore encyclopediaStore, WikiRepoStatus wikiRepoStatus, HtmlStyleProvider htmlStyleProvider, TokenStorage tokenStorage, Logger logger) {
+    public WikiController(Router router, Configurations configurations, EncyclopediaStore encyclopediaStore, WikiRepoStatus wikiRepoStatus, HtmlStyleProvider htmlStyleProvider, RequestDataProvider requestDataProvider, TokenStorage tokenStorage, Logger logger) {
         super(tokenStorage, logger);
         this.router = router;
         this.configurations = configurations;
         this.encyclopediaStore = encyclopediaStore;
         this.wikiRepoStatus = wikiRepoStatus;
         this.htmlStyleProvider = htmlStyleProvider;
+        this.requestDataProvider = requestDataProvider;
     }
 
     @GET
     @Produces(value = MediaType.TEXT_HTML)
-    public Response index(
-            @CookieParam("theme") String theme,
-            @QueryParam("theme") String setTheme) {
+    public Response index() {
 
-        return provideResourse("", theme, setTheme);
+        return provideResourse("");
     }
 
     @POST
@@ -90,11 +92,9 @@ public class WikiController extends ControllerBase {
     @GET
     @Path("{rawuri:.*}")
     public Response get(
-            @PathParam("rawuri") String rawUri,
-            @CookieParam("theme") String theme,
-            @QueryParam("theme") String setTheme) {
+            @PathParam("rawuri") String rawUri) {
 
-        return provideResourse(rawUri, theme, setTheme);
+        return provideResourse(rawUri);
     }
 
     private String grantThemeName(String theme) {
@@ -107,28 +107,49 @@ public class WikiController extends ControllerBase {
         return theme;
     }
 
-    private Response provideResourse(String rawUri, String theme, String setTheme) {
+    private Response provideResourse(String rawUri) {
 
-        if (!StringUtils.isNullOrEmpty(setTheme)) {
+        byte[] data;
+        int status;
 
-            setTheme = grantThemeName(setTheme);
+        String theme = this.requestDataProvider.readCookie("theme");
 
-            theme = setTheme;
-
-        } else {
-            theme = grantThemeName(theme);
-        }
-
-        int status = 200;
+        String setTheme = this.requestDataProvider.readQuery("theme");
 
         String type = new MimeTypeTable().getMimeTypeForUri(rawUri);
 
-        byte[] data = readFile(rawUri, theme);
+        if (isAuthorizedUser()) {
 
+            if (!StringUtils.isNullOrEmpty(setTheme)) {
+
+                setTheme = grantThemeName(setTheme);
+
+                theme = setTheme;
+
+            } else {
+                theme = grantThemeName(theme);
+            }
+
+            status = 200;
+
+            data = readFile(rawUri, theme);
+        } else {
+
+            status = 403;
+
+            String html = "<html><head><title>Oops!</title></head><body>"
+                    + "<h1>You are not authorized.</h1> <br>"
+                    + "<h3> please contact "
+                    + "your system administrator to resolve this."
+                    + "</h3></body></html>";
+
+            data = html.getBytes();
+        }
         return Response
                 .status(status)
                 .type(type)
-                .entity(data).cookie(new NewCookie("theme", theme, "/", "", "wiki theme", 10000000, false))
+                .entity(data)
+                .cookie(new NewCookie("theme", theme, "/", "", "wiki theme", 10000000, false))
                 .build();
     }
 
@@ -204,5 +225,19 @@ public class WikiController extends ControllerBase {
         new RebaseAnchorsHtmlInterceptor(WIKI_ROUTE_PATH).manipulate(document);
 
         return document.html();
+    }
+
+    private boolean isAuthorizedUser() {
+
+        if (this.configurations.getAuthorizationConfigurations().isUseGitlab()) {
+
+            return new GitlabAuthorizationProvider(
+                    this.configurations.getAuthorizationConfigurations().getGitlabBaseUrl()
+            ).isAuthorized(this.requestDataProvider);
+        }
+
+        // if there is no authorization method configured, so maybe
+        // it doesnt need authorization
+        return true;
     }
 }
