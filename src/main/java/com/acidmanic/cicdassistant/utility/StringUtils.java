@@ -76,4 +76,18 @@ public class StringUtils {
         }
         return string;
     }
+
+    public static String stripSides(String string, String start, String end) {
+
+        if (isNullOrEmpty(string)) {
+            return string;
+        }
+        if (!isNullOrEmpty(start) && string.startsWith(start)) {
+            string = string.substring(start.length(), string.length());
+        }
+        if (!isNullOrEmpty(end) && string.endsWith(end)) {
+            string = string.substring(0, string.length() - end.length());
+        }
+        return string;
+    }
 }
