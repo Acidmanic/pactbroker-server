@@ -11,7 +11,9 @@ import com.acidmanic.cicdassistant.html.RawString;
 import com.acidmanic.cicdassistant.html.Ul;
 import com.acidmanic.cicdassistant.wiki.linkprocessing.LinkManipulator;
 import com.acidmanic.cicdassistant.wiki.linkprocessing.LinkTextProvider;
+import com.acidmanic.cicdassistant.wiki.linkprocessing.MarkdownLinkTextProvider;
 import java.util.List;
+import org.eclipse.jgit.util.StringUtils;
 
 /**
  *
@@ -24,6 +26,7 @@ public class IndexHtml {
 
     private final LinkManipulator linkManipulator;
     private final LinkTextProvider linkTextProvider;
+    private final LinkTextProvider backupLinkTextProvider = new MarkdownLinkTextProvider();
 
     public IndexHtml(List<WebNode> heads,
             int levels,
@@ -98,6 +101,10 @@ public class IndexHtml {
         String text = node.getFile().getName();
 
         text = this.linkTextProvider.getTextFor(node.getKey());
+
+        if (StringUtils.isEmptyOrNull(text)) {
+            text = this.backupLinkTextProvider.getTextFor(node.getKey());
+        }
 
         String href = this.linkManipulator.manipulate(node.getKey());
 
