@@ -5,10 +5,13 @@
  */
 package functional;
 
+import com.acidmanic.cicdassistant.wiki.autoindexing.IndexHtml;
 import com.acidmanic.cicdassistant.wiki.autoindexing.MarkdownWikiIndexTree;
 import com.acidmanic.cicdassistant.wiki.autoindexing.WebNode;
 import java.io.File;
+import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.List;
 
 /**
@@ -27,8 +30,19 @@ public class WikiIndexing {
 
         List<WebNode> miscs = index.getMiscellaneousNodes();
 
-        printMenue(heads, miscs);
+        //printMenue(heads, miscs);
+        IndexHtml indexHtml = new IndexHtml(heads);
+        
+        String html = indexHtml.getHtmlContent();
 
+        try {
+            
+            Files.write(Paths.get("debug/index.html"), html.getBytes(), StandardOpenOption.CREATE);
+            
+        } catch (Exception e) {
+        }
+        
+        System.out.println("DONE");
     }
 
     private static void printDown(WebNode key, String indent) {
@@ -58,5 +72,5 @@ public class WikiIndexing {
             printDown(misc, "");
         }
     }
-    
+
 }

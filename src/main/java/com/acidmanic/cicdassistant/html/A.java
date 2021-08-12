@@ -5,10 +5,28 @@
  */
 package com.acidmanic.cicdassistant.html;
 
+import com.acidmanic.cicdassistant.utility.Result;
+
 /**
  *
  * @author diego
  */
-public class A extends ContainerHtmlTagBase{
-    
+public class A extends ContainerHtmlTagBase {
+
+    public String getHref() {
+
+        Result<String> attribute = this.containsAttributeKey("href");
+
+        if (attribute.isSuccessfull()) {
+
+            return this.getAttribute(attribute.getValue());
+        }
+        return "";
+    }
+
+    public void setHref(String href) {
+        
+        this.setAttribute("href", href);
+    }
+
 }
