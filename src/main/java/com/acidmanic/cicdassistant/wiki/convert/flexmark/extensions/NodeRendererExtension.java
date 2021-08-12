@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.acidmanic.wiki.convert.flexmark.extensions;
+package com.acidmanic.cicdassistant.wiki.convert.flexmark.extensions;
 
 import com.vladsch.flexmark.html.HtmlRenderer;
 import com.vladsch.flexmark.html.HtmlWriter;

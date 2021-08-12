@@ -9,8 +9,10 @@ import com.acidmanic.cicdassistant.utility.MarkdownCleanup;
 import com.acidmanic.cicdassistant.wiki.convert.autolink.AnchorSource;
 import com.acidmanic.cicdassistant.wiki.convert.autolink.AutoAnchorMachine;
 import com.acidmanic.cicdassistant.wiki.convert.flexmark.extensions.CodeFormatExtension;
+import com.acidmanic.cicdassistant.wiki.convert.flexmark.extensions.LinkManipulationExtension;
 import com.acidmanic.cicdassistant.wiki.convert.style.HtmlStyleProvider;
 import com.acidmanic.cicdassistant.wiki.convert.style.NullStyleProvider;
+import com.acidmanic.cicdassistant.wiki.linkprocessing.LinkManipulator;
 import com.vladsch.flexmark.ext.emoji.EmojiExtension;
 import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughExtension;
 import com.vladsch.flexmark.ext.tables.TablesExtension;
@@ -33,6 +35,7 @@ public class MarkdownToHtmlConvertor {
     private final List<AnchorSource> anchorSources = new ArrayList<>();
     private final List<Extension> extensions = new ArrayList<>();
     private HtmlStyleProvider styleProvider;
+    private LinkManipulator linkManipulator = s -> s;
 
     public MarkdownToHtmlConvertor() {
 
@@ -60,6 +63,13 @@ public class MarkdownToHtmlConvertor {
         return this;
     }
 
+    public MarkdownToHtmlConvertor setLinkManipulator(LinkManipulator manipulator) {
+
+        this.linkManipulator = manipulator;
+
+        return this;
+    }
+
     private MutableDataSet provideOptions() {
 
         MutableDataSet options = new MutableDataSet();
@@ -71,7 +81,8 @@ public class MarkdownToHtmlConvertor {
                 TablesExtension.create(),
                 TocExtension.create(),
                 new CodeFormatExtension(),
-                EmojiExtension.create()
+                EmojiExtension.create(),
+                new LinkManipulationExtension(linkManipulator)
         ));
 
         allExtentions.addAll(this.extensions);

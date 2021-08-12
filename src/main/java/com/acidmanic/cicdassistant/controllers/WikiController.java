@@ -8,7 +8,6 @@ package com.acidmanic.cicdassistant.controllers;
 import com.acidmanic.cicdassistant.application.configurations.Configurations;
 import com.acidmanic.cicdassistant.application.services.web.Controller;
 import static com.acidmanic.cicdassistant.controllers.WikiController.WIKI_ROUTE;
-import com.acidmanic.cicdassistant.html.interception.GitlabLinksHtmlInterceptor;
 import com.acidmanic.cicdassistant.html.interception.RebaseAnchorsHtmlInterceptor;
 import com.acidmanic.cicdassistant.models.Dto;
 import com.acidmanic.cicdassistant.services.EncyclopediaStore;
@@ -17,6 +16,7 @@ import com.acidmanic.cicdassistant.services.routing.Router;
 import com.acidmanic.cicdassistant.storage.TokenStorage;
 import com.acidmanic.cicdassistant.utility.StringUtils;
 import com.acidmanic.cicdassistant.utility.web.MimeTypeTable;
+import com.acidmanic.cicdassistant.wiki.GitlabRelativeLinkManipulator;
 import com.acidmanic.cicdassistant.wiki.convert.MarkdownToHtmlConvertor;
 import com.acidmanic.cicdassistant.wiki.convert.anchorsources.GitLabCommitHashAnchorSource;
 import com.acidmanic.cicdassistant.wiki.convert.anchorsources.MailToAnchorSource;
@@ -30,14 +30,12 @@ import java.io.File;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import javax.ws.rs.CookieParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
@@ -174,7 +172,8 @@ public class WikiController extends ControllerBase {
             MarkdownToHtmlConvertor convertor = new MarkdownToHtmlConvertor()
                     .addAnchorSource(new SmartWebLinkAnchorSource())
                     .addAnchorSource(new MailToAnchorSource())
-                    .setStyleProvider(this.htmlStyleProvider);
+                    .setStyleProvider(this.htmlStyleProvider)
+                    .setLinkManipulator(new GitlabRelativeLinkManipulator());
 
             this.encyclopediaStore.getAvailables()
                     .forEach(en -> convertor.addAnchorSource(new TerminologyAnchorSource().addEncyclopedia(en.getEntries())));
@@ -219,8 +218,6 @@ public class WikiController extends ControllerBase {
     private String intercept(String html) {
 
         Document document = Jsoup.parse(html);
-
-        new GitlabLinksHtmlInterceptor().manipulate(document);
 
         new RebaseAnchorsHtmlInterceptor(WIKI_ROUTE_PATH).manipulate(document);
 
