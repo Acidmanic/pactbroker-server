@@ -5,8 +5,11 @@
  */
 package functional;
 
+import com.acidmanic.cicdassistant.wiki.autoindexing.MarkdownWikiIndexTree;
+import com.acidmanic.cicdassistant.wiki.autoindexing.WebNode;
 import java.io.File;
 import java.nio.file.Paths;
+import java.util.List;
 
 /**
  *
@@ -18,8 +21,42 @@ public class WikiIndexing {
 
         File root = Paths.get("dev-workspace").resolve("wikiroot.dev").toFile();
 
-        Index index = new Index(root);
+        MarkdownWikiIndexTree index = new MarkdownWikiIndexTree(root);
 
-        index.indexDirectory();
+        List<WebNode> heads = index.getHeads();
+
+        List<WebNode> miscs = index.getMiscellaneousNodes();
+
+        printMenue(heads, miscs);
+
     }
+
+    private static void printDown(WebNode key, String indent) {
+
+        System.out.println(indent + key.getKey());
+
+        for (WebNode child : key.getReferences()) {
+
+            printDown(child, indent + "|------");
+        }
+    }
+
+    private static void printMenue(List<WebNode> heads, List<WebNode> miscs) {
+
+        for (WebNode key : heads) {
+
+            System.out.println("===================");
+
+            printDown(key, "");
+        }
+
+        System.out.println("===================");
+        System.out.println("Misc");
+        System.out.println("-------------------");
+
+        for (WebNode misc : miscs) {
+            printDown(misc, "");
+        }
+    }
+    
 }
