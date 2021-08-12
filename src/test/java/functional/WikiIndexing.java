@@ -6,6 +6,7 @@
 package functional;
 
 import com.acidmanic.cicdassistant.wiki.autoindexing.IndexHtml;
+import com.acidmanic.cicdassistant.wiki.autoindexing.IndexHtmlBuilder;
 import com.acidmanic.cicdassistant.wiki.autoindexing.MarkdownWikiIndexTree;
 import com.acidmanic.cicdassistant.wiki.autoindexing.WebNode;
 import java.io.File;
@@ -31,17 +32,27 @@ public class WikiIndexing {
         List<WebNode> miscs = index.getMiscellaneousNodes();
 
         //printMenue(heads, miscs);
-        IndexHtml indexHtml = new IndexHtml(heads);
-        
-        String html = indexHtml.getHtmlContent();
+        IndexHtml indexHtml = new IndexHtmlBuilder()
+                .addHeads(heads)
+                .addtMiscellaneous(miscs)
+                .build();
+
+        String html =  indexHtml.getHtmlContent();
 
         try {
-            
-            Files.write(Paths.get("debug/index.html"), html.getBytes(), StandardOpenOption.CREATE);
-            
+
+            File outputFile = new File("debug/index.html");
+
+            if (outputFile.exists()) {
+
+                outputFile.delete();
+            }
+
+            Files.write(outputFile.toPath(), html.getBytes(), StandardOpenOption.CREATE);
+
         } catch (Exception e) {
         }
-        
+
         System.out.println("DONE");
     }
 
