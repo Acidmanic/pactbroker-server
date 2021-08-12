@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.acidmanic.cicdassistant.wiki.convert.authorization;
+package com.acidmanic.cicdassistant.wiki.authorization;
 
 import com.acidmanic.cicdassistant.utility.StringUtils;
 import kong.unirest.HttpResponse;

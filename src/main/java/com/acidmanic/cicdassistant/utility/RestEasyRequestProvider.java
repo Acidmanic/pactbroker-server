@@ -5,7 +5,7 @@
  */
 package com.acidmanic.cicdassistant.utility;
 
-import com.acidmanic.cicdassistant.wiki.convert.authorization.RequestDataProvider;
+import com.acidmanic.cicdassistant.wiki.authorization.RequestDataProvider;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;

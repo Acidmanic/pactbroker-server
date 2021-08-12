@@ -22,8 +22,8 @@ import com.acidmanic.cicdassistant.wiki.convert.anchorsources.GitLabCommitHashAn
 import com.acidmanic.cicdassistant.wiki.convert.anchorsources.MailToAnchorSource;
 import com.acidmanic.cicdassistant.wiki.convert.anchorsources.SmartWebLinkAnchorSource;
 import com.acidmanic.cicdassistant.wiki.convert.anchorsources.TerminologyAnchorSource;
-import com.acidmanic.cicdassistant.wiki.convert.authorization.GitlabAuthorizationProvider;
-import com.acidmanic.cicdassistant.wiki.convert.authorization.RequestDataProvider;
+import com.acidmanic.cicdassistant.wiki.authorization.GitlabAuthorizationProvider;
+import com.acidmanic.cicdassistant.wiki.authorization.RequestDataProvider;
 import com.acidmanic.cicdassistant.wiki.convert.style.HtmlStyleProvider;
 import com.acidmanic.lightweight.logger.Logger;
 import java.io.File;

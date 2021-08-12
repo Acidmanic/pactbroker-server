@@ -53,7 +53,7 @@ import com.acidmanic.cicdassistant.storage.TokenStorage;
 import com.acidmanic.cicdassistant.tokengenerate.DoubleUUIDTokenGenerator;
 import com.acidmanic.cicdassistant.tokengenerate.TokenGenerator;
 import com.acidmanic.cicdassistant.utility.RestEasyRequestProvider;
-import com.acidmanic.cicdassistant.wiki.convert.authorization.RequestDataProvider;
+import com.acidmanic.cicdassistant.wiki.authorization.RequestDataProvider;
 import com.acidmanic.cicdassistant.wiki.convert.style.HtmlStyleProvider;
 import com.acidmanic.cicdassistant.wiki.convert.styleproviders.CssDirectoryProvider;
 import com.acidmanic.cicdassistant.wiki.convert.styleproviders.CssDirectoryStyleProvider;
