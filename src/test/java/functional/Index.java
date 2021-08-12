@@ -8,6 +8,7 @@ package functional;
 import com.acidmanic.cicdassistant.utility.MarkdownCleanup;
 import com.acidmanic.cicdassistant.utility.PathHelpers;
 import com.acidmanic.cicdassistant.utility.StringUtils;
+import com.acidmanic.delegates.arg3.Action;
 import com.vladsch.flexmark.ast.Link;
 import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.util.ast.Node;
@@ -34,7 +35,7 @@ public class Index {
 
     private void printDown(KeyNode key, String indent) {
 
-        System.out.println(indent + key.key );
+        System.out.println(indent + key.key);
 
         for (KeyNode child : key.references) {
 
@@ -89,6 +90,11 @@ public class Index {
             return !this.sitations.isEmpty() && !this.references.isEmpty();
         }
 
+        public boolean isSited() {
+
+            return !this.sitations.isEmpty();
+        }
+
         public boolean isSitedBy(KeyNode node) {
 
             for (KeyNode parent : this.sitations) {
@@ -122,6 +128,7 @@ public class Index {
 
         // Scan all files, and create nodes
         indexDirectory(baseDirectory);
+
         linkNodes(this.keys);
 
         System.out.println("Total Shsst count: " + this.keys.size());
@@ -183,15 +190,13 @@ public class Index {
         }
     }
 
-    private void linkNodes(HashMap<String, KeyNode> nodes) {
+    private void walkThroughNodePairs(HashMap<String, KeyNode> nodes,
+            HashMap<KeyNode, List<String>> nodeReferences,
+            Action<KeyNode, KeyNode, PathHelpers.PathRelation> scanner) {
 
         for (KeyNode node : nodes.values()) {
 
-            // Read the node's file
-            // find other referenced nodes based on file system relation
-            String markdown = readFile(node.file);
-
-            List<String> referencedLinks = findAllReferencedNodes(markdown);
+            List<String> referencedLinks = nodeReferences.get(node);
 
             for (String referencedLink : referencedLinks) {
 
@@ -203,40 +208,65 @@ public class Index {
                             .relationOfRelativePaths(node.file.toPath(),
                                     referencedNode.file.toPath());
 
-                    if (relation == PathHelpers.PathRelation.ParentOf) {
-
-                        node.references(referencedNode);
-
-                        referencedNode.sitedBy(node);
-                    }
-                    if (relation == PathHelpers.PathRelation.Sibling) {
-
-                        if (!node.isSitedBy(referencedNode)
-                                && !referencedNode.hasReferenced(node)) {
-
-                            node.references(referencedNode);
-
-                            referencedNode.sitedBy(node);
-                        }
-                    }
+                    scanner.perform(node, referencedNode, relation);
                 }
-
-//                Path linkedFile = findFileOf(referencedLink);
-//
-//                if (linkedFile != null) {
-//                       
-//                    PathHelpers.PathRelation relation = new PathHelpers()
-//                            .relationOfRelativePaths(node.file.toPath(), linkedFile);
-//                    
-//                    if(relation == PathHelpers.PathRelation.ParentOf){
-//                        
-//                        
-//                    }
-//                }
             }
-
         }
     }
+
+    private void linkNodes(HashMap<String, KeyNode> nodes) {
+
+        HashMap<KeyNode, List<String>> nodeReferences = new HashMap<>();
+        // Cache markdown references for each file
+        for (KeyNode node : nodes.values()) {
+
+            String markdown = readFile(node.file);
+
+            List<String> referencedLinks = findAllReferencedNodes(markdown);
+
+            nodeReferences.put(node, referencedLinks);
+        }
+
+        walkThroughNodePairs(nodes, nodeReferences, (referrer, referree, relation) -> {
+
+            if (relation == PathHelpers.PathRelation.ParentOf) {
+
+                referrer.references(referree);
+
+                referree.sitedBy(referrer);
+            }
+        });
+
+        walkThroughNodePairs(nodes, nodeReferences, (referrer, referree, relation) -> {
+
+            if (relation == PathHelpers.PathRelation.Sibling) {
+
+                KeyNode base = null, moving = null;
+
+                if (!referrer.isSited() && referree.isSited()) {
+
+                    base = referree;
+
+                    moving = referrer;
+                }
+                if (referrer.isSited() && !referree.isSited()) {
+
+                    base = referrer;
+
+                    moving = referree;
+                }
+
+                if (base != null && moving != null) {
+
+                    base.references(moving);
+
+                    moving.sitedBy(base);
+                }
+            }
+        });
+
+    }
+
 
     private List<String> findAllReferencedNodes(String markdown) {
 
@@ -299,37 +329,6 @@ public class Index {
             }
         }
         node.getChildren().forEach(child -> scan(child, foundLinks));
-    }
-
-    private Path findFileOf(String href) {
-
-        File hrefFile = this.baseDirectory.toPath()
-                .resolve(Paths.get(href))
-                .normalize().toFile();
-
-        if (hrefFile.exists()) {
-            return hrefFile.toPath();
-        }
-
-        File hrefParent = hrefFile.toPath().getParent().toFile();
-
-        String hrefFileName = hrefFile.getName() + ".md";
-
-        if (hrefParent.exists() && hrefParent.isDirectory()) {
-
-            File[] files = hrefParent.listFiles();
-
-            for (File file : files) {
-
-                if (hrefFileName.equalsIgnoreCase(file.getName())) {
-
-                    return file.toPath();
-                }
-            }
-        }
-
-        return null;
-
     }
 
     private String filePathToLink(File file) {
