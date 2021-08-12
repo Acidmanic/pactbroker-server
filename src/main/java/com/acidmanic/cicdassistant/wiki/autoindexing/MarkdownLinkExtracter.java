@@ -24,16 +24,16 @@ public class MarkdownLinkExtracter {
 
     private final MutableDataSet options = new MutableDataSet();
 
-    public List<String> findAllReferencedNodes(File file) {
+    public List<MarkdownLink> findAllReferencedNodes(File file) {
 
         String markdown = readFile(file);
 
         return findAllReferencedNodes(markdown);
     }
 
-    public List<String> findAllReferencedNodes(String markdown) {
+    public List<MarkdownLink> findAllReferencedNodes(String markdown) {
 
-        List<String> links = new ArrayList();
+        List<MarkdownLink> links = new ArrayList();
 
         if (!StringUtils.isNullOrEmpty(markdown)) {
 
@@ -49,7 +49,7 @@ public class MarkdownLinkExtracter {
         return links;
     }
 
-    private void scan(Node node, List<String> foundLinks) {
+    private void scan(Node node, List<MarkdownLink> foundLinks) {
 
         if (node == null) {
             return;
@@ -73,7 +73,9 @@ public class MarkdownLinkExtracter {
 
                 if (!StringUtils.isNullOrEmpty(href) && !href.startsWith("http")) {
 
-                    foundLinks.add(href);
+                    MarkdownLink link = new MarkdownLink(href, text);
+
+                    foundLinks.add(link);
                 }
             }
         }

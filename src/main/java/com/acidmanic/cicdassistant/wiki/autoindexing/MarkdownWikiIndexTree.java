@@ -6,6 +6,7 @@
 package com.acidmanic.cicdassistant.wiki.autoindexing;
 
 import com.acidmanic.cicdassistant.utility.PathHelpers;
+import com.acidmanic.cicdassistant.wiki.linkprocessing.LinkTextProvider;
 import com.acidmanic.delegates.arg3.Action;
 import java.io.File;
 import java.util.ArrayList;
@@ -16,16 +17,20 @@ import java.util.List;
  *
  * @author diego
  */
-public class MarkdownWikiIndexTree {
+public class MarkdownWikiIndexTree implements LinkTextProvider {
 
     private final File baseDirectory;
 
     private final HashMap<String, WebNode> keys;
 
+    private final HashMap<String, String> titles;
+
     public MarkdownWikiIndexTree(File baseDirectory) {
         this.baseDirectory = baseDirectory;
 
         this.keys = new HashMap<>();
+
+        this.titles = new HashMap<>();
 
         indexDirectory();
 
@@ -102,18 +107,18 @@ public class MarkdownWikiIndexTree {
     }
 
     private void walkThroughNodePairs(HashMap<String, WebNode> nodes,
-            HashMap<WebNode, List<String>> nodeReferences,
+            HashMap<WebNode, List<MarkdownLink>> nodeReferences,
             Action<WebNode, WebNode, PathHelpers.PathRelation> scanner) {
 
         for (WebNode node : nodes.values()) {
 
-            List<String> referencedLinks = nodeReferences.get(node);
+            List<MarkdownLink> referencedLinks = nodeReferences.get(node);
 
-            for (String referencedLink : referencedLinks) {
+            for (MarkdownLink referencedLink : referencedLinks) {
 
-                if (nodes.containsKey(referencedLink)) {
+                if (nodes.containsKey(referencedLink.getHref())) {
 
-                    WebNode referencedNode = nodes.get(referencedLink);
+                    WebNode referencedNode = nodes.get(referencedLink.getHref());
 
                     PathHelpers.PathRelation relation = new PathHelpers()
                             .relationOfRelativePaths(node.getFile().toPath(),
@@ -127,14 +132,16 @@ public class MarkdownWikiIndexTree {
 
     private void linkNodes(HashMap<String, WebNode> nodes) {
 
-        HashMap<WebNode, List<String>> nodeReferences = new HashMap<>();
+        HashMap<WebNode, List<MarkdownLink>> nodeReferences = new HashMap<>();
         // Cache markdown references for each file
         for (WebNode node : nodes.values()) {
 
-            List<String> referencedLinks = new MarkdownLinkExtracter()
+            List<MarkdownLink> referencedLinks = new MarkdownLinkExtracter()
                     .findAllReferencedNodes(node.getFile());
 
             nodeReferences.put(node, referencedLinks);
+
+            referencedLinks.forEach(link -> this.titles.put(link.getHref(), link.getText()));
         }
 
         walkThroughNodePairs(nodes, nodeReferences, (referrer, referree, relation) -> {
@@ -188,6 +195,16 @@ public class MarkdownWikiIndexTree {
             refKey = refKey.substring(0, refKey.length() - 3);
         }
         return refKey;
+    }
+
+    @Override
+    public String getTextFor(String link) {
+
+        if (this.titles.containsKey(link)) {
+
+            return this.titles.get(link);
+        }
+        return null;
     }
 
 }

@@ -25,19 +25,20 @@ public class WikiIndexing {
 
         File root = Paths.get("dev-workspace").resolve("wikiroot.dev").toFile();
 
-        MarkdownWikiIndexTree index = new MarkdownWikiIndexTree(root);
+        MarkdownWikiIndexTree indexTree = new MarkdownWikiIndexTree(root);
 
-        List<WebNode> heads = index.getHeads();
+        List<WebNode> heads = indexTree.getHeads();
 
-        List<WebNode> miscs = index.getMiscellaneousNodes();
+        List<WebNode> miscs = indexTree.getMiscellaneousNodes();
 
         //printMenue(heads, miscs);
         IndexHtml indexHtml = new IndexHtmlBuilder()
+                .use(indexTree)
                 .addHeads(heads)
                 .addtMiscellaneous(miscs)
                 .build();
 
-        String html =  indexHtml.getHtmlContent();
+        String html = indexHtml.getHtmlContent();
 
         try {
 

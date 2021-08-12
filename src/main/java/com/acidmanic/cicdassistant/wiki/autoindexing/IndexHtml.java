@@ -6,11 +6,8 @@
 package com.acidmanic.cicdassistant.wiki.autoindexing;
 
 import com.acidmanic.cicdassistant.html.A;
-import com.acidmanic.cicdassistant.html.B;
-import com.acidmanic.cicdassistant.html.Div;
 import com.acidmanic.cicdassistant.html.Li;
 import com.acidmanic.cicdassistant.html.RawString;
-import com.acidmanic.cicdassistant.html.Style;
 import com.acidmanic.cicdassistant.html.Ul;
 import com.acidmanic.cicdassistant.wiki.linkprocessing.LinkManipulator;
 import com.acidmanic.cicdassistant.wiki.linkprocessing.LinkTextProvider;
@@ -100,7 +97,7 @@ public class IndexHtml {
 
         String text = node.getFile().getName();
 
-        text = this.linkTextProvider.getTextFor(text);
+        text = this.linkTextProvider.getTextFor(node.getKey());
 
         String href = this.linkManipulator.manipulate(node.getKey());
 
