@@ -17,7 +17,7 @@ import java.util.List;
  *
  * @author diego
  */
-public class MarkdownWikiIndexTree implements LinkTextProvider {
+public class MarkdownWikiIndexTree implements LinkTextProvider, WikiIndexTree {
 
     private final File baseDirectory;
 
@@ -36,6 +36,7 @@ public class MarkdownWikiIndexTree implements LinkTextProvider {
 
     }
 
+    @Override
     public List<WebNode> getHeads() {
 
         ArrayList<WebNode> heads = new ArrayList<>();
@@ -50,6 +51,7 @@ public class MarkdownWikiIndexTree implements LinkTextProvider {
         return heads;
     }
 
+    @Override
     public List<WebNode> getMiscellaneousNodes() {
 
         ArrayList<WebNode> heads = new ArrayList<>();
@@ -207,6 +209,7 @@ public class MarkdownWikiIndexTree implements LinkTextProvider {
         return null;
     }
 
+    @Override
     public int getTotalNodesCount() {
 
         return this.keys.size();

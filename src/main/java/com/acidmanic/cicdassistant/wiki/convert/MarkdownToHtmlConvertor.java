@@ -6,6 +6,11 @@
 package com.acidmanic.cicdassistant.wiki.convert;
 
 import com.acidmanic.cicdassistant.utility.MarkdownCleanup;
+import com.acidmanic.cicdassistant.wiki.GitlabRelativeLinkManipulator;
+import com.acidmanic.cicdassistant.wiki.autoindexing.IndexHtml;
+import com.acidmanic.cicdassistant.wiki.autoindexing.IndexHtmlBuilder;
+import com.acidmanic.cicdassistant.wiki.autoindexing.WebNode;
+import com.acidmanic.cicdassistant.wiki.autoindexing.WikiIndexTree;
 import com.acidmanic.cicdassistant.wiki.convert.autolink.AnchorSource;
 import com.acidmanic.cicdassistant.wiki.convert.autolink.AutoAnchorMachine;
 import com.acidmanic.cicdassistant.wiki.convert.flexmark.extensions.CodeFormatExtension;
@@ -13,6 +18,7 @@ import com.acidmanic.cicdassistant.wiki.convert.flexmark.extensions.LinkManipula
 import com.acidmanic.cicdassistant.wiki.convert.style.HtmlStyleProvider;
 import com.acidmanic.cicdassistant.wiki.convert.style.NullStyleProvider;
 import com.acidmanic.cicdassistant.wiki.linkprocessing.LinkManipulator;
+import com.acidmanic.cicdassistant.wiki.linkprocessing.LinkTextProvider;
 import com.acidmanic.delegates.Function;
 import com.vladsch.flexmark.ext.emoji.EmojiExtension;
 import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughExtension;
@@ -37,8 +43,9 @@ public class MarkdownToHtmlConvertor {
     private final List<Extension> extensions = new ArrayList<>();
     private HtmlStyleProvider styleProvider;
     private LinkManipulator linkManipulator = s -> s;
-    
-    
+    private Function<WikiIndexTree> wikiIndexTreeFactory = () -> null;
+    private Function<LinkTextProvider> linkTextProviderFactory = () -> null;
+
     public MarkdownToHtmlConvertor() {
 
         this.styleProvider = new NullStyleProvider();
@@ -68,6 +75,20 @@ public class MarkdownToHtmlConvertor {
     public MarkdownToHtmlConvertor setLinkManipulator(LinkManipulator manipulator) {
 
         this.linkManipulator = manipulator;
+
+        return this;
+    }
+
+    public MarkdownToHtmlConvertor useIndexTree(Function<WikiIndexTree> factory) {
+
+        this.wikiIndexTreeFactory = factory;
+
+        return this;
+    }
+
+    public MarkdownToHtmlConvertor useLinkTextProvider(Function<LinkTextProvider> factory) {
+
+        this.linkTextProviderFactory = factory;
 
         return this;
     }
@@ -127,6 +148,7 @@ public class MarkdownToHtmlConvertor {
                 + createThemeContainer()
                 + InMemoryResources.COPY_TO_CLIPBOARD_JS
                 + InMemoryResources.TOAST_COMPONENT
+                + createIndexTag()
                 + body
                 + "</body>"
                 + "</html>";
@@ -156,6 +178,30 @@ public class MarkdownToHtmlConvertor {
         container += "</div>";
 
         return container;
+    }
+
+    private String createIndexTag() {
+
+        WikiIndexTree indexTree = this.wikiIndexTreeFactory == null ? null : this.wikiIndexTreeFactory.perform();
+
+        if (indexTree != null) {
+
+            LinkTextProvider textProvider = this.linkTextProviderFactory == null ? null : this.linkTextProviderFactory.perform();
+            if (textProvider != null) {
+
+                IndexHtml indexHtml = new IndexHtmlBuilder()
+                        .use(this.linkManipulator)
+                        .use(textProvider)
+                        .addHeads(indexTree.getHeads())
+                        .addtMiscellaneous(indexTree.getMiscellaneousNodes())
+                        .build();
+
+                String html = indexHtml.getHtmlContent();
+
+                return html;
+            }
+        }
+        return "";
     }
 
 }
