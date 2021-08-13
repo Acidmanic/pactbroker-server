@@ -74,14 +74,19 @@
                         </goals>
                         <configuration>
                             <outputDirectory>${basedir}/target</outputDirectory>
-                            <resources>          
+                            <resources>
                                 <resource>
                                     <directory>Graphics</directory>
                                     <include>wiki-styles/</include>
                                     <filtering>true</filtering>
                                 </resource>
-                            </resources>              
-                        </configuration>            
+                                <resource>
+                                    <directory>Graphics</directory>
+                                    <include>assets/</include>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>                       
+                        </configuration>  
                     </execution>
                 </executions>
             </plugin>
