@@ -60,8 +60,8 @@ public class WikiPage {
     @Override
     public String toString() {
 
-        String bootstrapCssHref = "";
-        String bootstrapJsSrc = "";
+        String bootstrapCssHref = "/../assets/bootstrap5/bootstrap.min.css";
+        String bootstrapJsSrc = "./../assets/bootstrap5/bootstrap.min.js";
 
         Html html = new Html();
         // set title
