@@ -13,6 +13,7 @@ import com.acidmanic.cicdassistant.wiki.convert.flexmark.extensions.LinkManipula
 import com.acidmanic.cicdassistant.wiki.convert.style.HtmlStyleProvider;
 import com.acidmanic.cicdassistant.wiki.convert.style.NullStyleProvider;
 import com.acidmanic.cicdassistant.wiki.linkprocessing.LinkManipulator;
+import com.acidmanic.delegates.Function;
 import com.vladsch.flexmark.ext.emoji.EmojiExtension;
 import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughExtension;
 import com.vladsch.flexmark.ext.tables.TablesExtension;
@@ -36,7 +37,8 @@ public class MarkdownToHtmlConvertor {
     private final List<Extension> extensions = new ArrayList<>();
     private HtmlStyleProvider styleProvider;
     private LinkManipulator linkManipulator = s -> s;
-
+    
+    
     public MarkdownToHtmlConvertor() {
 
         this.styleProvider = new NullStyleProvider();

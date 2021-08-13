@@ -6,6 +6,7 @@
 package com.acidmanic.cicdassistant.services;
 
 import com.acidmanic.cicdassistant.utility.Final;
+import com.acidmanic.cicdassistant.wiki.autoindexing.MarkdownWikiIndexTree;
 import com.acidmanic.delegates.arg1.Action;
 
 /**
@@ -18,6 +19,7 @@ public class WikiRepoStatus {
 
         private boolean ready;
         private boolean featchDemand;
+        private MarkdownWikiIndexTree indexTree;
 
         public Status() {
             this.ready = true;
@@ -38,6 +40,14 @@ public class WikiRepoStatus {
 
         public void setFeatchDemand(boolean featchDemand) {
             this.featchDemand = featchDemand;
+        }
+
+        public MarkdownWikiIndexTree getIndexTree() {
+            return indexTree;
+        }
+
+        public void setIndexTree(MarkdownWikiIndexTree indexTree) {
+            this.indexTree = indexTree;
         }
 
     }
@@ -85,5 +95,19 @@ public class WikiRepoStatus {
     public void setFetchDemand() {
 
         accessStatus(stt -> stt.setFeatchDemand(true));
+    }
+
+    public MarkdownWikiIndexTree getIndexTree() {
+
+        Final<MarkdownWikiIndexTree> result = new Final<>();
+
+        accessStatus(stt -> result.setValue(stt.getIndexTree()));
+
+        return result.getValue();
+    }
+
+    public void setIndexTree(MarkdownWikiIndexTree indexTree) {
+
+        accessStatus(stt -> stt.setIndexTree(indexTree));
     }
 }

@@ -207,4 +207,9 @@ public class MarkdownWikiIndexTree implements LinkTextProvider {
         return null;
     }
 
+    public int getTotalNodesCount() {
+
+        return this.keys.size();
+    }
+
 }

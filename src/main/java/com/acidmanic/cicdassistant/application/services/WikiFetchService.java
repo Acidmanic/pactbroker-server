@@ -10,6 +10,7 @@ import com.acidmanic.cicdassistant.application.configurations.Configurations;
 import com.acidmanic.cicdassistant.services.WikiRepoStatus;
 import com.acidmanic.cicdassistant.utility.JGit;
 import com.acidmanic.cicdassistant.utility.ResourceHelper;
+import com.acidmanic.cicdassistant.wiki.autoindexing.MarkdownWikiIndexTree;
 import com.acidmanic.lightweight.logger.Logger;
 import java.io.File;
 import java.util.Date;
@@ -23,6 +24,7 @@ public class WikiFetchService extends SyncLoopApplicationServiceBase {
     private final WikiRepoStatus wikiRepoStatus;
     private final Configurations configurations;
     private Date lastFetch = new Date(0);// makes it to fetch on first run
+    private File wikiDirectory;
 
     public WikiFetchService(Logger logger,
             WikiRepoStatus wikiRepoStatus,
@@ -30,6 +32,17 @@ public class WikiFetchService extends SyncLoopApplicationServiceBase {
         super(logger, 5000);
         this.wikiRepoStatus = wikiRepoStatus;
         this.configurations = configurations;
+
+    }
+
+    private void checkDirectory() {
+        //TODO: unify this with wiki router
+        this.wikiDirectory = new ResourceHelper()
+                .getExecutionDirectory()
+                .resolve("wikiroot")
+                .toAbsolutePath()
+                .normalize()
+                .toFile();
     }
 
     @Override
@@ -38,8 +51,12 @@ public class WikiFetchService extends SyncLoopApplicationServiceBase {
         if (shouldFetch()) {
 
             this.wikiRepoStatus.setBusy();
+            
+            checkDirectory();
 
             performWikiFetch();
+            
+            updateIndex();
 
             this.wikiRepoStatus.setReady();
 
@@ -62,13 +79,6 @@ public class WikiFetchService extends SyncLoopApplicationServiceBase {
     }
 
     private void performWikiFetch() {
-        //TODO: unify this with wiki router
-        File wikiDirectory = new ResourceHelper()
-                .getExecutionDirectory()
-                .resolve("wikiroot")
-                .toAbsolutePath()
-                .normalize()
-                .toFile();
 
         JGit git = new JGit(getLogger());
 
@@ -97,15 +107,24 @@ public class WikiFetchService extends SyncLoopApplicationServiceBase {
                     configurations.getWikiConfigurations().getPassword(),
                     configurations.getWikiConfigurations().getWikiBranch(),
                     wikiDirectory);
-            
+
             if (success) {
                 getLogger().log("Local Wiki Repository Updated Successfully");
             } else {
                 getLogger().warning("Problem updating the local wiki repository");
             }
-            
+
         }
         this.lastFetch = new Date();
+    }
+
+    private void updateIndex() {
+        
+        MarkdownWikiIndexTree indexTree = new MarkdownWikiIndexTree(this.wikiDirectory);
+        
+        this.wikiRepoStatus.setIndexTree(indexTree);
+        
+        getLogger().log("Index Updated: " + indexTree.getTotalNodesCount() + " nodes in total.");
     }
 
 }
