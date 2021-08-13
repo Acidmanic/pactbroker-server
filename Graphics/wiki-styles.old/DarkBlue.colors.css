@@ -14,6 +14,7 @@ thead{
 }
 thead tr,thead td {
 }
+
 tr{
     border-color: #a2aab0;
 }
@@ -22,6 +23,8 @@ tr:nth-child(even) {
 }
 tr:nth-child(odd) {
     background: #4e596480;
+}
+h1{
 }
 hr {
     border-bottom-color: #080a0d;

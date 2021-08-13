@@ -12,7 +12,6 @@ import com.acidmanic.cicdassistant.html.interception.RebaseAnchorsHtmlIntercepto
 import com.acidmanic.cicdassistant.models.Dto;
 import com.acidmanic.cicdassistant.services.EncyclopediaStore;
 import com.acidmanic.cicdassistant.services.WikiRepoStatus;
-import com.acidmanic.cicdassistant.http.Router;
 import com.acidmanic.cicdassistant.services.routing.WikiRouter;
 import com.acidmanic.cicdassistant.storage.TokenStorage;
 import com.acidmanic.cicdassistant.utility.StringUtils;

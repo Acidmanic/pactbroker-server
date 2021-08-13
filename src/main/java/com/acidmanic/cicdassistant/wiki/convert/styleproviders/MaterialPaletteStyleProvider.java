@@ -9,7 +9,7 @@ import com.acidmanic.cicdassistant.html.theme.MaterialPaletteColors;
 import com.acidmanic.cicdassistant.wiki.convert.style.HtmlStyleProvider;
 import com.acidmanic.cicdassistant.wiki.convert.styleproviders.palettes.MaterialPalettes;
 import com.acidmanic.cicdassistant.wiki.convert.styleproviders.palettes.NamedMaterialPalette;
-import com.acidmanic.cicdassistant.wiki.convert.stylesheet.WikiStyleSheet;
+import com.acidmanic.cicdassistant.wiki.convert.structure.MaterialBasedWikiStyleSheet;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,7 +45,7 @@ public class MaterialPaletteStyleProvider implements HtmlStyleProvider {
                 new NamedMaterialPalette("No Style",
                         MaterialPaletteColors.accentColor));
 
-        WikiStyleSheet styleSheet = new WikiStyleSheet(palette);
+        MaterialBasedWikiStyleSheet styleSheet = new MaterialBasedWikiStyleSheet(palette);
 
         return styleSheet.toString();
     }

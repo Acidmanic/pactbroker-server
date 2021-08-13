@@ -7,7 +7,7 @@ package functional;
 
 import com.acidmanic.cicdassistant.html.StyleSheet;
 import com.acidmanic.cicdassistant.html.theme.MaterialPalette;
-import com.acidmanic.cicdassistant.wiki.convert.stylesheet.WikiStyleSheet;
+import com.acidmanic.cicdassistant.wiki.convert.structure.MaterialBasedWikiStyleSheet;
 
 /**
  *
@@ -43,7 +43,7 @@ public class StyleSheetTests {
 
         MaterialPalette palette = MaterialPalette.fromPolymer(palettePolymer);
 
-        StyleSheet sheet = new WikiStyleSheet(palette);
+        StyleSheet sheet = new MaterialBasedWikiStyleSheet(palette);
 
         String html = sheet.toString();
 

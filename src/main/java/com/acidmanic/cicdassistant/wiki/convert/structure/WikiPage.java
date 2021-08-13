@@ -78,13 +78,12 @@ public class WikiPage {
         html.getHead().addChild(bootStrapScript);
 
         // add builtind styles
-        StyleSheet builtinStyles = makeBuiltinStyles();
+        StyleSheet builtinStyles = new WikiStyleSheet();
 
         html.getHead().addChild(builtinStyles);
-        
-        
+
         RawHtml injections = new RawHtml(this.scripts + this.styles);
-        
+
         html.getHead().addChild(injections);
 
         // Design body
@@ -159,14 +158,13 @@ public class WikiPage {
         wikiIndexListItem.addProperty("text-shadow", "0px 0px 100pt #f9f9f98a");
         wikiIndexListItem.addProperty("color", "white");
         wikiIndexListItem.addProperty("list-style-type", "disclosure-closed");
-        
+
         sheet.addChild(wikiIndexListItem);
-        
+
 //        Style autoIndexMenu = new Style(".auto-index-menu");
 //        wikiIndexListItem.addProperty("font-size", "0.84em");
 //        
 //        sheet.addChild(autoIndexMenu);
-
         Style themContainer = new Style("." + CSS_THEME_CONTAINER);
         themContainer.addProperty("cursor", "pointer");
         themContainer.addProperty("left", "5pt");

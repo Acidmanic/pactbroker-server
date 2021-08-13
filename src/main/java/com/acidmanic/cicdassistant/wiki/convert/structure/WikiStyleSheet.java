@@ -1,15 +1,13 @@
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * and open  the template in the editor.
  */
-package com.acidmanic.cicdassistant.wiki.convert.stylesheet;
+package com.acidmanic.cicdassistant.wiki.convert.structure;
 
 import com.acidmanic.cicdassistant.html.Style;
 import com.acidmanic.cicdassistant.html.StyleSheet;
-import com.acidmanic.cicdassistant.html.theme.MaterialPalette;
-import com.acidmanic.cicdassistant.html.theme.MaterialPaletteColors;
-import com.acidmanic.cicdassistant.html.theme.MaterialStyle;
+import com.acidmanic.cicdassistant.html.Tag;
 
 /**
  *
@@ -17,20 +15,13 @@ import com.acidmanic.cicdassistant.html.theme.MaterialStyle;
  */
 public class WikiStyleSheet extends StyleSheet {
 
-    private final MaterialPalette palette;
-
-    public WikiStyleSheet(MaterialPalette palette) {
-        this.palette = palette;
+    public WikiStyleSheet() {
 
         this.addChild(bodyStyle());
         this.addChild(aAhourStyle());
         this.addChild(tableStyle());
         this.addChild(tdStyle());
-        this.addChild(theadStyle());
-        this.addChild(theadTrStyle());
         this.addChild(trStyle());
-        this.addChild(trEvenStyle());
-        this.addChild(trOddStyle());
         addSingleColorStyle(".json-string", "#689F38");
         addSingleColorStyle(".json-number", "#FF5722");
         addSingleColorStyle(".json-key", "#448AFF");
@@ -40,21 +31,19 @@ public class WikiStyleSheet extends StyleSheet {
         this.addChild(hiddenDataStyle());
         this.addChild(codeMessageStyle());
         this.addChild(themeItemStyle());
-        this.addChild(themeContaonerStyle());
+        this.addChild(themeContainerStyle());
         this.addChild(themeItemHoverStyle());
-        this.addChild(hrStyle());
+        this.addChild(wikiIndexStyle());
     }
 
     private Style bodyStyle() {
 
-        MaterialStyle style = new MaterialStyle(palette, "body");
+        Style style = new Style("body");
 
         style.addProperty("font-family", "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Noto Sans\", Ubuntu, Cantarell, \"Helvetica Neue\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"");
 
-        style.addColorProperty("background-color", MaterialPaletteColors.lightPrimaryColor)
-                .addColorProperty("color", MaterialPaletteColors.textIcons);
-
         style.addProperty("padding-left", "5%");
+
         style.addProperty("padding-right", "5%");
 
         return style;
@@ -62,11 +51,9 @@ public class WikiStyleSheet extends StyleSheet {
 
     private Style aAhourStyle() {
 
-        MaterialStyle style = new MaterialStyle(palette, "a,a:hover");
+        Style style = new Style("a,a:hover");
 
         style.addProperty("text-decoration", "none");
-
-        style.addColorProperty("color", MaterialPaletteColors.accentColor);
 
         style.addProperty("text-shadow", "0 0 10px #CCCCCC0F");
 
@@ -77,82 +64,35 @@ public class WikiStyleSheet extends StyleSheet {
 
     private Style tableStyle() {
 
-        MaterialStyle style = new MaterialStyle(palette, "table");
+        Style style = new Style("table");
 
-        style.addProperty("max-width", "70%");
+//        style.addProperty("max-width", "70%");
         style.addProperty("font-size", "0.9em");
         style.addProperty("display", "inline-table");
 
         style.addProperty("border", "1px solid black");
-        style.addColorProperty("border-color", MaterialPaletteColors.dividerColor);
 
         return style;
     }
 
     private Style tdStyle() {
 
-        MaterialStyle style = new MaterialStyle(palette, "td");
+        Style style = new Style("td");
 
         style.addProperty("padding", "6pt");
 
         return style;
     }
 
-    private Style theadStyle() {
-
-        MaterialStyle style = new MaterialStyle(palette, "thead");
-
-        style.addColorProperty("background-color", MaterialPaletteColors.primaryColor);
-
-        return style;
-    }
-
-    private Style theadTrStyle() {
-
-        MaterialStyle style = new MaterialStyle(palette, "thead tr:nth-child(odd)");
-
-        style.addProperty("background-color", "#ffffff69");
-
-        return style;
-    }
-
     private Style trStyle() {
 
-        MaterialStyle style = new MaterialStyle(palette, "tr");
+        Style style = new Style("tr");
 
-        style.addProperty("border", "solid 1px #000000");
-        style.addColorProperty("border-color", MaterialPaletteColors.dividerColor);
-        style.addColorProperty("color", MaterialPaletteColors.primaryText);
-        return style;
-    }
+        style.addProperty("border", "solid 1px #a2aab0");
 
-    private Style trEvenStyle() {
-
-        MaterialStyle style = new MaterialStyle(palette, "tr:nth-child(even)");
-
-        style.addColorProperty("color", MaterialPaletteColors.textIcons);
-
-        style.addColorProperty("background-color", MaterialPaletteColors.darkPrimaryColor);
+        style.addProperty("padding", "6pt");
 
         return style;
-    }
-
-    private Style trOddStyle() {
-
-        MaterialStyle style = new MaterialStyle(palette, "tr:nth-child(odd)");
-
-        style.addColorProperty("background-color", MaterialPaletteColors.lightPrimaryColor);
-
-        return style;
-    }
-
-    private void addSingleColorStyle(String name, MaterialPaletteColors color) {
-
-        MaterialStyle style = new MaterialStyle(palette, name);
-
-        style.addColorProperty("color", color);
-
-        this.addChild(style);
     }
 
     private void addSingleColorStyle(String name, String code) {
@@ -166,14 +106,19 @@ public class WikiStyleSheet extends StyleSheet {
 
     private Style jsonObjectCodeStyle() {
 
-        MaterialStyle style = new MaterialStyle(palette, ".json-object,code");
+        Style style = new Style(".json-object,code");
 
-        style.addProperty("background-color", "#00000061");
-        style.addProperty("border", "solid 1px #000000");
-        style.addColorProperty("border-color", MaterialPaletteColors.dividerColor);
-        style.addColorProperty("color", MaterialPaletteColors.dividerColor);
+        style.addProperty("background-color", "#0000001A");
+
+        style.addProperty("border", "solid 1px #a2aab0");
+
+        style.addProperty("font-size", "0.85em");
+
         style.addProperty("display", "inline-block");
+
         style.addProperty("padding", "5pt");
+
+        style.addProperty("border-radius", "3pt");
 
         this.addChild(style);
 
@@ -182,18 +127,21 @@ public class WikiStyleSheet extends StyleSheet {
 
     private Style btnCopyStyle() {
 
-        MaterialStyle style = new MaterialStyle(palette, ".btn-copy, .btn-copy:active");
+        Style style = new Style(".btn-copy, .btn-copy:active");
 
-        style.addProperty("width", "27pt");
-        style.addProperty("height", "13pt");
+//        style.addProperty("width", "27pt");
+//        style.addProperty("height", "13pt");
         style.addProperty("border-radius", "3pt");
         style.addProperty("margin", "0pt");
-        style.addProperty("border", "solid 1px #000000");
-        style.addColorProperty("border-color", MaterialPaletteColors.dividerColor);
+        style.addProperty("paddiing-top", "3pt");
+        style.addProperty("paddiing-bottom", "3pt");
+        style.addProperty("paddiing-left", "5pt");
+        style.addProperty("paddiing-right", "5pt");
+        style.addProperty("border", "solid 1px #7b7b7b");
         style.addProperty("cursor", "pointer");
         style.addProperty("text-align", "center");
         style.addProperty("font-size", "9pt");
-        style.addColorProperty("color", MaterialPaletteColors.dividerColor);
+        style.addProperty("color", "#1a8cf0");
         this.addChild(style);
 
         return style;
@@ -201,11 +149,12 @@ public class WikiStyleSheet extends StyleSheet {
 
     private Style btnCopyActiveStyle() {
 
-        MaterialStyle style = new MaterialStyle(palette, ".btn-copy:active");
+        Style style = new Style(".btn-copy:active");
 
-        style.addProperty("border", "solid 1px #000000");
-        style.addColorProperty("border-color", MaterialPaletteColors.dividerColor);
-        style.addColorProperty("background-color", MaterialPaletteColors.accentColor);
+        style.addProperty("background-color", "2d3233");
+        style.addProperty("text-shadow", "0px 0px 3pt #3b8a65");
+        style.addProperty("border", "solid 1px #535353");
+
         this.addChild(style);
 
         return style;
@@ -230,15 +179,15 @@ public class WikiStyleSheet extends StyleSheet {
 
     private Style codeMessageStyle() {
 
-        MaterialStyle style = new MaterialStyle(palette, ".code-message");
+        Style style = new Style(".code-message");
 
         style.addProperty("display", "block");
         style.addProperty("visibility", "hidden");
         style.addProperty("padding-top", "-2pt");
         style.addProperty("margin-righ", "20pt");
         style.addProperty("margin-bottom", "6pt");
-        style.addColorProperty("color", MaterialPaletteColors.textIcons);
-        style.addFadeToRightLineaGradiantProperty("background-image", MaterialPaletteColors.primaryText);
+        style.addColorProperty("color", "#dbffe8");
+        style.addProperty("background-image", "linear-gradient(to right, #4fac9fa3 , #62ff0a0a)");
         style.addProperty("text-align", "center");
         style.addProperty("padding-bottom", "2pt");
         style.addProperty("padding-top", "2pt");
@@ -260,18 +209,17 @@ public class WikiStyleSheet extends StyleSheet {
 
     private Style themeItemHoverStyle() {
 
-        MaterialStyle style = new MaterialStyle(this.palette, ".theme-item:hover");
+        Style style = new Style(".theme-item:hover");
 
         style.addProperty("width", "20pt");
         style.addProperty("height", "20pt");
         style.addProperty("border", "solid 1px #000000");
-        style.addColorProperty("border-color", MaterialPaletteColors.dividerColor);
         style.addProperty("border-radius", "20pt");
 
         return style;
     }
 
-    private Style themeContaonerStyle() {
+    private Style themeContainerStyle() {
 
         Style style = new Style(".theme-container");
 
@@ -284,14 +232,13 @@ public class WikiStyleSheet extends StyleSheet {
         return style;
     }
 
-    private Style hrStyle() {
+    private Style wikiIndexStyle() {
 
-        MaterialStyle style = new MaterialStyle(this.palette, "hr");
+        Style wikiIndexListItem = new Style(".auto-index li");
+        wikiIndexListItem.addProperty("text-shadow", "0px 0px 100pt #f9f9f98a");
+        wikiIndexListItem.addProperty("color", "white");
+        wikiIndexListItem.addProperty("list-style-type", "disclosure-closed");
 
-        style.addProperty("border-width", "1pt");
-        style.addProperty("opacity", "0.4");
-        style.addColorProperty("background-color", MaterialPaletteColors.dividerColor);
-
-        return style;
+        return wikiIndexListItem;
     }
 }
