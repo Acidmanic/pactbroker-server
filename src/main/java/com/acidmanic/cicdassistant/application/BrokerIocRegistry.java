@@ -44,7 +44,8 @@ import com.acidmanic.cicdassistant.services.HtmlTemplateManager;
 import com.acidmanic.cicdassistant.services.PactsManagerService;
 import com.acidmanic.cicdassistant.services.SmtpClient;
 import com.acidmanic.cicdassistant.services.WikiRepoStatus;
-import com.acidmanic.cicdassistant.services.routing.Router;
+import com.acidmanic.cicdassistant.http.Router;
+import com.acidmanic.cicdassistant.services.routing.AssetsRouter;
 import com.acidmanic.cicdassistant.services.routing.WikiRouter;
 import com.acidmanic.cicdassistant.storage.BadgeStorage;
 import com.acidmanic.cicdassistant.storage.PactMapStorage;
@@ -160,9 +161,9 @@ public class BrokerIocRegistry implements Installer {
 
         reg.register().bindToSelf(ArtifactManager.class);
 
-        reg.register().bind(Router.class)
-                .withBuilder(() -> new WikiRouter())
-                .livesAsA(LifetimeType.Singleton);
+        reg.register().bindToSelf(WikiRouter.class).livesAsA(LifetimeType.Singleton);
+
+        reg.register().bindToSelf(AssetsRouter.class).livesAsA(LifetimeType.Singleton);
 
         reg.register().bindToSelf(EncyclopediaStore.class)
                 .livesAsA(LifetimeType.Singleton);

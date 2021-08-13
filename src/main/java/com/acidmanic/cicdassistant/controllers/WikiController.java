@@ -12,7 +12,8 @@ import com.acidmanic.cicdassistant.html.interception.RebaseAnchorsHtmlIntercepto
 import com.acidmanic.cicdassistant.models.Dto;
 import com.acidmanic.cicdassistant.services.EncyclopediaStore;
 import com.acidmanic.cicdassistant.services.WikiRepoStatus;
-import com.acidmanic.cicdassistant.services.routing.Router;
+import com.acidmanic.cicdassistant.http.Router;
+import com.acidmanic.cicdassistant.services.routing.WikiRouter;
 import com.acidmanic.cicdassistant.storage.TokenStorage;
 import com.acidmanic.cicdassistant.utility.StringUtils;
 import com.acidmanic.cicdassistant.utility.web.MimeTypeTable;
@@ -52,14 +53,14 @@ public class WikiController extends ControllerBase {
 
     public static final String WIKI_ROUTE = "wiki";
     private static final java.nio.file.Path WIKI_ROUTE_PATH = Paths.get(WIKI_ROUTE);
-    private final Router router;
+    private final WikiRouter router;
     private final Configurations configurations;
     private final EncyclopediaStore encyclopediaStore;
     private final WikiRepoStatus wikiRepoStatus;
     private final HtmlStyleProvider htmlStyleProvider;
     private final RequestDataProvider requestDataProvider;
 
-    public WikiController(Router router, Configurations configurations, EncyclopediaStore encyclopediaStore, WikiRepoStatus wikiRepoStatus, HtmlStyleProvider htmlStyleProvider, RequestDataProvider requestDataProvider, TokenStorage tokenStorage, Logger logger) {
+    public WikiController(WikiRouter router, Configurations configurations, EncyclopediaStore encyclopediaStore, WikiRepoStatus wikiRepoStatus, HtmlStyleProvider htmlStyleProvider, RequestDataProvider requestDataProvider, TokenStorage tokenStorage, Logger logger) {
         super(tokenStorage, logger);
         this.router = router;
         this.configurations = configurations;
@@ -175,8 +176,7 @@ public class WikiController extends ControllerBase {
                     .setStyleProvider(this.htmlStyleProvider)
                     .setLinkManipulator(new GitlabRelativeLinkManipulator())
                     .useIndexTree(this.wikiRepoStatus::getIndexTree)
-                    .useLinkTextProvider(this.wikiRepoStatus::getIndexTree)
-                    ;
+                    .useLinkTextProvider(this.wikiRepoStatus::getIndexTree);
 
             this.encyclopediaStore.getAvailables()
                     .forEach(en -> convertor.addAnchorSource(new TerminologyAnchorSource().addEncyclopedia(en.getEntries())));
