@@ -211,8 +211,22 @@ public abstract class HtmlTagBase implements Tag {
 
         return this;
     }
+    
+    protected void removeAttribute(String name){
+        
+        Result<String> attKey = containsAttributeKey(name);
+        
+        if(attKey.isSuccessfull()){
+            
+            this.attributes.remove(attKey.getValue());
+        }
+    }
 
     public <T> T as() {
         return (T) this;
     }
+    
+    
+    
+    
 }

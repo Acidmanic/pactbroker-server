@@ -175,7 +175,8 @@ public class WikiController extends ControllerBase {
                     .setStyleProvider(this.htmlStyleProvider)
                     .setLinkManipulator(new GitlabRelativeLinkManipulator())
                     .useIndexTree(this.wikiRepoStatus::getIndexTree)
-                    .useLinkTextProvider(this.wikiRepoStatus::getIndexTree);
+                    .useLinkTextProvider(this.wikiRepoStatus::getIndexTree)
+                    ;
 
             this.encyclopediaStore.getAvailables()
                     .forEach(en -> convertor.addAnchorSource(new TerminologyAnchorSource().addEncyclopedia(en.getEntries())));

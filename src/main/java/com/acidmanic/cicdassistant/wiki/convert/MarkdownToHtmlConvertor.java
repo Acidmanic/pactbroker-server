@@ -6,15 +6,14 @@
 package com.acidmanic.cicdassistant.wiki.convert;
 
 import com.acidmanic.cicdassistant.utility.MarkdownCleanup;
-import com.acidmanic.cicdassistant.wiki.GitlabRelativeLinkManipulator;
 import com.acidmanic.cicdassistant.wiki.autoindexing.IndexHtml;
 import com.acidmanic.cicdassistant.wiki.autoindexing.IndexHtmlBuilder;
-import com.acidmanic.cicdassistant.wiki.autoindexing.WebNode;
 import com.acidmanic.cicdassistant.wiki.autoindexing.WikiIndexTree;
 import com.acidmanic.cicdassistant.wiki.convert.autolink.AnchorSource;
 import com.acidmanic.cicdassistant.wiki.convert.autolink.AutoAnchorMachine;
 import com.acidmanic.cicdassistant.wiki.convert.flexmark.extensions.CodeFormatExtension;
 import com.acidmanic.cicdassistant.wiki.convert.flexmark.extensions.LinkManipulationExtension;
+import com.acidmanic.cicdassistant.wiki.convert.structure.WikiPage;
 import com.acidmanic.cicdassistant.wiki.convert.style.HtmlStyleProvider;
 import com.acidmanic.cicdassistant.wiki.convert.style.NullStyleProvider;
 import com.acidmanic.cicdassistant.wiki.linkprocessing.LinkManipulator;
@@ -133,25 +132,20 @@ public class MarkdownToHtmlConvertor {
 
         Node document = parser.parse(markdown);
 
-        String body = htmlRenderer.render(document);
+        String wikiHtml = htmlRenderer.render(document);
 
         String styles = this.styleProvider.getHeadInjectableHtml(styleName);
 
-        this.anchorSources.forEach(s -> s.preProcessInputString(body));
+        this.anchorSources.forEach(s -> s.preProcessInputString(wikiHtml));
+        
+        WikiPage wikiPage = new WikiPage()
+                .indexHtml(createIndexTag())
+                .scripts(InMemoryResources.COPY_TO_CLIPBOARD_JS + InMemoryResources.TOAST_COMPONENT)
+                .styles(styles)
+                .styleProvider(styleProvider)
+                .wikiHtml(wikiHtml);
 
-        String html = ""
-                + "<html>"
-                + "<head>"
-                + styles
-                + "</head>"
-                + "<body>"
-                + createThemeContainer()
-                + InMemoryResources.COPY_TO_CLIPBOARD_JS
-                + InMemoryResources.TOAST_COMPONENT
-                + createIndexTag()
-                + body
-                + "</body>"
-                + "</html>";
+        String html = wikiPage.toString();
 
         AutoAnchorMachine anchorMachine = new AutoAnchorMachine(this.anchorSources);
 
@@ -159,25 +153,6 @@ public class MarkdownToHtmlConvertor {
 
         return html;
 
-    }
-
-    private String createThemeContainer() {
-
-        String container = "<div class =\"theme-container\">";
-
-        for (String themeName : this.styleProvider.getNames()) {
-
-            String colorCode = this.styleProvider.getStyleFlagColorCode(themeName);
-
-            container += "<a title=\"" + themeName + "\" href=\"?theme=" + themeName + "\">"
-                    + "<div class=\"theme-item\" "
-                    + "style=\"background-color: " + colorCode + "\">"
-                    + "</div>"
-                    + "</a>";
-        }
-        container += "</div>";
-
-        return container;
     }
 
     private String createIndexTag() {
@@ -190,6 +165,7 @@ public class MarkdownToHtmlConvertor {
             if (textProvider != null) {
 
                 IndexHtml indexHtml = new IndexHtmlBuilder()
+                        .limitLevelsTo(3)
                         .use(this.linkManipulator)
                         .use(textProvider)
                         .addHeads(indexTree.getHeads())
