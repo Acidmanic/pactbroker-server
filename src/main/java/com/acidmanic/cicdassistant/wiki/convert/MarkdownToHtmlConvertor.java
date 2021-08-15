@@ -44,6 +44,7 @@ public class MarkdownToHtmlConvertor {
     private LinkManipulator linkManipulator = s -> s;
     private Function<WikiIndexTree> wikiIndexTreeFactory = () -> null;
     private Function<LinkTextProvider> linkTextProviderFactory = () -> null;
+    private String emojiesDirectory = "img";
 
     public MarkdownToHtmlConvertor() {
 
@@ -92,9 +93,17 @@ public class MarkdownToHtmlConvertor {
         return this;
     }
 
+    public MarkdownToHtmlConvertor emojiesDirectory(String emojiesDirectory) {
+
+        this.emojiesDirectory = emojiesDirectory;
+
+        return this;
+    }
+
     private MutableDataSet provideOptions() {
 
-        MutableDataSet options = new MutableDataSet();
+        MutableDataSet options = new MutableDataSet()
+                .set(EmojiExtension.ROOT_IMAGE_PATH, emojiesDirectory);
 
         List<Extension> allExtentions = new ArrayList<>();
 
