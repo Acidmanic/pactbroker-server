@@ -14,7 +14,9 @@ import com.acidmanic.cicdassistant.html.Link;
 import com.acidmanic.cicdassistant.html.RawHtml;
 import com.acidmanic.cicdassistant.html.Script;
 import com.acidmanic.cicdassistant.html.StyleSheet;
+import com.acidmanic.cicdassistant.utility.StringUtils;
 import com.acidmanic.cicdassistant.wiki.convert.style.HtmlStyleProvider;
+import java.util.List;
 
 /**
  *
@@ -66,7 +68,7 @@ public class WikiPage {
 
         Html html = new Html();
         // set title
-
+        html.setTitle(getTitle());
         // add bootstrap
         Link bootstrapCss = new Link();
         bootstrapCss.setHref(bootstrapCssHref);
@@ -157,6 +159,32 @@ public class WikiPage {
 
         }
         return containerDiv;
+    }
+
+    private String getTitle() {
+
+        for (int headingLevel = 1; headingLevel < 4; headingLevel++) {
+
+            List<String> headers = StringUtils.extractPatterns(this.wikiHtml,
+                    "<h" + headingLevel + ".*>.*</h" + headingLevel + ">");
+
+            if (!headers.isEmpty()) {
+
+                String tag = headers.get(0);
+
+                int st = tag.indexOf(">");
+
+                tag = tag.substring(st + 1, tag.length());
+
+                st = tag.indexOf("<");
+
+                tag = tag.substring(0, st);
+
+                return "Wiki: " + tag;
+            }
+
+        }
+        return "";
     }
 
 }
