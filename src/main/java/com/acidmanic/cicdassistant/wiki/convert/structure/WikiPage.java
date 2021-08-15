@@ -7,6 +7,8 @@ package com.acidmanic.cicdassistant.wiki.convert.structure;
 
 import com.acidmanic.cicdassistant.html.A;
 import com.acidmanic.cicdassistant.html.Div;
+import com.acidmanic.cicdassistant.html.H3;
+import com.acidmanic.cicdassistant.html.Hr;
 import com.acidmanic.cicdassistant.html.Html;
 import com.acidmanic.cicdassistant.html.Link;
 import com.acidmanic.cicdassistant.html.RawHtml;
@@ -96,6 +98,8 @@ public class WikiPage {
 
         divContainer.addChild(themeContainer);
 
+        divContainer.addChild(new Div("row"));// Push contents one row down
+
         Div contentRow = new Div();
 
         contentRow.setCssClass("row");
@@ -106,17 +110,19 @@ public class WikiPage {
         Div divWiki = new Div();
         Div divIndex = new Div();
 
-        contentRow.addChild(divWiki).addChild(divIndex);
+        contentRow.addChild(divIndex).addChild(divWiki);
 
         //Design div wiki
-        divWiki.setCssClass("col-md-8 col-sm-12");
+        divWiki.setCssClass("col-md-9 col-sm-12");
 
         RawHtml wikiContent = new RawHtml(this.wikiHtml);
 
         divWiki.addChild(wikiContent);
 
         //Design div index
-        divIndex.setCssClass("col-md-4 cols-sm-12");
+        divIndex.setCssClass("col-md-3 cols-sm-12");
+
+        divIndex.addChild(new H3("Index")).addChild(new Hr());
 
         RawHtml indexContent = new RawHtml(this.indexHtml);
 

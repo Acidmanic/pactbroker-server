@@ -9,6 +9,32 @@ package com.acidmanic.cicdassistant.html;
  *
  * @author diego
  */
-public class Div extends ContainerHtmlTagBase{
-    
+public class Div extends ContainerHtmlTagBase {
+
+    public Div() {
+    }
+
+    public Div(String cssClasses) {
+
+        this.setCssClass(cssClasses);
+    }
+
+    public Div(Tag... children) {
+
+        for (Tag child : children) {
+
+            this.addChild(child);
+        }
+    }
+
+    public Div(String cssClasses, Tag... children) {
+
+        this.setCssClass(cssClasses);
+
+        for (Tag child : children) {
+
+            this.addChild(child);
+        }
+    }
+
 }

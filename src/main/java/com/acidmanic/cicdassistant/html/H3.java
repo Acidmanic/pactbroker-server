@@ -9,6 +9,14 @@ package com.acidmanic.cicdassistant.html;
  *
  * @author diego
  */
-public class H3 extends ContainerHtmlTagBase{
-    
+public class H3 extends ContainerHtmlTagBase {
+
+    public H3() {
+    }
+
+    public H3(String textContent) {
+
+        this.addChild(new RawString(textContent));
+    }
+
 }
