@@ -5,6 +5,7 @@
  */
 package functional;
 
+import com.acidmanic.cicdassistant.services.routing.WikiRouter;
 import com.acidmanic.cicdassistant.wiki.GitlabRelativeLinkManipulator;
 import com.acidmanic.cicdassistant.wiki.autoindexing.IndexHtml;
 import com.acidmanic.cicdassistant.wiki.autoindexing.IndexHtmlBuilder;
@@ -34,7 +35,7 @@ public class WikiIndexing {
 
         //printMenue(heads, miscs);
         IndexHtml indexHtml = new IndexHtmlBuilder()
-                .use(new GitlabRelativeLinkManipulator())
+                .use(new GitlabRelativeLinkManipulator(new WikiRouter(root.toPath())))
                 .use(indexTree)
                 .addHeads(heads)
                 .addtMiscellaneous(miscs)

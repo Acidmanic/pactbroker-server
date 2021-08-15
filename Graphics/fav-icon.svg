@@ -16,7 +16,7 @@
    version="1.1"
    id="svg8"
    inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
-   sodipodi:docname="icon.svg"
+   sodipodi:docname="fav-icon.svg"
    inkscape:export-filename="/home/diego/Projects/pactbroker-server/Graphics/icon.png"
    inkscape:export-xdpi="40.639999"
    inkscape:export-ydpi="40.639999">
@@ -24,13 +24,25 @@
      id="defs2">
     <linearGradient
        inkscape:collect="always"
+       id="linearGradient843">
+      <stop
+         style="stop-color:#fbfbfb;stop-opacity:0.84792626"
+         offset="0"
+         id="stop839" />
+      <stop
+         style="stop-color:#ffffff;stop-opacity:0.33179724"
+         offset="1"
+         id="stop841" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
        id="linearGradient1021">
       <stop
-         style="stop-color:#fffdf3;stop-opacity:0"
+         style="stop-color:#e2e2e2;stop-opacity:0"
          offset="0"
          id="stop1017" />
       <stop
-         style="stop-color:#100e00;stop-opacity:0.38248849"
+         style="stop-color:#675555;stop-opacity:0.48235294"
          offset="1"
          id="stop1019" />
     </linearGradient>
@@ -109,6 +121,15 @@
        r="12.5"
        gradientUnits="userSpaceOnUse"
        gradientTransform="matrix(0.73501543,0.40621932,-0.43779466,0.76502008,129.63153,97.603225)" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient843"
+       id="linearGradient845"
+       x1="35.337791"
+       y1="240.75839"
+       x2="50.269951"
+       y2="215.68295"
+       gradientUnits="userSpaceOnUse" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -117,11 +138,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4142136"
-     inkscape:cx="53.302338"
-     inkscape:cy="64.992515"
+     inkscape:zoom="1"
+     inkscape:cx="-5.4356423"
+     inkscape:cy="-10.215316"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer2"
+     inkscape:current-layer="g1055"
      showgrid="false"
      inkscape:window-width="1440"
      inkscape:window-height="812"
@@ -140,14 +161,16 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <g
      inkscape:groupmode="layer"
      id="layer2"
-     inkscape:label="Layer 2">
+     inkscape:label="Layer 2"
+     sodipodi:insensitive="true"
+     style="display:none">
     <rect
        style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.50509864;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
        id="rect835"
@@ -160,8 +183,7 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-24.65741,-202.56406)"
-     sodipodi:insensitive="true">
+     transform="translate(-24.65741,-202.56406)">
     <g
        id="g1055"
        transform="matrix(1.1363878,0,0,1.1363878,-2.8483331,-36.167771)">
@@ -172,17 +194,18 @@
          style="opacity:1;fill:url(#radialGradient1025);fill-opacity:1;stroke:none;stroke-width:0.19751498;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke" />
       <g
          id="g1029"
-         transform="matrix(0.98811875,0,0,0.98811875,0.23475367,1.131291)">
+         transform="matrix(0.98811875,0,0,0.98811875,0.23475367,1.131291)"
+         style="stroke:url(#linearGradient845);stroke-opacity:0.45161289;stroke-width:0.64387653;stroke-miterlimit:4;stroke-dasharray:none">
         <path
            id="path1058-7-2"
-           style="opacity:1;fill:url(#linearGradient961-2);fill-opacity:1;stroke:none;stroke-width:1.31473041;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+           style="opacity:1;fill:url(#linearGradient961-2);fill-opacity:1;stroke:url(#linearGradient845);stroke-width:0.64387653;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.45161289;paint-order:markers fill stroke"
            d="m 43.415129,212.79437 c -7.813225,0.13336 -15.403759,8.29154 -15.403759,8.29154 l 7.051861,-1.31919 c 0,0 2.599984,3.21594 3.862298,4.75457 0,0 1.740551,-6.23075 5.025532,-6.3593 5.305489,-0.20763 9.613822,4.26722 9.613885,9.5312 -6.3e-5,5.26397 -4.304335,9.53122 -9.613885,9.5312 -5.293127,2e-5 -9.587309,-4.24112 -9.613883,-9.48263 -8.2e-5,-0.0163 0,-0.0486 0,-0.0486 l 5.676656,0.95808 c -1.845183,-3.02508 -3.505967,-5.04132 -5.384887,-8.00824 -3.517193,2.16342 -6.961214,3.22534 -9.971537,5.15515 l 4.293277,0.90641 c 0,0 -1.09e-4,1.03511 0,1.05833 0.03804,8.18101 6.739374,14.80123 15.000118,14.80117 8.284195,6e-5 14.999945,-6.65785 15.000115,-14.87093 1.2e-4,-8.21328 -6.715717,-14.87151 -15.000115,-14.87145 -0.174548,-0.017 -0.35337,-0.0259 -0.535885,-0.0274 z"
            inkscape:connector-curvature="0"
            sodipodi:nodetypes="ccccscccccccccccccc" />
         <path
            inkscape:connector-curvature="0"
            id="path1049-3-5-7"
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:40px;line-height:1.25;font-family:STIX;-inkscape-font-specification:'STIX Bold';letter-spacing:0px;word-spacing:0px;fill:url(#linearGradient969-3);fill-opacity:1;stroke:none;stroke-width:0.17900002;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:40px;line-height:1.25;font-family:STIX;-inkscape-font-specification:'STIX Bold';letter-spacing:0px;word-spacing:0px;fill:url(#linearGradient969-3);fill-opacity:1;stroke:url(#linearGradient845);stroke-width:0.64387653;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.45161289"
            d="m 42.849199,234.40357 c 0,0 -0.801612,1.13124 -1.979226,0.49929 -1.177609,-0.63196 -0.700565,-1.96879 -0.700565,-1.96879 l 6.326253,-12.17621 c 0,0 1.024099,-0.9563 2.01538,-0.40557 0.991282,0.55079 0.664436,1.87515 0.664436,1.87515 z"
            sodipodi:nodetypes="czcczcc" />
       </g>
