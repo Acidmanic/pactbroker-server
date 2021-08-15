@@ -86,17 +86,21 @@ public class WikiPage {
         html.getHead().addChild(injections);
 
         // Design body
-        html.getBody().setCssClass("container");
+        Div divContainer = new Div();
+
+        html.getBody().addChild(divContainer);
+
+        divContainer.setCssClass("container");
 
         Div themeContainer = createThemeContainer();
 
-        html.getBody().addChild(themeContainer);
+        divContainer.addChild(themeContainer);
 
         Div contentRow = new Div();
 
         contentRow.setCssClass("row");
 
-        html.getBody().addChild(contentRow);
+        divContainer.addChild(contentRow);
 
         // Add wiki and index columns
         Div divWiki = new Div();
