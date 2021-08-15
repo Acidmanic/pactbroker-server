@@ -11,7 +11,6 @@ import com.acidmanic.cicdassistant.html.Html;
 import com.acidmanic.cicdassistant.html.Link;
 import com.acidmanic.cicdassistant.html.RawHtml;
 import com.acidmanic.cicdassistant.html.Script;
-import com.acidmanic.cicdassistant.html.Style;
 import com.acidmanic.cicdassistant.html.StyleSheet;
 import com.acidmanic.cicdassistant.wiki.convert.style.HtmlStyleProvider;
 
@@ -61,7 +60,7 @@ public class WikiPage {
     public String toString() {
 
         String bootstrapCssHref = "/../assets/bootstrap5/bootstrap.min.css";
-        String bootstrapJsSrc = "./../assets/bootstrap5/bootstrap.min.js";
+        String bootstrapJsSrc = "/../assets/bootstrap5/bootstrap.bundle.min.js";
 
         Html html = new Html();
         // set title
@@ -148,41 +147,6 @@ public class WikiPage {
 
         }
         return containerDiv;
-    }
-
-    private StyleSheet makeBuiltinStyles() {
-
-        StyleSheet sheet = new StyleSheet();
-
-        Style wikiIndexListItem = new Style(".auto-index li");
-        wikiIndexListItem.addProperty("text-shadow", "0px 0px 100pt #f9f9f98a");
-        wikiIndexListItem.addProperty("color", "white");
-        wikiIndexListItem.addProperty("list-style-type", "disclosure-closed");
-
-        sheet.addChild(wikiIndexListItem);
-
-//        Style autoIndexMenu = new Style(".auto-index-menu");
-//        wikiIndexListItem.addProperty("font-size", "0.84em");
-//        
-//        sheet.addChild(autoIndexMenu);
-        Style themContainer = new Style("." + CSS_THEME_CONTAINER);
-        themContainer.addProperty("cursor", "pointer");
-        themContainer.addProperty("left", "5pt");
-        themContainer.addProperty("top", "5pt");
-        themContainer.addProperty("position", "absoute");
-        themContainer.addProperty("display", "block");
-
-        sheet.addChild(themContainer);
-
-        Style themeItem = new Style("." + CSS_THEME_ITEM);
-        themeItem.addProperty("color", "white");
-        themeItem.addProperty("height", "3pt");
-        themeItem.addProperty("width", "20pt");
-        themeItem.addProperty("position", "relative");
-
-        sheet.addChild(themeItem);
-
-        return sheet;
     }
 
 }

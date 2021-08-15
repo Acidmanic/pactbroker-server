@@ -31,7 +31,7 @@ public class QueryStringMap {
 
         for (String segment : segments) {
 
-            int st = segment.indexOf(":");
+            int st = segment.indexOf("=");
 
             if (st > -1) {
 

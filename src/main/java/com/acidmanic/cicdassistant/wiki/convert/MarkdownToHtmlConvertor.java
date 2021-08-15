@@ -137,7 +137,7 @@ public class MarkdownToHtmlConvertor {
         String styles = this.styleProvider.getHeadInjectableHtml(styleName);
 
         this.anchorSources.forEach(s -> s.preProcessInputString(wikiHtml));
-        
+
         WikiPage wikiPage = new WikiPage()
                 .indexHtml(createIndexTag())
                 .scripts(InMemoryResources.COPY_TO_CLIPBOARD_JS + InMemoryResources.TOAST_COMPONENT)

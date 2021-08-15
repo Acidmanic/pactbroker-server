@@ -147,7 +147,7 @@ public class WikiController extends ControllerBase {
                 .status(status)
                 .type(type)
                 .entity(data)
-                .cookie(new NewCookie("theme", theme, "/", "", "wiki theme", 10000000, false))
+                .cookie(new NewCookie("theme", theme, "/", "", "wiki theme", 10000000, true))
                 .build();
     }
 
