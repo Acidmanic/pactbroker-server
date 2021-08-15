@@ -5,9 +5,9 @@
  */
 package com.acidmanic.cicdassistant.wiki.convert.autolink;
 
-import com.acidmanic.cicdassistant.utility.StringUtils;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -16,17 +16,38 @@ import java.util.List;
  */
 public class HtmlTextMarker {
 
+    /**
+     * Indicates an HTML start tag or end tag. from (including) &lt; character
+     * to &gt; character
+     */
     public static final String MARK_TAG = "TAG";
-    public static final String MARK_TEXT = "TEXT";
-    public static final String MARK_CONTENT = "CONTENT";
+    /**
+     * Indicates text content. The human readable parts of the HTML
+     */
+    public static final String MARK_TEXT_CONTENT = "TEXT";
+    /**
+     * Indicates HTML content. But these content belong to tags that are not
+     * supposed to be directly read by user. These content are for browser
+     * components to use.
+     */
+    public static final String MARK_NONTEXT_CONTENT = "CONTENT";
+    /**
+     * Indicates HTML content which depending on the usage of
+     * <code>HtmlTextMarker</code>, are marked to be filtered out.
+     */
+    public static final String MARK_PROTECTED_CONTENT = "PROTECTED";
 
-    private static final String[] PROTECTED_TAGS = {"code", "head", "style", "script",
-        "area", "map", "param", "obj", "input", "textarea", "select", "option",
-        "optgroup", "button", "label", "fieldset", "legend", "noscript",
-        "a", "applet", "audio", "base", "basefont", "canvas", "cite", "data",
-        "dd", "del", "embed", "font", "isindex", "link", "nav", "output", "picture",
-        "progress", "samp", "source", "svg", "template", "time", "title", "track",
-        "var", "video", "thead", "th", "h1", "h2", "h3", "h4", "h5", "h6", "li"};
+    private final List<String> protectedTags = new ArrayList<>();
+
+    public HtmlTextMarker(String... protectedTags) {
+
+        this.protectedTags.addAll(Arrays.asList(protectedTags));
+    }
+
+    public HtmlTextMarker(Collection<String> protectedTags) {
+
+        this.protectedTags.addAll(protectedTags);
+    }
 
     public List<Mark> markTexts(String html) {
 
@@ -35,7 +56,12 @@ public class HtmlTextMarker {
         boolean inTag = html.startsWith("<");
         int startIndex = 0;
         int lastCharDelivered = 0;
-        HashMap<String, Integer> bannedCount = new HashMap<>();
+
+        TagTracer nonTexuals = new TagTracer()
+                .addTagNames(HtmlTagGroups.NONE_TEXTUALS)
+                .addTagNames(HtmlTagGroups.NONE_PARAGRAPHIC_TEXTS);
+
+        TagTracer protecteds = new TagTracer(this.protectedTags);
 
         char[] chars = html.toCharArray();
 
@@ -57,7 +83,10 @@ public class HtmlTextMarker {
 
                     if (!mark.isEmpty()) {
 
-                        count(bannedCount, html, mark);
+                        String tagString = mark.pickChunk(html);
+
+                        nonTexuals.count(tagString);
+                        protecteds.count(tagString);
 
                         marks.add(mark);
                     }
@@ -68,7 +97,7 @@ public class HtmlTextMarker {
 
                     lastCharDelivered = i + 1;
 
-                    Mark mark = new Mark(startIndex + 1, lastCharDelivered - 1, MARK_TEXT);
+                    Mark mark = new Mark(startIndex + 1, lastCharDelivered - 1, MARK_TEXT_CONTENT);
 
                     startIndex = i;
 
@@ -76,8 +105,12 @@ public class HtmlTextMarker {
 
                     if (!mark.isEmpty()) {
 
-                        if (isBanned(bannedCount)) {
-                            mark.setTag(MARK_CONTENT);
+                        if (nonTexuals.inZone()) {
+                            mark.setTag(MARK_NONTEXT_CONTENT);
+                        }
+                        // let protecteds override nonTextuals
+                        if (protecteds.inZone()) {
+                            mark.setTag(MARK_PROTECTED_CONTENT);
                         }
                         marks.add(mark);
                     }
@@ -89,70 +122,11 @@ public class HtmlTextMarker {
 
             Mark mark = new Mark(lastCharDelivered,
                     chars.length,
-                    inTag ? MARK_TAG : MARK_TEXT);
+                    inTag ? MARK_TAG : MARK_TEXT_CONTENT);
 
             marks.add(mark);
         }
         return marks;
-    }
-
-    private void count(HashMap<String, Integer> bannedCount, String html, Mark mark) {
-
-        String tagHead = mark.pickChunk(html).toLowerCase().trim();
-        //strip <> away
-        tagHead = tagHead.substring(1, tagHead.length() - 1).trim();
-
-        int addSign = 1;
-
-        if (tagHead.startsWith("/")) {
-            addSign = -1;
-            tagHead = tagHead.substring(1, tagHead.length());
-        }
-
-        List<String> segments = StringUtils.split(tagHead, "\\s", true);
-
-        if (!segments.isEmpty()) {
-
-            String tagName = segments.get(0);
-
-            if (isProtected(tagName)) {
-
-                int currentCount = 0;
-
-                if (bannedCount.containsKey(tagName)) {
-
-                    currentCount = bannedCount.get(tagName);
-
-                    bannedCount.remove(tagName);
-                }
-                currentCount += addSign;
-
-                bannedCount.put(tagName, currentCount);
-            }
-        }
-
-    }
-
-    private boolean isBanned(HashMap<String, Integer> bannedCount) {
-
-        for (int count : bannedCount.values()) {
-            // if odd number 
-            if (count % 2 == 1) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean isProtected(String tagName) {
-
-        for (String pTag : PROTECTED_TAGS) {
-
-            if (pTag.equalsIgnoreCase(tagName)) {
-                return true;
-            }
-        }
-        return false;
     }
 
 }

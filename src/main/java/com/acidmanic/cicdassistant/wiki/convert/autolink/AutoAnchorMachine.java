@@ -65,7 +65,7 @@ public class AutoAnchorMachine {
 
             String htmlChunk = htmlMark.pickChunk(html);
 
-            if (HtmlTextMarker.MARK_TEXT.equals(htmlMark.getTag())) {
+            if (HtmlTextMarker.MARK_TEXT_CONTENT.equals(htmlMark.getTag())) {
 
                 htmlChunk = replaceLinksInHtmlChunk(htmlChunk);
             }
