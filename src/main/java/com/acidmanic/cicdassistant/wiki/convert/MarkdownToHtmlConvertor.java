@@ -164,13 +164,18 @@ public class MarkdownToHtmlConvertor {
             LinkTextProvider textProvider = this.linkTextProviderFactory == null ? null : this.linkTextProviderFactory.perform();
             if (textProvider != null) {
 
-                IndexHtml indexHtml = new IndexHtmlBuilder()
+                IndexHtmlBuilder builder = new IndexHtmlBuilder()
                         .limitLevelsTo(3)
                         .use(this.linkManipulator)
                         .use(textProvider)
-                        .addHeads(indexTree.getHeads())
-                        .addtMiscellaneous(indexTree.getMiscellaneousNodes())
-                        .build();
+                        .addHeads(indexTree.getHeads());
+
+                if (!indexTree.getMiscellaneousNodes().isEmpty()) {
+
+                    builder.addtMiscellaneous(indexTree.getMiscellaneousNodes());
+                }
+
+                IndexHtml indexHtml = builder.build();
 
                 String html = indexHtml.getHtmlContent();
 

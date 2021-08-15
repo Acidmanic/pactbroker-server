@@ -98,9 +98,7 @@ public class IndexHtml {
 
     private A createLink(WebNode node) {
 
-        String text = node.getFile().getName();
-
-        text = this.linkTextProvider.getTextFor(node.getKey());
+        String text = this.linkTextProvider.getTextFor(node.getKey());
 
         if (StringUtils.isEmptyOrNull(text)) {
             text = this.backupLinkTextProvider.getTextFor(node.getKey());
