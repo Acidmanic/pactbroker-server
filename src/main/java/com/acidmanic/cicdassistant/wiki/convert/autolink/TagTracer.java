@@ -117,4 +117,20 @@ public class TagTracer {
         }
         return false;
     }
+    
+    public String zone(){
+        
+        StringBuilder sb = new StringBuilder();
+        
+        for(String tagName:this.occuranceCount.keySet()){
+            
+            int count = this.occuranceCount.get(tagName);
+            
+            if(count % 2 ==1){
+                
+                sb.append(tagName).append(" - ");
+            }
+        }
+        return sb.toString();
+    }
 }

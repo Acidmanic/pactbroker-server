@@ -22,12 +22,12 @@ public final class HtmlTagGroups {
         "area", "map", "param", "obj", "input", "select", "option",
         "optgroup", "button", "fieldset", "legend", "noscript",
         "a", "applet", "audio", "base", "basefont", "canvas", "cite", "data",
-        "dd", "del", "embed", "font", "isindex", "link", "nav", "output", "picture",
+        "dd", "del", "embed", "font", "isindex", "nav", "output", "picture",
         "progress", "samp", "source", "svg", "template", "time", "title", "track",
         "var", "video"
     };
     public static final String[] NONE_PARAGRAPHIC_TEXTS = {
-        "textarea", "label", "li", "thead", "th", "h1", "h2", "h3", "h4", "h5", "h6"
+        "textarea", "label", "thead", "th", "h1", "h2", "h3", "h4", "h5", "h6"
     };
 
 }

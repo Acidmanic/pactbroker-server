@@ -106,6 +106,7 @@ public class HtmlTextMarker {
                     if (!mark.isEmpty()) {
 
                         if (nonTexuals.inZone()) {
+                            
                             mark.setTag(MARK_NONTEXT_CONTENT);
                         }
                         // let protecteds override nonTextuals
