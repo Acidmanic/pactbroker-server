@@ -26,7 +26,9 @@ package com.acidmanic.cicdassistant.utility;
 import com.acidmanic.lightweight.logger.Logger;
 import com.acidmanic.lightweight.logger.SilentLogger;
 import java.io.File;
+import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.PullCommand;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
 /**
@@ -93,13 +95,17 @@ public class JGit {
 
     public boolean clone(String repo, String username, String password, File directory) {
         try {
-            Git.cloneRepository()
-                    .setDirectory(directory)
-                    .setURI(repo)
-                    .setCredentialsProvider(
-                            new UsernamePasswordCredentialsProvider(username, password)
-                    )
-                    .call();
+            CloneCommand gitClone
+                    = Git.cloneRepository()
+                            .setDirectory(directory)
+                            .setURI(repo);
+            if (!StringUtils.isNullOrEmpty(username)) {
+
+                gitClone.setCredentialsProvider(
+                        new UsernamePasswordCredentialsProvider(username, password));
+            }
+
+            gitClone.call();
             return true;
         } catch (Exception e) {
             logException(e, "cloning repository");
@@ -143,12 +149,16 @@ public class JGit {
         Git git = tryGetGit(directory);
 
         try {
-            git.pull()
-                    .setRemoteBranchName(branch)
-                    .setRemote(remote)
-                    .setCredentialsProvider(
-                            new UsernamePasswordCredentialsProvider(username, password)
-                    ).call();
+            PullCommand gitPull
+                    = git.pull()
+                            .setRemoteBranchName(branch)
+                            .setRemote(remote);
+
+            if (!StringUtils.isNullOrEmpty(username)) {
+                gitPull.setCredentialsProvider(
+                        new UsernamePasswordCredentialsProvider(username, password));
+            }
+            gitPull.call();
             return true;
         } catch (Exception e) {
             logException(e, "Pulling from repo");
