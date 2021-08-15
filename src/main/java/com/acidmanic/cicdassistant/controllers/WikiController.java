@@ -173,7 +173,7 @@ public class WikiController extends ControllerBase {
                     .addAnchorSource(new SmartWebLinkAnchorSource())
                     .addAnchorSource(new MailToAnchorSource())
                     .setStyleProvider(this.htmlStyleProvider)
-                    .setLinkManipulator(new GitlabRelativeLinkManipulator())
+                    .setLinkManipulator(new GitlabRelativeLinkManipulator(this.router))
                     .useIndexTree(this.wikiRepoStatus::getIndexTree)
                     .useLinkTextProvider(this.wikiRepoStatus::getIndexTree);
 
