@@ -39,4 +39,22 @@ public class A extends ContainerHtmlTagBase {
         this.setAttribute("title", title);
     }
 
+    public A(String text, String href) {
+        setHref(href);
+
+        this.addChild(new RawString(text));
+    }
+
+    public A(String text, String href, String title) {
+
+        setHref(href);
+
+        setTitle(title);
+
+        this.addChild(new RawString(text));
+    }
+
+    public A() {
+    }
+
 }

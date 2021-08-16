@@ -9,6 +9,7 @@ import com.acidmanic.cicdassistant.application.configurations.Configurations;
 import com.acidmanic.cicdassistant.application.services.web.Controller;
 import static com.acidmanic.cicdassistant.controllers.WikiController.WIKI_ROUTE;
 import com.acidmanic.cicdassistant.html.interception.RebaseAnchorsHtmlInterceptor;
+import com.acidmanic.cicdassistant.html.interception.TitleSublinkInterceptor;
 import com.acidmanic.cicdassistant.models.Dto;
 import com.acidmanic.cicdassistant.services.EncyclopediaStore;
 import com.acidmanic.cicdassistant.services.WikiRepoStatus;
@@ -223,6 +224,8 @@ public class WikiController extends ControllerBase {
         Document document = Jsoup.parse(html);
 
         new RebaseAnchorsHtmlInterceptor(WIKI_ROUTE_PATH).manipulate(document);
+        
+        new TitleSublinkInterceptor().manipulate(document);
 
         return document.html();
     }

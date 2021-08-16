@@ -34,6 +34,8 @@ public class WikiStyleSheet extends StyleSheet {
         this.addChild(themeContainerStyle());
         this.addChild(themeItemHoverStyle());
         this.addChild(wikiIndexStyle());
+        this.addChild(headingAnchorsStyle());
+        this.addChild(headingAnchorsHoverStyle());
     }
 
     private Style bodyStyle() {
@@ -240,5 +242,30 @@ public class WikiStyleSheet extends StyleSheet {
         wikiIndexListItem.addProperty("list-style-type", "disclosure-closed");
 
         return wikiIndexListItem;
+    }
+
+    private Tag headingAnchorsStyle() {
+
+        Style style = new Style("h1 a, h2 a, h3 a, h4 a, h5 a,h6 a");
+        style.addProperty("font-size", "0.55em");
+        style.addProperty("margin", "5pt");
+        style.addProperty("position", "relative");
+        style.addProperty("text-shadow", "0px 0px 5pt #9998989C");
+        style.addProperty("top", "7pt");
+        style.addProperty("display", "none");
+
+        return style;
+
+    }
+
+    private Tag headingAnchorsHoverStyle() {
+
+        Style style = new Style("h1:hover a, h2:hover a, h3:hover a, "
+                + "h4:hover a, h5:hover a,h6:hover a");
+        style.addProperty("display", "inline");
+        style.addProperty("text-shadow", "0px 0px 5pt #9998989C");
+
+        return style;
+
     }
 }
