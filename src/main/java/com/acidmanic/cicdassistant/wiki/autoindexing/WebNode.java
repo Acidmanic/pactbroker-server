@@ -91,4 +91,11 @@ public class WebNode {
         return file;
     }
 
+    public WebNode singularClone() {
+
+        WebNode clone = new WebNode(key, file);
+
+        return clone;
+    }
+
 }

@@ -60,10 +60,17 @@ public class IndexHtmlBuilder {
         WebNode miscNode = new NoneLinkWebNode(title);
 
         for (WebNode node : nodes) {
+            // each node is a singular node
+            // so it has no references and no sitations
+            // so its safe to use a singular clone. its identical
+            // if you use the node itself, it will get sited by miscNode
+            // so the source data will change and the node would not be 
+            // singular anymore. it will be a singular not showing up as header!
+            WebNode nodeClone = node.singularClone();
 
-            miscNode.references(node);
+            miscNode.references(nodeClone);
 
-            node.sitedBy(miscNode);
+            nodeClone.sitedBy(miscNode);
         }
 
         this.heads.add(miscNode);
