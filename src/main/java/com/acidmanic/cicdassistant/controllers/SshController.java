@@ -15,6 +15,7 @@ import com.acidmanic.cicdassistant.storage.TokenStorage;
 import com.acidmanic.cicdassistant.utility.Result;
 import com.acidmanic.cicdassistant.utility.StringUtils;
 import com.acidmanic.delegates.Function;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.HeaderParam;
@@ -53,7 +54,14 @@ public class SshController extends ControllerBase {
 
             SshSession sessionParams = findSessionParameters(host, configurations);
 
-            if (sessionParams != null) {
+            if (sessionParams == null) {
+                
+                result.setFailure(true);
+                
+                result.setError("No Ssh Session is Configured for host: " + host);
+            }
+            else
+            {
 
                 Result<List<String>> sshReponse = this.sshCommandExecuter
                         .executeCommand(command, sessionParams);
