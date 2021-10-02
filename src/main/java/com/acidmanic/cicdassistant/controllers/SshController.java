@@ -16,6 +16,7 @@ import com.acidmanic.cicdassistant.utility.Result;
 import com.acidmanic.cicdassistant.utility.StringUtils;
 import com.acidmanic.delegates.Function;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.HeaderParam;
@@ -46,7 +47,7 @@ public class SshController extends ControllerBase {
     public Dto<List<String>> executeSshCommands(
             @HeaderParam("token") String token,
             @FormParam("host") String host,
-            @FormParam("command") String command) {
+            @FormParam("base64Command") String base64Command) {
 
         Function<Dto<List<String>>> innerCode = () -> {
 
@@ -55,20 +56,35 @@ public class SshController extends ControllerBase {
             SshSession sessionParams = findSessionParameters(host, configurations);
 
             if (sessionParams == null) {
-                
+
                 result.setFailure(true);
-                
+
                 result.setError("No Ssh Session is Configured for host: " + host);
-            }
-            else
-            {
+                
+            } else if (StringUtils.isNullOrEmpty(base64Command)) {
 
-                Result<List<String>> sshReponse = this.sshCommandExecuter
-                        .executeCommand(command, sessionParams);
+                result.setModel(new ArrayList<>());
 
-                result.setFailure(!sshReponse.isSuccessfull());
+                result.getModel().add("Command Field is empty, leaving whithout executing ssh command.");
 
-                result.setModel(sshReponse.getValue());
+            } else {
+
+                try {
+                    String command = new String(Base64.getDecoder().decode(base64Command.trim()));
+
+                    Result<List<String>> sshReponse = this.sshCommandExecuter
+                            .executeCommand(command, sessionParams);
+
+                    result.setFailure(!sshReponse.isSuccessfull());
+
+                    result.setModel(sshReponse.getValue());
+                    
+                } catch (Exception e) {
+
+                    result.setError(e);
+
+                    result.setFailure(true);
+                }
             }
             return result;
 

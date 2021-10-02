@@ -637,10 +637,11 @@ creates an ssh session and executes your commands on the target machine.
 |Http Method            |  POST                         |
 |Headers                |  token: &lt;token&gt;         |
 |wwwform-url-encoded    |  host: &lt;example.host:22    |
-|wwwform-url-encoded    |  command: wget http://source.com/application.zip && unzip  application.zip -d application |
+|wwwform-url-encoded    |  base64(base64Command: wget http://source.com/application.zip && unzip  application.zip -d application) |
 
 * Host parameter can be followed with a port number. If not, the default would be 22.
 * You can execute any commands that are available on the target machine.
+* base64Command parameter must contain base64 encoded command. This will prevent the conflicts that may occur by some command characters like & and etc.
 
 __Response Body__:
 
@@ -693,7 +694,7 @@ Usage Example
 
 
 ```bash
-    curl -X POST http://cicd.source.server:8585/ssh -H "Content-Type: application/x-www-form-urlencoded" -d "command=ls -a&host=product.example.com:22424" -H "token: 23a910bc-...-06674476d3f8"
+    curl -X POST http://cicd.source.server:8585/ssh -H "Content-Type: application/x-www-form-urlencoded" -d "command=$(echo 'ls -a && echo Files listed.' | base64)" -d "host=product.example.com:22424" -H "token: 23a910bc-...-06674476d3f8"
 ```
 
 Fav Icon
