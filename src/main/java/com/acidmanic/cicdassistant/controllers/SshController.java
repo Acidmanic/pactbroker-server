@@ -47,7 +47,7 @@ public class SshController extends ControllerBase {
     public Dto<List<String>> executeSshCommands(
             @HeaderParam("token") String token,
             @FormParam("host") String host,
-            @FormParam("base64Command") String base64Command) {
+            @FormParam("command") String command) {
 
         Function<Dto<List<String>>> innerCode = () -> {
 
@@ -61,7 +61,7 @@ public class SshController extends ControllerBase {
 
                 result.setError("No Ssh Session is Configured for host: " + host);
                 
-            } else if (StringUtils.isNullOrEmpty(base64Command)) {
+            } else if (StringUtils.isNullOrEmpty(command)) {
 
                 result.setModel(new ArrayList<>());
 
@@ -70,7 +70,6 @@ public class SshController extends ControllerBase {
             } else {
 
                 try {
-                    String command = new String(Base64.getDecoder().decode(base64Command.trim()));
 
                     Result<List<String>> sshReponse = this.sshCommandExecuter
                             .executeCommand(command, sessionParams);
